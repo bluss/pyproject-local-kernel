@@ -22,14 +22,14 @@ if any(a.startswith(("bdist", "install")) for a in sys.argv):
     if os.path.exists(spec_dir):
         shutil.rmtree(spec_dir)
     os.mkdir(spec_dir)
-    from poetry_kernel.kernelspec import _write_kernelspec
+    from ryeish_kernel.kernelspec import _write_kernelspec
     _write_kernelspec(spec_dir)
 
     setup_args["data_files"] = [
         # Extract the kernel.json file relative to the installation root
         # (i.e., the virtual environment or system Python installation).
         (
-            os.path.join("share", "jupyter", "kernels", "poetry-kernel"),
+            os.path.join("share", "jupyter", "kernels", "ryeish-kernel"),
             glob(os.path.join(spec_dir, "*")),
         ),
     ]
@@ -38,15 +38,15 @@ with open(os.path.join(current_dir, "README.md")) as fp:
     README = fp.read()
 
 setup(
-    name="poetry-kernel",
+    name="ryeish-kernel",
     version="0.1.2",
 
     # Package metadata
-    author="Pathbird Inc",
-    author_email="oss@pathbird.com",
-    url="https://github.com/pathbird/poetry-kernel",
+    author="bluss",
+    author_email="bluss@example.com",
+    url="https://github.com/bluss/ryeish-kernel",
     license="MIT",
-    description="Python Jupyter kernel using Poetry for dependency management",
+    description="Python Jupyter kernel using Rye for dependency management",
     long_description=README,
     long_description_content_type="text/markdown",
     keywords=["Interactive", "Interpreter", "Shell", "Web"],
@@ -62,10 +62,10 @@ setup(
     ],
 
     # Actual code stuff
-    packages=["poetry_kernel"],
-    python_requires=">=3.7",
+    packages=["ryeish_kernel"],
+    python_requires=">=3.8",
     install_requires=[
-        "jupyter-client ~= 7.0.1",
+        "jupyter-client >= 7.0, < 9",
         "colorama ~= 0.4.4",
     ],
     **setup_args,

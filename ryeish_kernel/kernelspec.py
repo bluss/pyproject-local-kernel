@@ -2,13 +2,14 @@ import json
 import os.path
 import tempfile
 
+
 def _write_kernelspec(dir):
     spec = {
         "argv": [
-            "python", "-m", "poetry_kernel",
+            "python", "-m", "ryeish_kernel",
             "-f", "{connection_file}",
         ],
-        "display_name": "Poetry",
+        "display_name": "Rye(ish)",
         "language": "python",
     }
     with open(os.path.join(dir, "kernel.json"), "w") as fp:
@@ -24,4 +25,4 @@ def install():
     manager = KernelSpecManager()
     with tempfile.TemporaryDirectory() as tmpdir:
         _write_kernelspec(tmpdir)
-        manager.install_kernel_spec(tmpdir, kernel_name="poetry")
+        manager.install_kernel_spec(tmpdir, kernel_name="Rye")

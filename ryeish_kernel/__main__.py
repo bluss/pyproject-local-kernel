@@ -6,6 +6,8 @@ from pathlib import Path
 
 import colorama
 
+RUN_CMD = ["rye", "run"]
+
 
 def main():
     colorama.init()
@@ -18,19 +20,18 @@ def main():
             colorama.Fore.RED + colorama.Style.BRIGHT +
             "\n" +
             "!" * 80 + "\n" +
-            "!! Cannot start Poetry kernel:\n"
+            "!! Cannot start Rye kernel:\n"
             "!!     expected pyproject.toml in notebook directory\n" +
             "!!     (or any parent directory)\n" +
-            "!! Do you need to run `poetry init`?\n" +
+            "!! Do you need to run `rye init`?\n" +
             "!" * 80 + "\n" +
             colorama.Style.RESET_ALL,
             file=sys.stderr,
             sep="\n",
         )
-        raise RuntimeError("Cannot start Poetry kernel: couldn't find pyproject.toml")
+        raise RuntimeError("Cannot start Rye kernel: couldn't find pyproject.toml")
 
-    cmd = [
-        "poetry", "run",
+    cmd = RUN_CMD + [
         "python", "-m", "ipykernel_launcher",
         *sys.argv[1:],
     ]
