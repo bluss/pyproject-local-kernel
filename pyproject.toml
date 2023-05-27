@@ -1,0 +1,35 @@
+[project]
+name = "ryeish-kernel"
+version = "0.2.0"
+description = "Python Jupyter kernel using Rye for dependency management"
+authors = [
+    { name = "Ulrik Sverdrup", email = "ulrik.sverdrup@gmail.com" }
+]
+dependencies = ["jupyter_client ~= 7.0"]
+readme = "README.md"
+license = "MIT"
+requires-python = ">= 3.8"
+keywords = ["Interactive", "Interpreter", "Shell", "Web"]
+classifiers = [
+    "Framework :: Jupyter",
+    "Intended Audience :: Developers",
+    "Intended Audience :: System Administrators",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.rye]
+managed = true
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel.shared-data]
+"./data/kernel.json" = "share/jupyter/kernel/ryeish-kernel/kernel.json"

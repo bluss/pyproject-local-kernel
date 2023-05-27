@@ -1,0 +1,1 @@
+{"argv": ["python", "-m", "ryeish_kernel", "-f", "{connection_file}"], "display_name": "Rye(ish)", "language": "python"}
