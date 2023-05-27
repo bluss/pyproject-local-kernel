@@ -5,7 +5,7 @@ description = "Python Jupyter kernel using Rye for dependency management"
 authors = [
     { name = "Ulrik Sverdrup", email = "ulrik.sverdrup@gmail.com" }
 ]
-dependencies = ["jupyter_client ~= 7.0"]
+dependencies = []
 readme = "README.md"
 license = "MIT"
 requires-python = ">= 3.8"
