@@ -4,28 +4,22 @@ import subprocess
 import sys
 from pathlib import Path
 
-import colorama
-
 RUN_CMD = ["rye", "run"]
 
 
 def main():
-    colorama.init()
-
     # Try to find pyproject.toml file
     # We do this so that we can spit out a better, more informative error
     # message if there is no pyproject.toml file present.
     if find_pyproject_file() is None:
         print(
-            colorama.Fore.RED + colorama.Style.BRIGHT +
             "\n" +
             "!" * 80 + "\n" +
             "!! Cannot start Rye kernel:\n"
             "!!     expected pyproject.toml in notebook directory\n" +
             "!!     (or any parent directory)\n" +
             "!! Do you need to run `rye init`?\n" +
-            "!" * 80 + "\n" +
-            colorama.Style.RESET_ALL,
+            "!" * 80 + "\n",
             file=sys.stderr,
             sep="\n",
         )

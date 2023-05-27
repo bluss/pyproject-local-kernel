@@ -39,10 +39,10 @@ with open(os.path.join(current_dir, "README.md")) as fp:
 
 setup(
     name="ryeish-kernel",
-    version="0.1.2",
+    version="0.2.0",
 
     # Package metadata
-    author="bluss",
+    author="Ulrik Sverdrup",
     author_email="bluss@example.com",
     url="https://github.com/bluss/ryeish-kernel",
     license="MIT",
@@ -66,7 +66,6 @@ setup(
     python_requires=">=3.8",
     install_requires=[
         "jupyter-client >= 7.0, < 9",
-        "colorama ~= 0.4.4",
     ],
     **setup_args,
 )
