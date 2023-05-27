@@ -43,9 +43,7 @@ def main():
         signal.signal(sig, handle_signal)
 
     exit_code = proc.wait()
-    if exit_code == 0:
-        print("ipykernel_launcher exited", file=sys.stderr)
-    else:
+    if exit_code != 0:
         print("ipykernel_launcher exited with error code:", exit_code, file=sys.stderr)
 
 
