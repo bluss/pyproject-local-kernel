@@ -1,12 +1,19 @@
-# Rye(ish) Kernel
+# Rye(ish) Jupyter Kernel
 
-Use per-directory Rye projects to run Jupyter kernels.
-See poetry-kernel for more documentation about the concept.
+Use per-directory Rye projects to run Python Jupyter kernels. See the examples
+directory for how to setup jupyterlab and notebook projects separately.
 
-Status: Proof of Concept
+The intention is that instead of installing a myriad of jupyter kernels, one
+per project, instead have one "meta" kernel that enables the environment for
+the project the notebook file resides in. This approach should be more portable
+(usable to anyone who checks out your project structure from git) and easier to
+use.
 
-The name is Rye(ish) because it is not officially connected with Rye.
+Project Status: Proof of Concept
 
-Rye: https://github.com/mitsuhiko/rye
+* Rye: https://github.com/mitsuhiko/rye
+* Poetry-kernel: https://github.com/pathbird/poetry-kernel
+  See poetry-kernel for more documentation about the per-directory concept.
 
-Poetry-kernel: https://github.com/pathbird/poetry-kernel
+The name is currently Rye(ish) because it is not officially connected with Rye.
+

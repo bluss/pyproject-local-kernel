@@ -31,5 +31,11 @@ managed = true
 [tool.hatch.metadata]
 allow-direct-references = true
 
+[tool.hatch.build]
+exclude = [
+    "/example",
+]
+
+
 [tool.hatch.build.targets.wheel.shared-data]
 "./data/kernel.json" = "share/jupyter/kernel/ryeish-kernel/kernel.json"

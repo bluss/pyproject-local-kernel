@@ -1,0 +1,19 @@
+[project]
+name = "my-jupyterlab"
+version = "0.1.0"
+description = "Jupyterlab install"
+authors = [
+    { name = "Author", email = "author@example.com" }
+]
+dependencies = ["jupyterlab~=3.6", "jupytext~=1.14.5", "ryeish-kernel @ git+https://github.com/bluss/ryeish-kernel"]
+readme = "README.md"
+requires-python = ">= 3.11"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.rye]
+managed = true
+[tool.hatch.metadata]
+allow-direct-references = true
