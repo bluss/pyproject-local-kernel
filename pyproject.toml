@@ -1,6 +1,6 @@
 [project]
 name = "ryeish-kernel"
-version = "0.2.1"
+version = "0.3.0"
 description = "Python Jupyter kernel using Rye for dependency management"
 authors = [
     { name = "Ulrik Sverdrup", email = "ulrik.sverdrup@gmail.com" }
