@@ -12,22 +12,6 @@ RUN_CMD = ["rye", "run"]
 
 def main():
     logging.basicConfig(level=logging.INFO)
-    # Try to find pyproject.toml file
-    # We do this so that we can spit out a better, more informative error
-    # message if there is no pyproject.toml file present.
-    if find_pyproject_file() is None:
-        print(
-            "\n" +
-            "!" * 80 + "\n" +
-            "!! Cannot start Rye kernel:\n"
-            "!!     expected pyproject.toml in notebook directory\n" +
-            "!!     (or any parent directory)\n" +
-            "!! Do you need to run `rye init`?\n" +
-            "!" * 80 + "\n",
-            file=sys.stderr,
-            sep="\n",
-        )
-        raise RuntimeError("Cannot start Rye kernel: couldn't find pyproject.toml")
 
     cmd = RUN_CMD + [
         "python", "-m", "ipykernel_launcher",
@@ -69,7 +53,20 @@ def start_fallback_kernel():
     1. Show a message that rye is not setup as expected in this environment
     2. Provide a regular ipython kernel which lets you run shell commands to fix rye!
     """
-    help_messages = [
+    has_pyproject = find_pyproject_file() is not None
+
+    help_messages = []
+
+    rye_init_messages = [
+        "No pyproject.toml found - use rye init to start a new project?",
+        "!rye init",
+        "",
+    ]
+
+    if not has_pyproject:
+        help_messages += rye_init_messages
+
+    rye_kernel_messages = [
         "Failed to start Rye environment kernel - no ipykernel in rye project?",
         "Run these:",
         "!rye add ipykernel",
@@ -77,6 +74,8 @@ def start_fallback_kernel():
         "",
         "Then restart the kernel to try again.",
     ]
+
+    help_messages += rye_kernel_messages
 
     print("starting fallback kernel", file=sys.stderr)
     for msg in help_messages:
