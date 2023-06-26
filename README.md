@@ -3,11 +3,11 @@
 Use per-directory Rye projects to run Python Jupyter kernels. See the examples
 directory for how to setup jupyterlab and notebook projects separately.
 
-The intention is that instead of installing a myriad of jupyter kernels, one
-per project, instead have one "meta" kernel that enables the environment for
-the project the notebook file resides in. This approach should be more portable
-(usable to anyone who checks out your project structure from git) and easier to
-use.
+The intention is that instead of installing a myriad of jupyter kernelspecs,
+one per project, instead have one "meta" kernel that enables the environment
+for the project the notebook file resides in. This approach should be more
+portable (usable to anyone who checks out your project structure from git) and
+easier to use.
 
 Project Status: Proof of Concept
 
@@ -19,7 +19,7 @@ The name is currently Rye(ish) because it is not officially connected with Rye.
 
 ## User Experience
 
-If the Rye(ish) kernel is used in a project where rye is not installed, or
+If the Rye kernel is used in a project where rye is not installed, or
 the rye project does not have an ipykernel, then starting the kernel fails.
 
 It starts a "fallback" kernel which that shows a message that rye is not setup
