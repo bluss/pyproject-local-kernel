@@ -1,22 +1,20 @@
 [project]
 name = "my-notebook"
-version = "0.1.0"
+version = "0.2.0"
 description = "Notebook project with custom deps"
 authors = [
     { name = "Author", email = "author@example.com" }
 ]
-dependencies = ["ipykernel~=6.23.1", "numpy~=1.24.3"]
+dependencies = [
+    "ipykernel>=6.29.3",
+    "numpy>=1.26.4",
+]
 readme = "README.md"
 requires-python = ">= 3.10"
 classifiers = [
     "Private :: Do Not Upload",
 ]
 
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
-
 [tool.rye]
 managed = true
-[tool.hatch.metadata]
-allow-direct-references = true
+virtual = true

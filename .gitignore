@@ -139,3 +139,5 @@ cython_debug/
 
 # ruff
 .ruff_cache/
+
+/requirements*.lock

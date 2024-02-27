@@ -1,6 +1,6 @@
 [project]
 name = "ryeish-kernel"
-version = "0.3.1"
+version = "0.4"
 description = "Python Jupyter kernel using Rye for dependency management"
 authors = [
     { name = "Ulrik Sverdrup", email = "ulrik.sverdrup@gmail.com" }
@@ -36,6 +36,8 @@ exclude = [
     "/example",
 ]
 
+[tool.hatch.build.targets.wheel]
+packages = ["src/ryeish_kernel"]
 
 [tool.hatch.build.targets.wheel.shared-data]
 "./data/kernel.json" = "share/jupyter/kernels/ryeish-kernel/kernel.json"
