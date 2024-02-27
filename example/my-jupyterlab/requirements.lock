@@ -202,7 +202,7 @@ rfc3986-validator==0.1.1
 rpds-py==0.18.0
     # via jsonschema
     # via referencing
-ryeish-kernel @ git+https://github.com/bluss/ryeish-kernel@c835b7e7b90f3665b7282bcab9cd7dd6248cf2ec
+ryeish-kernel @ git+https://github.com/bluss/ryeish-kernel@68f7a03fbabd4d68e7e47dc87ea9a02b540eaeb9
 send2trash==1.8.2
     # via jupyter-server
 six==1.16.0

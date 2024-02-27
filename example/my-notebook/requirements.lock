@@ -8,76 +8,70 @@
 #   with-sources: false
 
 asttokens==2.4.1
-[32m    # via stack-data[39m
+    # via stack-data
 comm==0.2.1
-[32m    # via ipykernel[39m
+    # via ipykernel
 debugpy==1.8.1
-[32m    # via ipykernel[39m
+    # via ipykernel
 decorator==5.1.1
-[32m    # via ipython[39m
+    # via ipython
 exceptiongroup==1.2.0
-[32m    # via ipython[39m
+    # via ipython
 executing==2.0.1
-[32m    # via stack-data[39m
+    # via stack-data
 ipykernel==6.29.3
 ipython==8.22.1
-[32m    # via ipykernel[39m
+    # via ipykernel
 jedi==0.19.1
-[32m    # via ipython[39m
+    # via ipython
 jupyter-client==8.6.0
-[32m    # via ipykernel[39m
+    # via ipykernel
 jupyter-core==5.7.1
-[32m    # via
     # via ipykernel
-    # via jupyter-client[39m
+    # via jupyter-client
 matplotlib-inline==0.1.6
-[32m    # via
     # via ipykernel
-    # via ipython[39m
+    # via ipython
 nest-asyncio==1.6.0
-[32m    # via ipykernel[39m
+    # via ipykernel
 numpy==1.26.4
 packaging==23.2
-[32m    # via ipykernel[39m
+    # via ipykernel
 parso==0.8.3
-[32m    # via jedi[39m
+    # via jedi
 pexpect==4.9.0
-[32m    # via ipython[39m
+    # via ipython
 platformdirs==4.2.0
-[32m    # via jupyter-core[39m
+    # via jupyter-core
 prompt-toolkit==3.0.43
-[32m    # via ipython[39m
+    # via ipython
 psutil==5.9.8
-[32m    # via ipykernel[39m
+    # via ipykernel
 ptyprocess==0.7.0
-[32m    # via pexpect[39m
+    # via pexpect
 pure-eval==0.2.2
-[32m    # via stack-data[39m
+    # via stack-data
 pygments==2.17.2
-[32m    # via ipython[39m
+    # via ipython
 python-dateutil==2.8.2
-[32m    # via jupyter-client[39m
+    # via jupyter-client
 pyzmq==25.1.2
-[32m    # via
     # via ipykernel
-    # via jupyter-client[39m
+    # via jupyter-client
 six==1.16.0
-[32m    # via
     # via asttokens
-    # via python-dateutil[39m
+    # via python-dateutil
 stack-data==0.6.3
-[32m    # via ipython[39m
+    # via ipython
 tornado==6.4
-[32m    # via
     # via ipykernel
-    # via jupyter-client[39m
+    # via jupyter-client
 traitlets==5.14.1
-[32m    # via
     # via comm
     # via ipykernel
     # via ipython
     # via jupyter-client
     # via jupyter-core
-    # via matplotlib-inline[39m
+    # via matplotlib-inline
 wcwidth==0.2.13
-[32m    # via prompt-toolkit[39m
+    # via prompt-toolkit
