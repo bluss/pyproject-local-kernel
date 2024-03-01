@@ -12,7 +12,7 @@ easier to use.
 ## Quick Start
 
 1. Install ryeish-kernel in your jupyterlab environment and restart jupyterlab
-2. Create a new directory and notebook, select ryeish-kernel in the notebook
+2. Create a new directory and notebook, select the **Rye** kernel for the notebook
 3. Run
   
    * `!rye init --virtual`
