@@ -1,7 +1,7 @@
 # Rye(ish) Jupyter Kernel
 
-Use per-directory Rye projects to run Python Jupyter kernels. See the examples
-directory for how to setup jupyterlab and notebook projects separately.
+- Use per-directory Rye projects to run Python Jupyter kernels - separate
+  dependencies for every notebook, as needed!
 
 The intention is that instead of installing a myriad of jupyter kernelspecs,
 one per project, instead have one "meta" kernel that enables the environment
@@ -9,7 +9,25 @@ for the project the notebook file resides in. This approach should be more
 portable (usable to anyone who checks out your project structure from git) and
 easier to use.
 
-Project Status: Proof of Concept
+## Quick Start
+
+1. Install ryeish-kernel in your jupyterlab environment and restart jupyterlab
+2. Create a new directory and notebook, select ryeish-kernel in the notebook
+3. Run
+  
+   * `!rye init --virtual`
+   * `!rye add --sync ipykernel`
+
+4. Restart the kernel and you are good to go. Use `!rye add` to add further
+   dependencies.
+
+- See the examples directory for how to setup jupyterlab and notebook projects
+  separately. JupyterLab and the notebook are installed in separate environments.
+
+
+## Project Status
+
+Status: Proof of Concept
 
 * Rye: https://github.com/mitsuhiko/rye
 * Poetry-kernel: https://github.com/pathbird/poetry-kernel
@@ -27,10 +45,9 @@ as expected in this environment, and provide a regular ipython kernel which
 lets you run shell commands to fix rye!
 
 ```diff
-- Failed to start Rye environment kernel - no ipykernel in rye project?
-- Run these:
-- !rye add ipykernel
-- !rye sync
-- 
-- Then restart the kernel to try again.
+! Failed to start Rye environment kernel - no ipykernel in rye project?
+! Run this:
+! !rye add --sync ipykernel
+! 
+! Then restart the kernel to try again.
 ```

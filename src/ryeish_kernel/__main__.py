@@ -80,7 +80,7 @@ def start_fallback_kernel():
 
     rye_init_messages = [
         "No pyproject.toml found - use rye init to start a new project?",
-        "!rye init",
+        "!rye init --virtual",
         "",
     ]
 
@@ -89,9 +89,8 @@ def start_fallback_kernel():
 
     rye_kernel_messages = [
         "Failed to start Rye environment kernel - no ipykernel in rye project?",
-        "Run these:",
-        "!rye add ipykernel",
-        "!rye sync",
+        "Run this:",
+        "!rye add --sync ipykernel",
         "",
         "Then restart the kernel to try again.",
     ]
