@@ -1,1 +1,1 @@
-{"argv": ["python", "-m", "ryeish_kernel", "-f", "{connection_file}"], "display_name": "Rye", "language": "python"}
+{"argv": ["python", "-m", "pyproject_local_kernel", "-f", "{connection_file}"], "display_name": "Pyproject Local", "language": "python"}

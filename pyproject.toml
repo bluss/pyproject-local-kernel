@@ -1,15 +1,17 @@
 [project]
-name = "ryeish-kernel"
-version = "0.4"
-description = "Python Jupyter kernel using Rye for dependency management"
+name = "pyproject-local-kernel"
+version = "0.5"
+description = "Python Jupyter kernel using pyproject environment manangers like Rye, PDM, Poetry, Hatch etc."
 authors = [
     { name = "Ulrik Sverdrup", email = "ulrik.sverdrup@gmail.com" }
 ]
-dependencies = []
+dependencies = [
+    "tomli>=2.0.1",
+]
 readme = "README.md"
 license = "MIT"
 requires-python = ">= 3.8"
-keywords = ["Interactive", "Interpreter", "Shell", "Web"]
+keywords = ["Interactive", "Interpreter", "Jupyter", "Pyproject"]
 classifiers = [
     "Framework :: Jupyter",
     "Intended Audience :: Developers",
@@ -37,7 +39,7 @@ exclude = [
 ]
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/ryeish_kernel"]
+packages = ["src/pyproject_local_kernel"]
 
 [tool.hatch.build.targets.wheel.shared-data]
-"./data/kernel.json" = "share/jupyter/kernels/ryeish-kernel/kernel.json"
+"./data/kernel.json" = "share/jupyter/kernels/pyproject_local_kernel/kernel.json"

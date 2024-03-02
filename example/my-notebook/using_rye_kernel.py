@@ -9,7 +9,7 @@
 #   kernelspec:
 #     display_name: Rye
 #     language: python
-#     name: ryeish-kernel
+#     name: pyproject_local_kernel
 # ---
 
 # %%

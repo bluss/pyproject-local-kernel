@@ -1,6 +1,6 @@
 [project]
 name = "my-jupyterlab"
-version = "0.2.0"
+version = "0.3.0"
 description = "Jupyterlab install"
 authors = [
     { name = "Author", email = "author@example.com" }
@@ -13,7 +13,7 @@ classifiers = [
 
 dependencies = [
     "jupyterlab",
-    "ryeish-kernel @ git+https://github.com/bluss/ryeish-kernel",
+    "pyproject-local-kernel @ git+https://github.com/bluss/pyproject-local-kernel",
     "jupytext>=1.16.1",
 ]
 
