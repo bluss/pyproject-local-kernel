@@ -138,18 +138,14 @@ def _identify_toml(data):
 
 def identify(file):
     pyproj = find_pyproject_file_from(file)
-    print(file, "->", pyproj)
     extra_vars = {}
     if pyproj is None:
         identity = ProjectKind.NoProject
-        print(pyproj, "->", identity)
     else:
         try:
             with open(pyproj, "rb") as tf:
                 toml_structure = tomli.load(tf)
                 identity, extra_vars = _identify_toml(toml_structure)
-                print(pyproj, "->", identity)
-                print()
         except (IOError, tomli.TOMLDecodeError) as exc:
             print("Error: ", exc, file=sys.stderr)
             kind = ProjectKind.InvalidData
@@ -159,11 +155,10 @@ def identify(file):
 
 
 def main():
-    logging.basicConfig(level=logging.INFO)
+    logging.basicConfig(level=logging.INFO, format=f"{MY_TOOL_NAME}: %(message)s")
 
     find_project = identify(Path.cwd())
     python_cmd = find_project.get_python_cmd()
-    print("Identified", python_cmd)
 
     launched = False
 
@@ -172,6 +167,8 @@ def main():
             "-m", "ipykernel_launcher",
             *sys.argv[1:],
         ]
+
+        _logger.info("Starting kernel: %r", cmd)
         proc = subprocess.Popen(cmd)
 
         if platform.system() == 'Windows':
