@@ -7,7 +7,7 @@
 #       format_version: '1.3'
 #       jupytext_version: 1.16.1
 #   kernelspec:
-#     display_name: Rye
+#     display_name: Pyproject Local
 #     language: python
 #     name: pyproject_local_kernel
 # ---

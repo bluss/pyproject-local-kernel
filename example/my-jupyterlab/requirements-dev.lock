@@ -175,6 +175,7 @@ pycparser==2.21
 pygments==2.17.2
     # via ipython
     # via nbconvert
+pyproject-local-kernel @ git+https://github.com/bluss/pyproject-local-kernel@91990fdc45120bbea2aae81edfa0fee4a5c6b98a
 python-dateutil==2.8.2
     # via arrow
     # via jupyter-client
@@ -223,6 +224,8 @@ tinycss2==1.2.1
     # via nbconvert
 toml==0.10.2
     # via jupytext
+tomli==2.0.1
+    # via pyproject-local-kernel
 tornado==6.4
     # via ipykernel
     # via jupyter-client
