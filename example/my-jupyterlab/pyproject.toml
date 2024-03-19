@@ -13,8 +13,8 @@ classifiers = [
 
 dependencies = [
     "jupyterlab",
-    "pyproject-local-kernel @ git+https://github.com/bluss/pyproject-local-kernel",
     "jupytext>=1.16.1",
+    "pyproject-local-kernel>=0.5",
 ]
 
 [tool.rye]

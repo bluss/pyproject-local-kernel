@@ -175,7 +175,7 @@ pycparser==2.21
 pygments==2.17.2
     # via ipython
     # via nbconvert
-pyproject-local-kernel @ git+https://github.com/bluss/pyproject-local-kernel@91990fdc45120bbea2aae81edfa0fee4a5c6b98a
+pyproject-local-kernel==0.5.*
 python-dateutil==2.8.2
     # via arrow
     # via jupyter-client
