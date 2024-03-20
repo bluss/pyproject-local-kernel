@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.5.2
+
+- Use tomllib for newer Python, and tomli as fallback
+- Catch all exceptions when starting the kernel, so that the fallback can be
+started in most situations.
+- More detailed error messages in the fallback
+
 ## 0.5.1
 
 - Cleaned up unnecessary log output

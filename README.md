@@ -5,26 +5,24 @@
 
 # Pyproject Local Jupyter Kernel
 
-- Use per-directory python projects to run Python Jupyter kernels - separate
-  dependencies for every notebook, as needed!
+- Use per-directory python projects to run Python Jupyter kernels
+- Separate dependencies for notebooks in separate projects
+- Use Rye, PDM, Poetry, Hatch, or similar project setups to define and run
+  IPython kernels with dependencies for Jupyter notebooks.
 
-- Use Rye, PDM, Poetry, or similar project setups to define and run IPython
-  kernels and dependencies for Jupyter notebooks.
+Instead of installing a myriad of jupyter kernelspecs, one per project, instead
+have one "meta" kernel that enables the environment for the project the
+notebook file resides in. This approach should be more portable (usable to
+anyone who checks out your project structure from git) and easier to use.
 
-The intention is that instead of installing a myriad of jupyter kernelspecs,
-one per project, instead have one "meta" kernel that enables the environment
-for the project the notebook file resides in. This approach should be more
-portable (usable to anyone who checks out your project structure from git) and
-easier to use.
-
-Supports
+Supports the following, reads pyproject.toml to figure out which kind of
+project it is:
 
 - Rye
 - Poetry
 - Hatch
 - Pdm
-- Custom configurations possible for other projects
-- Reads the pyproject.toml file to figure out which kind of project it is.
+- Custom configuration (for other setups)
 
 ## Quick Start
 
@@ -65,9 +63,11 @@ lets you run shell commands to the project.
 Example here is currently for Rye.
 
 ```diff
-! Failed to start Rye environment kernel - no ipykernel in rye project?
+! Failed to start kernel! The detected project type is: Rye
+! Is the virtual environment created, and does it have ipykernel in the project?
+!
 ! Run this:
 ! !rye add --sync ipykernel
-! 
+!
 ! Then restart the kernel to try again.
 ```
