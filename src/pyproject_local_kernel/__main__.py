@@ -29,7 +29,10 @@ import sys
 from pathlib import Path
 import typing
 
-import tomli
+try:
+    import tomllib as tomli
+except ImportError:
+    import tomli as tomli
 
 
 _logger = logging.getLogger(__name__)

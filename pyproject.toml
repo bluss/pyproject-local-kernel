@@ -6,7 +6,7 @@ authors = [
     { name = "Ulrik Sverdrup", email = "ulrik.sverdrup@gmail.com" }
 ]
 dependencies = [
-    "tomli>=2.0.1",
+    "tomli>=2.0.1; python_version < '3.11'",
 ]
 readme = "README.md"
 license = "MIT"
