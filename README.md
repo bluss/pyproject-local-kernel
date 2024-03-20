@@ -1,3 +1,8 @@
+[![PyPI - Python Version](https://img.shields.io/pypi/v/pyproject-local-kernel)][pypi]
+
+[pypi]: https://pypi.org/project/pyproject-local-kernel/
+
+
 # Pyproject Local Jupyter Kernel
 
 - Use per-directory python projects to run Python Jupyter kernels - separate
@@ -47,16 +52,17 @@ Status: Proof of Concept
 * Poetry-kernel: https://github.com/pathbird/poetry-kernel
   See poetry-kernel for more documentation about the per-directory concept.
 
-The name is currently Rye(ish) because it is not officially connected with Rye.
-
 ## User Experience
 
-If the Rye kernel is used in a project where rye is not installed, or
-the rye project does not have an ipykernel, then starting the kernel fails.
+If the Pyproject Local kernel is used in a project where rye (or the relevant
+pyproject manager) is not installed, or the rye project does not have an
+ipykernel, then starting the kernel fails.
 
 It starts a "fallback" kernel which that shows a message that rye is not setup
 as expected in this environment, and provide a regular ipython kernel which
-lets you run shell commands to fix rye!
+lets you run shell commands to the project.
+
+Example here is currently for Rye.
 
 ```diff
 ! Failed to start Rye environment kernel - no ipykernel in rye project?

@@ -1,6 +1,6 @@
 [project]
 name = "pyproject-local-kernel"
-version = "0.5"
+version = "0.5.1"
 description = "Python Jupyter kernel using pyproject environment manangers like Rye, PDM, Poetry, Hatch etc."
 authors = [
     { name = "Ulrik Sverdrup", email = "ulrik.sverdrup@gmail.com" }
@@ -22,6 +22,9 @@ classifiers = [
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
 ]
+
+[project.urls]
+Repository = "https://github.com/bluss/pyproject-local-kernel"
 
 [build-system]
 requires = ["hatchling"]
