@@ -52,6 +52,9 @@ class ProjectKind(enum.Enum):
     NoProject = enum.auto()
     InvalidData = enum.auto()
 
+    def is_known_project(self):
+        return self in (self.Rye, self.Poetry, self.Pdm, self.Hatch, self.CustomConfiguration)
+
     def python_cmd(self):
         if self == ProjectKind.Rye:
             return DEFAULT_RYE_RUN_CMD
@@ -132,7 +135,7 @@ def _identify_toml(data):
         return ProjectKind.InvalidData, {}
     custom, extra_vars = is_custom(data)
     if custom:
-        return custom, extra_vars
+        return ProjectKind.CustomConfiguration, extra_vars
     for kind, func in IDENTIFY_FUNCTIONS.items():
         if func(data):
             return kind, {}
@@ -191,10 +194,10 @@ def main():
         else:
             launched = True
     if not launched:
-        start_fallback_kernel()
+        start_fallback_kernel(find_project.kind)
 
 
-def start_fallback_kernel():
+def start_fallback_kernel(project_kind: ProjectKind):
     """
     Start a fallback kernel. Its purpose is
 
@@ -206,27 +209,44 @@ def start_fallback_kernel():
     help_messages = []
 
     rye_init_messages = [
-        "No pyproject.toml found - use rye init to start a new project?",
+        "No pyproject.toml found - do you need to create a new project?",
+        "",
+        "Use a command such as one of these to start:",
         "!rye init --virtual",
+        "!pdm init",
+        "!poetry new .",
+        "!hatch new",
         "",
     ]
 
     if not has_pyproject:
         help_messages += rye_init_messages
 
-    rye_kernel_messages = [
-        "Failed to start Rye environment kernel - no ipykernel in rye project?",
-        "Run this:",
-        "!rye add --sync ipykernel",
+    sync_kernel_env_messages = [
+        f"Failed to start kernel! The detected project type is: {project_kind.name}",
+        "Is the virtual environment created, and does it have ipykernel in the project?",
         "",
-        "Then restart the kernel to try again.",
     ]
 
-    help_messages += rye_kernel_messages
+    if project_kind == ProjectKind.Rye:
+        sync_kernel_env_messages += [
+            "Run this:",
+            "!rye add --sync ipykernel",
+            "",
+            "Then restart the kernel to try again.",
+        ]
+    else:
+        sync_kernel_env_messages += [
+            "Add ipykernel as a dependency in the project and sync the virtualenv."
+            "",
+            "Then restart the kernel to try again.",
+        ]
 
-    print("starting fallback kernel", file=sys.stderr)
+    help_messages += sync_kernel_env_messages
+
+    _logger.info("starting fallback kernel")
     for msg in help_messages:
-        print("ryeish-kernel:", msg, file=sys.stderr)
+        _logger.info(msg)
 
     import ipykernel.kernelapp
     import ipykernel.ipkernel
