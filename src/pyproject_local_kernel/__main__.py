@@ -119,6 +119,11 @@ def is_hatch(data: dict):
 
 def is_custom(data: dict):
     python_cmd = get_dotkey(data, f'tool.{MY_TOOL_NAME}.python-cmd', None)
+    if isinstance(python_cmd, str):
+        python_cmd = [python_cmd]
+    if python_cmd is not None and not isinstance(python_cmd, (tuple, list)):
+        _logger.error("Is not a list or string: tool.%s.python-cmd=%r", MY_TOOL_NAME, python_cmd)
+        python_cmd = None
     return python_cmd is not None, {'python_cmd': python_cmd}
 
 
