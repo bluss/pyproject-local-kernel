@@ -1,11 +1,23 @@
 # Frequently asked questions
 
+## How does it work?
+
+The regular IPython kernel for Jupyter is launched like this:
+`python -m ipykernel_launcher <arguments..>`
+
+If you just prefix that command with `rye run`, `poetry run`, `pdm run` etc,
+then you get a kernel invocation that executes in the current pyproject's
+environment. That's basically the whole magic of this package, it doesn't
+need to do more.
+
 ## Why do I have to install `ipykernel` manually?
 
-The IPython kernel runs as part of the same process as all your other Python
-code. This means we can't install our own version of it outside of your project.
+The IPython kernel is the interpreter that executes everything in the notebook,
+and it needs to be installed together with all the dependencies the notebook
+wants to import. The kernel and Jupyter however communicate over IPC and
+can be installed completely separately.
 
-## How do use with Pipenv?
+## Does it work with with Pipenv?
 
 1. Add ipykernel to the environment packages
 2. Configure the python run command in local pyproject file
@@ -16,7 +28,7 @@ python-cmd = ["env", "PIPENV_IGNORE_VIRTUALENVS=1", "pipenv", "run", "python"]
 ```
 
 
-## How change environment variables for the kernel
+## How change environment variables for the kernel?
 
 For example in Rye you can set environment variables for scripts, and you can
 configure pyproject-local-kernel to use the script for its kernel invocation.
@@ -35,6 +47,8 @@ cmd = ["rye", "run", "python"]
 X=1
 Y=2
 ```
+
+Other project managers have similar features (PDM, at least).
 
 ## Does Pyproject Local Kernel work with [Papermill][1]?
 
