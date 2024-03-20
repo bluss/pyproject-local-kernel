@@ -175,24 +175,29 @@ def main():
         ]
 
         _logger.info("Starting kernel: %r", cmd)
-        proc = subprocess.Popen(cmd)
+        try:
+            proc = subprocess.Popen(cmd)
 
-        if platform.system() == 'Windows':
-            forward_signals = set(signal.Signals) - {signal.CTRL_BREAK_EVENT, signal.CTRL_C_EVENT, signal.SIGTERM}
-        else:
-            forward_signals = set(signal.Signals) - {signal.SIGKILL, signal.SIGSTOP}
+            if platform.system() == 'Windows':
+                forward_signals = set(signal.Signals) - {signal.CTRL_BREAK_EVENT, signal.CTRL_C_EVENT, signal.SIGTERM}
+            else:
+                forward_signals = set(signal.Signals) - {signal.SIGKILL, signal.SIGSTOP}
 
-        def handle_signal(sig, _frame):
-            proc.send_signal(sig)
+            def handle_signal(sig, _frame):
+                proc.send_signal(sig)
 
-        for sig in forward_signals:
-            signal.signal(sig, handle_signal)
+            for sig in forward_signals:
+                signal.signal(sig, handle_signal)
 
-        exit_code = proc.wait()
-        if exit_code != 0:
-            print("ipykernel_launcher exited with error code:", exit_code, file=sys.stderr)
-        else:
-            launched = True
+            exit_code = proc.wait()
+            if exit_code != 0:
+                _logger.error("kernel exited with error code: %r", exit_code)
+            else:
+                launched = True
+        except (IOError, OSError) as exc:
+            _logger.error("kernel could not be started: %s", exc)
+        except Exception as exc:
+            _logger.exception("kernel could not be started: %s", exc)
     if not launched:
         start_fallback_kernel(find_project.kind)
 
