@@ -41,7 +41,7 @@ Here is an example (the name `kernelpython` is arbitrary).
 python-cmd = ["rye", "run", "kernelpython"]
 
 [tool.rye.scripts.kernelpython]
-cmd = ["rye", "run", "python"]
+cmd = ["python"]
 
 [tool.rye.scripts.kernelpython.env]
 X=1
