@@ -10,6 +10,7 @@ from pyproject_local_kernel import identify
     ("tests/identify/pdm", ProjectKind.Pdm),
     ("tests/identify/hatch", ProjectKind.Hatch),
     ("tests/identify/broken", ProjectKind.InvalidData),
+    ("tests/identify/unknown", ProjectKind.Unknown),
 ])
 def test_ident(path, expected):
     pd = identify(path)
@@ -31,3 +32,7 @@ def test_custom_error(path, caplog):
     # Test log error
     identify(path)
     assert any('Is not a list or string' in rec.message for rec in caplog.records)
+
+def test_no_project(tmp_path):
+    pd = identify(tmp_path)
+    assert pd.kind == ProjectKind.NoProject

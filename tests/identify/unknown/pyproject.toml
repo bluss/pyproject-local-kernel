@@ -1,0 +1,8 @@
+[project]
+name = "anon"
+version = "0.1.0"
+description = "Add your description here"
+authors = [
+    { name = "Author", email = "author@example.com" }
+]
+dependencies = []
