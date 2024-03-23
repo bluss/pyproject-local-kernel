@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.3
+
+- Add tests. Moved main logic to module to facilitate.
+- Update readme
+
 ## 0.5.2
 
 - Use tomllib for newer Python, and tomli as fallback
