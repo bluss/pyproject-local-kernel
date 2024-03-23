@@ -50,7 +50,7 @@ in the environment, then starting the kernel fails.
 
 In that case a fallback kernel is started which that shows a message that it is
 not setup as expected in this environment. This is a regular ipython kernel which
-allows you to run kernel which run shell commands to the project.
+allows you to run shell commands and hopefully fix the configuration of the project.
 
 It will give you some hints in the Jupyter notebook interface about the next
 steps to get it working. Example below is for Rye.
