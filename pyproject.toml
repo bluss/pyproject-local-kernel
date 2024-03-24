@@ -42,6 +42,7 @@ allow-direct-references = true
 [tool.hatch.build]
 exclude = [
     "/example",
+    "/.github",
 ]
 
 [tool.hatch.build.targets.wheel]
@@ -49,6 +50,9 @@ packages = ["src/pyproject_local_kernel"]
 
 [tool.hatch.build.targets.wheel.shared-data]
 "./data/kernel.json" = "share/jupyter/kernels/pyproject_local_kernel/kernel.json"
+
+
+# Editors and other tools below
 
 [tool.pyright]
 pythonVersion = "3.11"
