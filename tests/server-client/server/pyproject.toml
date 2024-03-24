@@ -6,7 +6,8 @@ authors = [
     { name = "Ulrik Sverdrup", email = "ulrik.sverdrup@gmail.com" }
 ]
 dependencies = [
-    "pyproject-local-kernel @ file:///${PROJECT_ROOT}/../../..",
+    # Note, the extra indirection at the end is a workaround for windows
+    "pyproject-local-kernel @ file:///${PROJECT_ROOT}/../../../../pyproject-local-kernel",
     "papermill>=2.5.0",
     "jupytext>=1.16.1",
 ]
