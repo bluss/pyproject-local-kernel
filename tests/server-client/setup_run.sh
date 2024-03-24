@@ -16,6 +16,7 @@ if [ -n "$IS_WINDOWS" ]; then
     UV=$HOME/.rye/uv/*/uv
     (cd server; $UV venv; $UV pip install -r pyproject.toml)
     (cd client; $UV venv; $UV pip install -r pyproject.toml)
+    sleep 1
 else
     $RYE sync --pyproject $SPROJ
     $RYE sync --pyproject $CPROJ
