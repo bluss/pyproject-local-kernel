@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  tests-linux:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11"]
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Install Rye
+      run: |
+        env curl -sSf https://rye-up.com/get | RYE_TOOLCHAIN_VERSION=$(cat .python-version) RYE_INSTALL_OPTION="--yes" bash
+        source ~/.rye/env
+        rye config --set-bool behavior.use-uv=true
+    - name: Rye Sync
+      run: |
+        source ~/.rye/env
+        rye sync
+    - name: Tests
+      run: |
+        source ~/.rye/env
+        rye test -v
+    - name: Execute notebook
+      run: |
+        source ~/.rye/env
+        ./tests/server-client/setup_run.sh
