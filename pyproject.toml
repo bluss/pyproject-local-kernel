@@ -56,3 +56,6 @@ include = ["src"]
 extraPaths = ["src"]
 venvPath = ".venv"
 typeCheckingMode = "basic"
+
+[tool.ruff]
+exclude = ["example", "tests/identify", "tests/server-client"]
