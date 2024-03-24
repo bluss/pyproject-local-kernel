@@ -49,3 +49,10 @@ packages = ["src/pyproject_local_kernel"]
 
 [tool.hatch.build.targets.wheel.shared-data]
 "./data/kernel.json" = "share/jupyter/kernels/pyproject_local_kernel/kernel.json"
+
+[tool.pyright]
+pythonVersion = "3.11"
+include = ["src"]
+extraPaths = ["src"]
+venvPath = ".venv"
+typeCheckingMode = "basic"
