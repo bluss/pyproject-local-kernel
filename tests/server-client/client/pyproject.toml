@@ -1,0 +1,18 @@
+[project]
+name = "client"
+version = "0.1.0"
+description = "Add your description here"
+authors = [
+    { name = "Ulrik Sverdrup", email = "ulrik.sverdrup@gmail.com" }
+]
+dependencies = [
+    "ipykernel>=6.29.3",
+    "jinja2>=3.1.3",
+]
+requires-python = ">= 3.8"
+classifiers = ["Private :: Do Not Upload"]
+
+[tool.rye]
+managed = true
+virtual = true
+dev-dependencies = []
