@@ -33,3 +33,36 @@ jobs:
       run: |
         source ~/.rye/env
         ./tests/server-client/setup_run.sh
+
+  tests-windows:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        rust:
+          - stable
+    name: tests-windows/${{ matrix.rust }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ matrix.rust }}
+          components: clippy
+      - uses: Swatinem/rust-cache@v2
+      - name: Install Rye
+        shell: bash
+        run: |
+          cargo install --debug rye --git https://github.com/astral-sh/rye
+          rye self install --toolchain-version $(cat .python-version) --modify-path -y
+          rye config --set-bool behavior.use-uv=true
+      - name: Rye Sync
+        shell: bash
+        run: |
+          rye sync
+      - name: Tests
+        shell: bash
+        run: |
+          rye test -v
+      - name: Execute notebook
+        run: |
+          source ~/.rye/env
+          ./tests/server-client/setup_run.sh
