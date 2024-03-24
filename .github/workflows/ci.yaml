@@ -35,19 +35,22 @@ jobs:
         ./tests/server-client/setup_run.sh
 
   tests-windows:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     strategy:
       matrix:
         rust:
           - stable
     name: tests-windows/${{ matrix.rust }}
+    env:
+      IS_WINDOWS: 1
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@master
         with:
           toolchain: ${{ matrix.rust }}
-          components: clippy
       - uses: Swatinem/rust-cache@v2
+        with:
+          cache-on-failure: true
       - name: Install Rye
         shell: bash
         run: |
@@ -63,6 +66,6 @@ jobs:
         run: |
           rye test -v
       - name: Execute notebook
+        shell: bash
         run: |
-          source ~/.rye/env
           ./tests/server-client/setup_run.sh
