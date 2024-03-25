@@ -9,57 +9,38 @@ on:
 jobs:
   tests-linux:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version: ["3.11"]
-
     steps:
     - uses: actions/checkout@v4
     - name: Install Rye
       run: |
-        env curl -sSf https://rye-up.com/get | RYE_TOOLCHAIN_VERSION=$(cat .python-version) RYE_INSTALL_OPTION="--yes" bash
-        source ~/.rye/env
-        rye config --set-bool behavior.use-uv=true
+        curl -sSf https://rye-up.com/get | RYE_TOOLCHAIN_VERSION=$(cat .python-version) RYE_INSTALL_OPTION="--yes" bash
+        echo "$HOME/.rye/shims" >> $GITHUB_PATH
     - name: Rye Sync
       run: |
-        source ~/.rye/env
+        rye config --set-bool behavior.use-uv=true
         rye sync
     - name: Tests
       run: |
-        source ~/.rye/env
         rye test -v
     - name: Execute notebook
       run: |
-        source ~/.rye/env
         ./tests/server-client/setup_run.sh
 
   tests-windows:
     runs-on: windows-latest
-    strategy:
-      matrix:
-        rust:
-          - stable
-    name: tests-windows/${{ matrix.rust }}
-    env:
-      IS_WINDOWS: 1
+    name: tests-windows
     steps:
       - uses: actions/checkout@v4
-      - uses: dtolnay/rust-toolchain@master
-        with:
-          toolchain: ${{ matrix.rust }}
-      - uses: Swatinem/rust-cache@v2
-        with:
-          cache-on-failure: true
       - name: Install Rye
         shell: bash
         run: |
-          cargo install --debug rye --git https://github.com/astral-sh/rye
-          rye self install --toolchain-version $(cat .python-version) --modify-path -y
-          rye config --set-bool behavior.use-uv=true
+          C:/msys64/usr/bin/wget.exe -q 'https://github.com/astral-sh/rye/releases/latest/download/rye-x86_64-windows.exe' -O rye-x86_64-windows.exe
+          ./rye-x86_64-windows.exe self install --toolchain-version $(cat .python-version) --modify-path -y
+          echo "$HOME\\.rye\\shims" >> $GITHUB_PATH
       - name: Rye Sync
         shell: bash
         run: |
+          rye config --set-bool behavior.use-uv=true
           rye sync
       - name: Tests
         shell: bash
