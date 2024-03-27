@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.4
+
+- Enable debugging for the Pyproject Local kernel (just like the regular
+ipykernel)
+- More extensive tests, on linux and windows, including notebook execution
+
 ## 0.5.3
 
 - Add tests. Moved main logic to module to facilitate.

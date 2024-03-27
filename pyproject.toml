@@ -1,6 +1,6 @@
 [project]
 name = "pyproject-local-kernel"
-version = "0.5.3"
+version = "0.5.4"
 description = "Python Jupyter kernel using pyproject environment manangers like Rye, PDM, Poetry, Hatch etc."
 authors = [
     { name = "Ulrik Sverdrup", email = "ulrik.sverdrup@gmail.com" }
