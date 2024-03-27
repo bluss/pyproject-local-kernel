@@ -1,1 +1,8 @@
-{"argv": ["python", "-m", "pyproject_local_kernel", "-f", "{connection_file}"], "display_name": "Pyproject Local", "language": "python"}
+{
+  "argv": ["python", "-m", "pyproject_local_kernel", "-f", "{connection_file}"],
+  "display_name": "Pyproject Local",
+  "language": "python",
+  "metadata": {
+    "debugger": true
+  }
+}
