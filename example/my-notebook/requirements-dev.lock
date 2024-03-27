@@ -15,8 +15,6 @@ debugpy==1.8.1
     # via ipykernel
 decorator==5.1.1
     # via ipython
-exceptiongroup==1.2.0
-    # via ipython
 executing==2.0.1
     # via stack-data
 ipykernel==6.29.3

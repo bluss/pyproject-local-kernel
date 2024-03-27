@@ -8,7 +8,8 @@ __pycache__/
 /dist
 
 # Jupyter Notebook
-.ipynb_checkpoints
+.ipynb_checkpoints/
+.virtual_documents/
 *.ipynb
 
 # rye lockfiles
