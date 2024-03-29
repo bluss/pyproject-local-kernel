@@ -7,7 +7,7 @@ authors = [
 ]
 dependencies = [
     # Note, the extra indirection at the end is a workaround for windows
-    "pyproject-local-kernel @ file:///${PROJECT_ROOT}/../../../../pyproject-local-kernel",
+    "pyproject-local-kernel @ file:///${PROJECT_ROOT}/../../..",
     "papermill>=2.5.0",
     "jupytext>=1.16.1",
 ]
