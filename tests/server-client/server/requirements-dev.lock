@@ -51,7 +51,7 @@ packaging==24.0
 papermill==2.5.0
 platformdirs==4.2.0
     # via jupyter-core
-pyproject-local-kernel @ file:///${PROJECT_ROOT}/../../../../pyproject-local-kernel
+pyproject-local-kernel @ file:///${PROJECT_ROOT}/../../..
 python-dateutil==2.9.0.post0
     # via jupyter-client
 pyyaml==6.0.1
