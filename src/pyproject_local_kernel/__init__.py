@@ -23,7 +23,7 @@ import enum
 import logging
 import sys
 from pathlib import Path
-import typing
+import typing as t
 
 try:
     import tomllib as tomli
@@ -65,9 +65,10 @@ class ProjectKind(enum.Enum):
 
 @dataclass
 class ProjectDetection:
-    path: Path
+    # pyproject.toml file path
+    path: t.Optional[Path]
     kind: ProjectKind
-    python_cmd: typing.Optional[typing.List[str]] = None
+    python_cmd: t.Optional[t.List[str]] = None
 
     def get_python_cmd(self):
         if self.python_cmd is not None:
@@ -156,7 +157,7 @@ def identify(file):
         except (IOError, tomli.TOMLDecodeError) as exc:
             print("Error: ", exc, file=sys.stderr)
             kind = ProjectKind.InvalidData
-            return ProjectDetection(file, kind)
+            return ProjectDetection(pyproj, kind)
 
-    return ProjectDetection(file, identity, **extra_vars)
+    return ProjectDetection(pyproj, identity, **extra_vars)
 

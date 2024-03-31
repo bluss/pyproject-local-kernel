@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.5
+
+- Fix ProjectDetection.path which should hold the path to the pyproject file
+
 ## 0.5.4
 
 - Enable debugging for the Pyproject Local kernel (just like the regular

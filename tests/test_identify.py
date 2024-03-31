@@ -15,6 +15,7 @@ from pyproject_local_kernel import identify
 def test_ident(path, expected):
     pd = identify(path)
     assert pd.kind == expected
+    assert pd.path is not None and pd.path.name == "pyproject.toml"
 
 
 @pytest.mark.parametrize("path,cmd", [
@@ -23,6 +24,7 @@ def test_ident(path, expected):
 def test_custom(path, cmd):
     pd = identify(path)
     assert pd.get_python_cmd() == cmd
+    assert pd.path is not None and pd.path.name == "pyproject.toml"
 
 
 @pytest.mark.parametrize("path", [
@@ -36,3 +38,4 @@ def test_custom_error(path, caplog):
 def test_no_project(tmp_path):
     pd = identify(tmp_path)
     assert pd.kind == ProjectKind.NoProject
+    assert pd.path is None
