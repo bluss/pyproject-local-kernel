@@ -3,6 +3,7 @@
 ## 0.5.5
 
 - Fix ProjectDetection.path which should hold the path to the pyproject file
+- Added trusted publishing (for PyPI) workflow on github
 
 ## 0.5.4
 
