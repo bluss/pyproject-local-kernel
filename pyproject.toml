@@ -58,7 +58,9 @@ packages = ["src/pyproject_local_kernel"]
 pythonVersion = "3.11"
 include = ["src"]
 extraPaths = ["src"]
-venvPath = ".venv"
+venvPath = "."
+venv = ".venv"
+exclude = [".venv"]
 typeCheckingMode = "basic"
 
 [tool.ruff]
