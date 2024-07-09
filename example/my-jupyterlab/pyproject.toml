@@ -19,6 +19,7 @@ dependencies = [
 
 [tool.rye]
 managed = true
+universal = true
 virtual = true
 
 [tool.hatch.metadata]

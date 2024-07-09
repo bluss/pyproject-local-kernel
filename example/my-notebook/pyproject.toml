@@ -17,4 +17,5 @@ classifiers = [
 
 [tool.rye]
 managed = true
+universal = true
 virtual = true
