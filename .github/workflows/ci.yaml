@@ -14,7 +14,7 @@ jobs:
     - uses: actions/checkout@v4
     - name: Install Rye
       run: |
-        curl -sSf https://rye-up.com/get | RYE_TOOLCHAIN_VERSION=$(cat .python-version) RYE_INSTALL_OPTION="--yes" bash
+        curl -sSf https://rye.astral.sh/get | RYE_TOOLCHAIN_VERSION=$(cat .python-version) RYE_INSTALL_OPTION="--yes" bash
         echo "$HOME/.rye/shims" >> $GITHUB_PATH
     - name: Rye Sync
       run: |
