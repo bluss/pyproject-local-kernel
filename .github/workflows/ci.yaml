@@ -19,6 +19,7 @@ jobs:
     - name: Rye Sync
       run: |
         rye config --set-bool behavior.use-uv=true
+        rye tools install -f uv
         rye sync
     - name: Tests
       run: |
@@ -42,6 +43,7 @@ jobs:
         shell: bash
         run: |
           rye config --set-bool behavior.use-uv=true
+          rye tools install -f uv
           rye sync
       - name: Tests
         shell: bash

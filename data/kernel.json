@@ -4,5 +4,6 @@
   "language": "python",
   "metadata": {
     "debugger": true
-  }
+  },
+  "interrupt_mode": "message"
 }

@@ -12,8 +12,9 @@ dependencies = [
 requires-python = ">= 3.8"
 classifiers = ["Private :: Do Not Upload"]
 
+[tool.uv]
 [tool.rye]
-managed = true
+managed = false
 universal = true
 virtual = true
 dev-dependencies = []
