@@ -1,3 +1,6 @@
+import pathlib
+import os
+
 import pytest
 
 from pyproject_local_kernel import ProjectKind
@@ -26,6 +29,20 @@ def test_custom(path, cmd):
     pd = identify(path)
     assert pd.get_python_cmd() == cmd
     assert pd.path is not None and pd.path.name == "pyproject.toml"
+
+
+@pytest.mark.parametrize("path,unix_cmd,win_cmd", [
+    ("tests/identify/use-venv", ".myvenv/bin/python", r".myvenv\Scripts\python.exe")
+])
+def test_use_venv(path, unix_cmd, win_cmd):
+    pd = identify(path)
+    expected = win_cmd if is_windows() else unix_cmd
+    assert pd.get_python_cmd() == [pathlib.Path(expected)]
+    assert pd.path is not None and pd.path.name == "pyproject.toml"
+
+
+def is_windows():
+    return os.name == "nt"
 
 
 @pytest.mark.parametrize("path", [

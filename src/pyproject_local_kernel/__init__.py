@@ -41,6 +41,7 @@ DEFAULT_RYE_RUN_CMD = ["rye", "run", "python"]
 class ProjectKind(enum.Enum):
     "detected project type"
     CustomConfiguration = enum.auto()
+    UseVenv = enum.auto()
     Rye = enum.auto()
     Poetry = enum.auto()
     Pdm = enum.auto()
@@ -49,9 +50,6 @@ class ProjectKind(enum.Enum):
     Unknown = enum.auto()
     NoProject = enum.auto()
     InvalidData = enum.auto()
-
-    def is_known_project(self):
-        return self in (self.Rye, self.Poetry, self.Pdm, self.Hatch, self.CustomConfiguration)
 
     def python_cmd(self):
         if self == ProjectKind.Rye:
@@ -74,8 +72,11 @@ class ProjectDetection:
     path: t.Optional[Path]
     kind: ProjectKind
     python_cmd: t.Optional[t.List[str]] = None
+    use_venv: t.Optional[str] = None
 
     def get_python_cmd(self):
+        if self.use_venv is not None:
+            return [get_venv_bin_python(Path(self.use_venv))]
         if self.python_cmd is not None:
             return self.python_cmd
         return self.kind.python_cmd() or DEFAULT_RYE_RUN_CMD
@@ -131,6 +132,14 @@ def is_custom(data: dict):
     return python_cmd is not None, {'python_cmd': python_cmd}
 
 
+def is_use_venv(data: dict):
+    use_venv = get_dotkey(data, f'tool.{MY_TOOL_NAME}.use-venv', None)
+    if use_venv is not None and not isinstance(use_venv, str):
+        _logger.error("Is not a string: tool.%s.use-venv=%r", MY_TOOL_NAME, use_venv)
+        use_venv = None
+    return use_venv is not None, {'use_venv': use_venv}
+
+
 IDENTIFY_FUNCTIONS = {
     ProjectKind.Rye: is_rye,
     ProjectKind.Pdm: is_pdm,
@@ -146,6 +155,9 @@ def _identify_toml(data):
     custom, extra_vars = is_custom(data)
     if custom:
         return ProjectKind.CustomConfiguration, extra_vars
+    use_venv, extra_vars = is_use_venv(data)
+    if use_venv:
+        return ProjectKind.UseVenv, extra_vars
     for kind, func in IDENTIFY_FUNCTIONS.items():
         if func(data):
             return kind, {}
