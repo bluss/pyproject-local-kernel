@@ -91,6 +91,7 @@ def start_fallback_kernel(project_kind: ProjectKind):
         "",
         "Use a command such as one of these to start:",
         "!rye init --virtual",
+        "!uv init",
         "!pdm init",
         "!poetry new .",
         "!hatch new",
@@ -110,6 +111,13 @@ def start_fallback_kernel(project_kind: ProjectKind):
         sync_kernel_env_messages += [
             "Run this:",
             "!rye add --sync ipykernel",
+            "",
+            "Then restart the kernel to try again.",
+        ]
+    elif project_kind == ProjectKind.Uv:
+        sync_kernel_env_messages += [
+            "Run this:",
+            "!uv add ipykernel",
             "",
             "Then restart the kernel to try again.",
         ]
