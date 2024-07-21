@@ -44,6 +44,7 @@ class ProjectKind(enum.Enum):
     Poetry = enum.auto()
     Pdm = enum.auto()
     Hatch = enum.auto()
+    Uv = enum.auto()
     Unknown = enum.auto()
     NoProject = enum.auto()
     InvalidData = enum.auto()
@@ -60,6 +61,9 @@ class ProjectKind(enum.Enum):
             return ['pdm', 'run', 'python']
         if self == ProjectKind.Hatch:
             return ['hatch', 'run', 'python']
+        if self == ProjectKind.Uv:
+            # uv trick - ensure ipykernel is installed
+            return ['uv', 'run', '--with', 'ipykernel', 'python']
         return None
 
 
@@ -100,7 +104,6 @@ def get_dotkey(data: dict, dotkey, default):
 def is_rye(data: dict):
     return get_dotkey(data, 'tool.rye.managed', False) is True
 
-
 def is_poetry(data: dict):
     return bool(get_dotkey(data, 'tool.poetry.name', ""))
 
@@ -113,6 +116,8 @@ def is_hatch(data: dict):
     return (get_dotkey(data, 'tool.hatch.version', None) is not None or
             get_dotkey(data, 'tool.hatch.envs', None) is not None)
 
+def is_uv(data: dict):
+    return get_dotkey(data, 'tool.uv', None) is not None
 
 def is_custom(data: dict):
     python_cmd = get_dotkey(data, f'tool.{MY_TOOL_NAME}.python-cmd', None)
@@ -129,6 +134,7 @@ IDENTIFY_FUNCTIONS = {
     ProjectKind.Pdm: is_pdm,
     ProjectKind.Poetry: is_poetry,
     ProjectKind.Hatch: is_hatch,
+    ProjectKind.Uv: is_uv,
 }
 
 
