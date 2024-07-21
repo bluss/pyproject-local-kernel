@@ -9,6 +9,7 @@ from pyproject_local_kernel import identify
     ("tests/identify/poetry", ProjectKind.Poetry),
     ("tests/identify/pdm", ProjectKind.Pdm),
     ("tests/identify/hatch", ProjectKind.Hatch),
+    ("tests/identify/uv", ProjectKind.Uv),
     ("tests/identify/broken", ProjectKind.InvalidData),
     ("tests/identify/unknown", ProjectKind.Unknown),
 ])

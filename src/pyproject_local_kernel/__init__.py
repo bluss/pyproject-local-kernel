@@ -21,6 +21,7 @@
 from dataclasses import dataclass
 import enum
 import logging
+import os
 import sys
 from pathlib import Path
 import typing as t
@@ -44,6 +45,7 @@ class ProjectKind(enum.Enum):
     Poetry = enum.auto()
     Pdm = enum.auto()
     Hatch = enum.auto()
+    Uv = enum.auto()
     Unknown = enum.auto()
     NoProject = enum.auto()
     InvalidData = enum.auto()
@@ -60,6 +62,9 @@ class ProjectKind(enum.Enum):
             return ['pdm', 'run', 'python']
         if self == ProjectKind.Hatch:
             return ['hatch', 'run', 'python']
+        if self == ProjectKind.Uv:
+            # uv - can't use uv run right now
+            return [get_venv_bin_python(Path(".venv"))]
         return None
 
 
@@ -113,6 +118,8 @@ def is_hatch(data: dict):
     return (get_dotkey(data, 'tool.hatch.version', None) is not None or
             get_dotkey(data, 'tool.hatch.envs', None) is not None)
 
+def is_uv(data: dict):
+    return get_dotkey(data, 'tool.uv', None) is not None
 
 def is_custom(data: dict):
     python_cmd = get_dotkey(data, f'tool.{MY_TOOL_NAME}.python-cmd', None)
@@ -129,6 +136,7 @@ IDENTIFY_FUNCTIONS = {
     ProjectKind.Pdm: is_pdm,
     ProjectKind.Poetry: is_poetry,
     ProjectKind.Hatch: is_hatch,
+    ProjectKind.Uv: is_uv,
 }
 
 
@@ -161,3 +169,9 @@ def identify(file):
 
     return ProjectDetection(pyproj, identity, **extra_vars)
 
+
+def get_venv_bin_python(base_venv: Path):
+    is_windows = os.name == "nt"
+    script_dir = "Scripts" if is_windows else "bin"
+    extension = ".exe" if is_windows else ""
+    return base_venv / script_dir / Path("python").with_suffix(extension)
