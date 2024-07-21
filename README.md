@@ -22,7 +22,9 @@ figure out which kind of project it is:
 - Poetry
 - Hatch
 - Pdm
-- Custom configuration (for other setups)
+- Uv
+- Custom command (for other setups)
+- Use venv at path (for other setups)
 
 ## Quick Start
 
@@ -67,9 +69,15 @@ steps to get it working. Example below is for Rye.
 
 ## Configuration
 
-By default python from the local pyproject is run (using rye run, poetry run, etc.).
-A custom command can be configured in `pyproject.toml` - the pyproject file closest
-to the notebook is used (and no other means of configuration are supported).
+Only one of the custom command and virtualenv path configurations can be used
+at a time.
+
+### Custom Command
+
+By default python from the local pyproject is run (using rye run, poetry run,
+etc.). A custom command can be configured in `pyproject.toml` - the pyproject
+file closest to the notebook is used (and no other means of configuration are
+supported).
 
 The key `tool.pyproject-local-kernel.python-cmd` should be a command that runs
 python in the virtual environment you want to use for the project.
@@ -78,6 +86,11 @@ python in the virtual environment you want to use for the project.
 [tool.pyproject-local-kernel]
 python-cmd = ["my", "custom", "python"]
 ```
+
+### Virtualenv Path
+
+The key `tool.pyproject-local-kernel.use-venv` can be a path to a virtualenv,
+relative to the pyproject.toml file, which should be used.
 
 ## Project Status
 

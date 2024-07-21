@@ -1,0 +1,9 @@
+[project]
+name = "use-venv"
+version = "0.1.0"
+description = "Add your description here"
+dependencies = []
+requires-python = ">= 3.0"
+
+[tool.pyproject-local-kernel]
+use-venv = ".myvenv"
