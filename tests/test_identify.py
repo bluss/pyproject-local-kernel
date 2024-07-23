@@ -12,7 +12,6 @@ from pyproject_local_kernel import identify
     ("tests/identify/poetry", ProjectKind.Poetry),
     ("tests/identify/pdm", ProjectKind.Pdm),
     ("tests/identify/hatch", ProjectKind.Hatch),
-    ("tests/identify/uv", ProjectKind.Uv),
     ("tests/identify/broken", ProjectKind.InvalidData),
     ("tests/identify/unknown", ProjectKind.Unknown),
 ])
@@ -32,11 +31,14 @@ def test_custom(path, cmd):
 
 
 @pytest.mark.parametrize("path,unix_cmd,win_cmd", [
-    ("tests/identify/use-venv", ".myvenv/bin/python", r".myvenv\Scripts\python.exe")
+    ("tests/identify/use-venv", ".myvenv/bin/python", r".myvenv\Scripts\python.exe"),
+    ("tests/identify/uv", ".venv/bin/python", r".venv\Scripts\python.exe"),
 ])
 def test_use_venv(path, unix_cmd, win_cmd):
+    # venv resolves to absolute path
     pd = identify(path)
-    expected = win_cmd if is_windows() else unix_cmd
+    base_dir = pathlib.Path(path).absolute()
+    expected = base_dir / (win_cmd if is_windows() else unix_cmd)
     assert pd.get_python_cmd() == [pathlib.Path(expected)]
     assert pd.path is not None and pd.path.name == "pyproject.toml"
 
