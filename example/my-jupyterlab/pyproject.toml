@@ -14,7 +14,7 @@ classifiers = [
 dependencies = [
     "jupyterlab",
     "jupytext>=1.16.1",
-    "pyproject-local-kernel>=0.5",
+    "pyproject-local-kernel",
 ]
 
 [tool.rye]
@@ -24,3 +24,6 @@ virtual = true
 
 [tool.hatch.metadata]
 allow-direct-references = true
+
+[tool.uv.sources]
+pyproject-local-kernel = { path = "../..", editable = true }

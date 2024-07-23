@@ -72,6 +72,18 @@ steps to get it working. Example below is for Rye.
 Only one of the custom command and virtualenv path configurations can be used
 at a time.
 
+### Virtualenv Path
+
+The key `tool.pyproject-local-kernel.use-venv` can be a path to a virtualenv,
+relative to the pyproject.toml file, which should be used.
+
+```toml
+[tool.pyproject-local-kernel]
+use-venv = ".venv"
+```
+
+This is what's used automatically when Uv is detected (at the moment).
+
 ### Custom Command
 
 By default python from the local pyproject is run (using rye run, poetry run,
@@ -86,11 +98,6 @@ python in the virtual environment you want to use for the project.
 [tool.pyproject-local-kernel]
 python-cmd = ["my", "custom", "python"]
 ```
-
-### Virtualenv Path
-
-The key `tool.pyproject-local-kernel.use-venv` can be a path to a virtualenv,
-relative to the pyproject.toml file, which should be used.
 
 ## Project Status
 

@@ -76,7 +76,8 @@ class ProjectDetection:
 
     def get_python_cmd(self):
         if self.use_venv is not None:
-            return [get_venv_bin_python(Path(self.use_venv))]
+            assert self.path is not None
+            return [self.path.parent / get_venv_bin_python(Path(self.use_venv))]
         if self.python_cmd is not None:
             return self.python_cmd
         return self.kind.python_cmd() or DEFAULT_RYE_RUN_CMD
@@ -119,9 +120,6 @@ def is_hatch(data: dict):
     return (get_dotkey(data, 'tool.hatch.version', None) is not None or
             get_dotkey(data, 'tool.hatch.envs', None) is not None)
 
-def is_uv(data: dict):
-    return get_dotkey(data, 'tool.uv', None) is not None
-
 def is_custom(data: dict):
     python_cmd = get_dotkey(data, f'tool.{MY_TOOL_NAME}.python-cmd', None)
     if isinstance(python_cmd, str):
@@ -135,8 +133,9 @@ def is_custom(data: dict):
 def is_use_venv(data: dict):
     use_venv = get_dotkey(data, f'tool.{MY_TOOL_NAME}.use-venv', None)
     if use_venv is not None and not isinstance(use_venv, str):
-        _logger.error("Is not a string: tool.%s.use-venv=%r", MY_TOOL_NAME, use_venv)
         use_venv = None
+    if use_venv is None and get_dotkey(data, 'tool.uv', None) is not None:
+        use_venv = ".venv"
     return use_venv is not None, {'use_venv': use_venv}
 
 
@@ -145,7 +144,6 @@ IDENTIFY_FUNCTIONS = {
     ProjectKind.Pdm: is_pdm,
     ProjectKind.Poetry: is_poetry,
     ProjectKind.Hatch: is_hatch,
-    ProjectKind.Uv: is_uv,
 }
 
 
