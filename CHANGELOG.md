@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.6.0
+
+- Support configuration `use-venv` for setting a name of a virtualenv to use
+- Support Uv (in a basic way, by assuming `use-venv=".venv"` for uv)
+
 ## 0.5.5
 
 - Fix ProjectDetection.path which should hold the path to the pyproject file
