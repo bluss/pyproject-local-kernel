@@ -7,7 +7,7 @@
 
 - Use per-directory python projects to run Python Jupyter kernels
 - Separate dependencies for notebooks in separate projects
-- Use Rye, PDM, Poetry, Hatch, or similar project setups to define and run
+- Use Rye, Uv, PDM, Poetry, Hatch, or similar project setups to define and run
   IPython kernels with dependencies for Jupyter notebooks.
 
 Instead of installing a myriad of jupyter kernelspecs, one per project, instead
@@ -25,6 +25,9 @@ figure out which kind of project it is:
 - Uv
 - Custom command (for other setups)
 - Use venv at path (for other setups)
+
+Designed to be used with JupyterLab. Can also work with Jupyter Notebook and
+papermill. Doesn't seem to be compatible with Codium or VS Code.
 
 ## Quick Start
 
