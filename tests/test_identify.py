@@ -12,6 +12,7 @@ from pyproject_local_kernel import identify
     ("tests/identify/poetry", ProjectKind.Poetry),
     ("tests/identify/pdm", ProjectKind.Pdm),
     ("tests/identify/hatch", ProjectKind.Hatch),
+    ("tests/identify/uv", ProjectKind.Uv),
     ("tests/identify/broken", ProjectKind.InvalidData),
     ("tests/identify/unknown", ProjectKind.Unknown),
 ])
@@ -32,7 +33,6 @@ def test_custom(path, cmd):
 
 @pytest.mark.parametrize("path,unix_cmd,win_cmd", [
     ("tests/identify/use-venv", ".myvenv/bin/python", r".myvenv\Scripts\python.exe"),
-    ("tests/identify/uv", ".venv/bin/python", r".venv\Scripts\python.exe"),
 ])
 def test_use_venv(path, unix_cmd, win_cmd):
     # venv resolves to absolute path

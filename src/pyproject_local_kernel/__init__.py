@@ -61,8 +61,7 @@ class ProjectKind(enum.Enum):
         if self == ProjectKind.Hatch:
             return ['hatch', 'run', 'python']
         if self == ProjectKind.Uv:
-            # uv - can't use uv run right now
-            return [get_venv_bin_python(Path(".venv"))]
+            return ['uv', 'run', '--with', 'ipykernel', 'python']
         return None
 
 
@@ -130,12 +129,13 @@ def is_custom(data: dict):
     return python_cmd is not None, {'python_cmd': python_cmd}
 
 
+def is_uv(data: dict):
+    return get_dotkey(data, 'tool.uv', None) is not None
+
 def is_use_venv(data: dict):
     use_venv = get_dotkey(data, f'tool.{MY_TOOL_NAME}.use-venv', None)
     if use_venv is not None and not isinstance(use_venv, str):
         use_venv = None
-    if use_venv is None and get_dotkey(data, 'tool.uv', None) is not None:
-        use_venv = ".venv"
     return use_venv is not None, {'use_venv': use_venv}
 
 
@@ -144,6 +144,7 @@ IDENTIFY_FUNCTIONS = {
     ProjectKind.Pdm: is_pdm,
     ProjectKind.Poetry: is_poetry,
     ProjectKind.Hatch: is_hatch,
+    ProjectKind.Uv: is_uv,
 }
 
 

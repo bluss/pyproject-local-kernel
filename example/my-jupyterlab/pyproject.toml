@@ -14,7 +14,7 @@ classifiers = [
 dependencies = [
     "jupyterlab",
     "jupytext>=1.16.1",
-    "pyproject-local-kernel",
+    "pyproject-local-kernel>=0.6.0",
 ]
 
 [tool.rye]

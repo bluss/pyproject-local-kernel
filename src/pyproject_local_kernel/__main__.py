@@ -57,6 +57,7 @@ def main():
                 forward_signals = set(signal.Signals) - {signal.SIGKILL, signal.SIGSTOP}
 
             def handle_signal(sig, _frame):
+                _logger.debug("Forwarding signal to kernel: %r", sig)
                 proc.send_signal(sig)
 
             for sig in forward_signals:
