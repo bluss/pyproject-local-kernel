@@ -27,7 +27,7 @@ figure out which kind of project it is:
 - Use venv at path (for other setups)
 
 Designed to be used with JupyterLab. Can also work with Jupyter Notebook and
-papermill. Doesn't seem to be compatible with Codium or VS Code.
+papermill. Doesn't seem to be compatible with VSCodium or VSCode.
 
 ## Quick Start
 
@@ -85,8 +85,6 @@ relative to the pyproject.toml file, which should be used.
 use-venv = ".venv"
 ```
 
-This is what's used automatically when Uv is detected (at the moment).
-
 ### Custom Command
 
 By default python from the local pyproject is run (using rye run, poetry run,
@@ -102,6 +100,32 @@ python in the virtual environment you want to use for the project.
 python-cmd = ["my", "custom", "python"]
 ```
 
+## About Particular Project Managers
+
+The package manager command, be it rye, uv, pdm, etc needs to be
+available on the path where jupyterlab runs. Either install the project
+manager in the jupyterlab environment, or install the project manager
+user-wide (using something like pipx, rye tools, uv tool, brew, or
+other method to install it.)
+
+### Rye
+
+- Rye is detected if the pyproject.toml contains `tool.rye.managed = true`
+  which Rye sets by default for its new projects.
+
+### Uv
+
+- Uv is detected if the pyproject.toml contains `tool.uv`
+
+- pyproject-local-kernel requires uv 0.2.29 or later
+
+- Uses `uv run` which is a preview feature (could break on future uv changes)
+
+- The command used is `uv run --with ipykernel python` which means that it ensures
+  `ipykernel` is used even if it's not already in the project(!). However, note that
+  it uses an ephemeral virtual environment for ipykernel in that case. Add
+  ipykernel to the project to avoid this.
+
 ## Project Status
 
 Status: Working proof of concept, published to PyPI. Additional interest and
@@ -109,6 +133,7 @@ maintainer help is welcomed.
 
 See also:
 
-* Rye: https://github.com/mitsuhiko/rye
+* https://github.com/mitsuhiko/rye
+* https://github.com/astral-sh/uv
 * https://github.com/goerz/python-localvenv-kernel
-* Poetry-kernel: https://github.com/pathbird/poetry-kernel
+* https://github.com/pathbird/poetry-kernel
