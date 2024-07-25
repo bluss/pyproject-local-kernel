@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.7.0
+
+- Use `uv run` for uv projects. Requires latests uv as of this writing, uv
+  0.2.29. Uses `uv run --with ipykernel` which means it will run as
+  before if ipykernel is already installed, or run in an overlay
+  environment (ipykernel + base pyproject) if not.
+- Include kernel start failure messages in user visible text in more cases such
+  as “command not found”.
+
 ## 0.6.0
 
 - Support configuration `use-venv` for setting a name of a virtualenv to use
