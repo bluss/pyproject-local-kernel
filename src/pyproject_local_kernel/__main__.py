@@ -40,6 +40,7 @@ def main():
     python_cmd = find_project.get_python_cmd()
 
     launched = False
+    failure_to_start_msg = ""
 
     if python_cmd is not None:
         cmd = python_cmd + [
@@ -69,14 +70,16 @@ def main():
             else:
                 launched = True
         except (IOError, OSError) as exc:
-            _logger.error("kernel could not be started: %s", exc)
+            failure_to_start_msg = str(exc)
+            _logger.error("kernel could not be started: %s", failure_to_start_msg)
         except Exception as exc:
-            _logger.exception("kernel could not be started: %s", exc)
+            failure_to_start_msg = str(exc)
+            _logger.exception("kernel could not be started: %s", failure_to_start_msg)
     if not launched:
-        start_fallback_kernel(find_project.kind)
+        start_fallback_kernel(find_project.kind, failure_to_start_msg)
 
 
-def start_fallback_kernel(project_kind: ProjectKind):
+def start_fallback_kernel(project_kind: ProjectKind, failure_to_start_msg: str = ""):
     """
     Start a fallback kernel. Its purpose is
 
@@ -101,6 +104,10 @@ def start_fallback_kernel(project_kind: ProjectKind):
 
     if not has_pyproject:
         help_messages += rye_init_messages
+
+    if failure_to_start_msg:
+        help_messages += ["Error: " + failure_to_start_msg]
+
 
     sync_kernel_env_messages = [
         f"Failed to start kernel! The detected project type is: {project_kind.name}",
