@@ -37,6 +37,14 @@ dev-dependencies = [
     "pytest>=8.1.1",
 ]
 
+[tool.uv]
+managed = true
+dev-dependencies = []
+
+[tool.uv.workspace]
+members = []
+exclude = ["tests/**", "example/**"]
+
 [tool.hatch.metadata]
 allow-direct-references = true
 
