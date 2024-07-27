@@ -6,11 +6,10 @@ authors = [
     { name = "Ulrik Sverdrup", email = "ulrik.sverdrup@gmail.com" }
 ]
 dependencies = [
-    "pyproject-local-kernel @ file:///${PROJECT_ROOT}/../../..",
-    "papermill>=2.5.0",
-    "jupytext>=1.16.1",
+    "papermill>=2.6.0",
+    "jupytext>=1.16.3",
+    "pyproject-local-kernel",
 ]
-requires-python = ">= 3.8"
 classifiers = [
     "Private :: Do Not Upload",
 ]
@@ -20,3 +19,6 @@ managed = true
 universal = true
 virtual = true
 dev-dependencies = []
+
+[tool.uv.sources]
+pyproject-local-kernel = { path = "../../../../pyproject-local-kernel" }

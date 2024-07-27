@@ -1,9 +1,12 @@
 
 .PHONY: test
 test:
+	# Test just current code / current version
 	uv run --with pytest pytest $(ARGS)
-	# not using this because it caches '.' and doesn't want to reinstall it:
-	#uvx -v --with . pytest $(ARGS)
+
+.PHONY: test-all
+test-all:
+	uvx nox --no-venv $(ARGS)
 
 .PHONY: build
 build:
