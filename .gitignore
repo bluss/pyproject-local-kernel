@@ -16,5 +16,10 @@ __pycache__/
 # rye lockfiles
 /requirements*.lock
 
+# uv lockfiles
+uv.lock
+# extra python version files
+.python-version
+
 /.pytest_cache
 /.ruff_cache
