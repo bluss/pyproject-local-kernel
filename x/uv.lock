@@ -1,0 +1,15 @@
+version = 1
+requires-python = ">=3.12"
+
+[[distribution]]
+name = "pyproject-local-kernel"
+version = "1.0.0"
+source = { directory = "../" }
+
+[[distribution]]
+name = "x"
+version = "0.1.0"
+source = { editable = "." }
+dependencies = [
+    { name = "pyproject-local-kernel" },
+]

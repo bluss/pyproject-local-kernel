@@ -21,7 +21,8 @@ jobs:
         rye tools install -f uv
     - name: Tests
       run: |
-        make test-all
+        cd x
+        uv lock -v
 
   tests-windows:
     runs-on: windows-latest
@@ -41,4 +42,5 @@ jobs:
     - name: Tests
       shell: bash
       run: |
-        uvx nox --no-venv
+        cd x
+        uv lock -v

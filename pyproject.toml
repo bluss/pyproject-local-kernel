@@ -1,41 +1,9 @@
 [project]
 name = "pyproject-local-kernel"
-version = "0.7.0"
-description = "Python Jupyter kernel using pyproject environment manangers like Rye, PDM, Poetry, Hatch etc."
-authors = [
-    { name = "Ulrik Sverdrup", email = "ulrik.sverdrup@gmail.com" }
-]
-dependencies = [
-    "tomli>=2.0.1; python_version < '3.11'",
-]
-readme = "README.md"
-license = "MIT"
+version = "1.0.0"
+description = "Root package"
+dependencies = []
 requires-python = ">= 3.8"
-keywords = ["Interactive", "Interpreter", "Jupyter", "Pyproject"]
-classifiers = [
-    "Framework :: Jupyter",
-    "Intended Audience :: Developers",
-    "Intended Audience :: System Administrators",
-    "Intended Audience :: Science/Research",
-    "License :: OSI Approved :: MIT License",
-    "Operating System :: OS Independent",
-    "Programming Language :: Python",
-    "Programming Language :: Python :: 3",
-]
-
-[project.urls]
-Repository = "https://github.com/bluss/pyproject-local-kernel"
-
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
-
-[tool.rye]
-managed = true
-universal = true
-dev-dependencies = [
-    "pytest>=8.1.1",
-]
 
 [tool.uv]
 managed = true
@@ -44,34 +12,4 @@ python-preference = "only-managed"
 
 [tool.uv.workspace]
 members = []
-exclude = ["tests/**", "example/**"]
-
-[tool.hatch.metadata]
-allow-direct-references = true
-
-[tool.hatch.build]
-exclude = [
-    "/example",
-    "/.github",
-]
-
-[tool.hatch.build.targets.wheel]
-packages = ["src/pyproject_local_kernel"]
-
-[tool.hatch.build.targets.wheel.shared-data]
-"./data/kernel.json" = "share/jupyter/kernels/pyproject_local_kernel/kernel.json"
-
-
-# Editors and other tools below
-
-[tool.pyright]
-pythonVersion = "3.11"
-include = ["src"]
-extraPaths = ["src"]
-venvPath = "."
-venv = ".venv"
-exclude = [".venv"]
-typeCheckingMode = "basic"
-
-[tool.ruff]
-exclude = ["example", "tests/identify", "tests/server-client"]
+exclude = ["x", "*", "**"]

@@ -1,0 +1,11 @@
+[project]
+name = "x"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.12"
+dependencies = [
+    "pyproject-local-kernel",
+]
+
+[tool.uv.sources]
+pyproject-local-kernel = { path = ".." }
