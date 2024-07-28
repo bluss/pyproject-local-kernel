@@ -44,7 +44,7 @@ python-preference = "only-managed"
 
 [tool.uv.workspace]
 members = []
-exclude = ["tests/**", "example/**"]
+exclude = ["tools/**", "tests/**", "example/**"]
 
 [tool.hatch.metadata]
 allow-direct-references = true
