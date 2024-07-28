@@ -17,6 +17,27 @@ and it needs to be installed together with all the dependencies the notebook
 wants to import. The kernel and Jupyter however communicate over IPC and
 can be installed completely separately.
 
+## How to setup for VSCodium or VS Code
+
+The [vscode-jupyter][] extension instructs that you must install `jupyter`
+in a python environment to use the extension. Install `pyproject-local-kernel` in that
+particular environment, and it will work. If doing this from scratch, you can
+setup a new environment with both `jupyter` and `pyproject-local-kernel`.
+
+It's possible one needs to use the command *Python: Select Interpreter* to
+select the environment.
+
+[vscode-jupyter]: https://github.com/microsoft/vscode-jupyter
+
+- The *jupyter* environment must install the `pyproject-local-kernel` package.
+- The notebook projects install `ipykernel` and the notebook dependencies,
+think of this as a separation of server and client.
+
+**Note** that code natively supports just using a directory local virtualenv
+for notebooks, such as Rye or Uv's `.venv` or similar. For this reason
+`pyproject-local-kernel` does not matter so much in this case, it's
+mainly useful for JupyterLab!
+
 ## Does it work with with Pipenv?
 
 1. Add ipykernel to the environment packages

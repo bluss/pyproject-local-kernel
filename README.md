@@ -26,10 +26,7 @@ figure out which kind of project it is:
 - Custom command (for other setups)
 - Use venv at path (for other setups)
 
-Designed to be used with JupyterLab. Can also work with Jupyter Notebook and
-papermill. Doesn't seem to be compatible with VSCodium or VSCode.
-
-## Quick Start
+## Quick Start (JupyterLab)
 
 1. Install pyproject-local-kernel in your jupyterlab environment and restart
    jupyterlab
@@ -46,6 +43,11 @@ papermill. Doesn't seem to be compatible with VSCodium or VSCode.
 - See the examples directory for how to setup jupyterlab and notebook projects
   separately. JupyterLab and the notebook are installed in separate environments.
 
+
+Do you want to use pyproject-local-kernel in **VSCodium or VS Code**? See our
+[FAQ][] for more information.
+
+[FAQ]: FAQ.md
 
 ## User Experience
 
