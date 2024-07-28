@@ -40,6 +40,7 @@ dev-dependencies = [
 [tool.uv]
 managed = true
 dev-dependencies = []
+python-preference = "only-managed"
 
 [tool.uv.workspace]
 members = []

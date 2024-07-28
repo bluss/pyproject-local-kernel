@@ -16,40 +16,28 @@ jobs:
       run: |
         curl -sSf https://rye.astral.sh/get | RYE_TOOLCHAIN_VERSION=$(cat .python-version) RYE_INSTALL_OPTION="--yes" bash
         echo "$HOME/.rye/shims" >> $GITHUB_PATH
-    - name: Rye Sync
+    - name: Install Uv
       run: |
-        rye config --set-bool behavior.use-uv=true
         rye tools install -f uv
-        rye sync
     - name: Tests
       run: |
-        rye test -v
-    - name: Execute notebook
-      run: |
-        ./tests/server-client/setup_run.sh
+        make test-all
 
   tests-windows:
     runs-on: windows-latest
     name: tests-windows
     steps:
-      - uses: actions/checkout@v4
-      - name: Install Rye
-        shell: bash
-        run: |
-          C:/msys64/usr/bin/wget.exe -q 'https://github.com/astral-sh/rye/releases/latest/download/rye-x86_64-windows.exe' -O rye-x86_64-windows.exe
-          ./rye-x86_64-windows.exe self install --toolchain-version $(cat .python-version) --modify-path -y
-          echo "$HOME\\.rye\\shims" >> $GITHUB_PATH
-      - name: Rye Sync
-        shell: bash
-        run: |
-          rye config --set-bool behavior.use-uv=true
-          rye tools install -f uv
-          rye sync
-      - name: Tests
-        shell: bash
-        run: |
-          rye test -v
-      - name: Execute notebook
-        shell: bash
-        run: |
-          ./tests/server-client/setup_run.sh
+    - uses: actions/checkout@v4
+    - name: Install Rye
+      uses: eifinger/setup-rye@v4
+      with:
+        version: 'latest'
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+    - name: Install Uv
+      shell: bash
+      run: |
+        rye tools install -f uv
+    - name: Tests
+      run: |
+        make test-all ARGS='"-ktests"'
+        make test-all ARGS='"-sserver_client(py312)"'

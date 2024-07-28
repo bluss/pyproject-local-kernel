@@ -6,7 +6,7 @@ test:
 
 .PHONY: test-all
 test-all:
-	uvx nox --no-venv $(ARGS)
+	uvx -q nox --no-venv $(ARGS)
 
 .PHONY: build
 build:
