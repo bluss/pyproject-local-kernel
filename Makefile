@@ -1,3 +1,4 @@
+root_dir:=$(dir $(realpath $(firstword $(MAKEFILE_LIST))))
 
 .PHONY: test
 test:
@@ -10,9 +11,9 @@ test-all:
 
 .PHONY: build
 build:
-	uvx --from build pyproject-build -s -w --installer uv $(ARGS)
+	cd ./tools/py-build/;  uv run --locked python -m build -s -w --installer uv $(ARGS) $(root_dir)
 
 .PHONY: build-test
 build-test:
 	# TODO: drop -n in next uv version
-	uvx -n --reinstall --with dist/*.whl pytest $(ARGS)
+	uvx -n -q --reinstall --with dist/*.whl pytest $(ARGS)

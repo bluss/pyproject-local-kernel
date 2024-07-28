@@ -22,6 +22,10 @@ jobs:
     - name: Tests
       run: |
         make test-all
+    - name: Test Build Wheel
+      run: |
+        make build
+        make build-test
 
   tests-windows:
     runs-on: windows-latest

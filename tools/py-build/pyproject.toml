@@ -1,0 +1,10 @@
+[project]
+name = "py-build"
+version = "0.1.0"
+description = "Lockfile for build package for creating the release."
+requires-python = ">=3.11"
+dependencies = [
+    "build>=1.2.1",
+]
+
+[tool.uv.workspace]
