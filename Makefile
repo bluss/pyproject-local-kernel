@@ -15,5 +15,4 @@ build:
 
 .PHONY: build-test
 build-test:
-	# TODO: drop -n in next uv version
-	uvx -n -q --reinstall --with dist/*.whl pytest $(ARGS)
+	uvx -q --reinstall --with dist/*.whl pytest $(ARGS)
