@@ -19,10 +19,10 @@ Pyproject Local supports the following systems, and reads pyproject.toml to
 figure out which kind of project it is:
 
 - Rye
+- Uv
 - Poetry
 - Hatch
 - Pdm
-- Uv
 - Custom command (for other setups)
 - Use venv at path (for other setups)
 
@@ -52,7 +52,7 @@ Do you want to use pyproject-local-kernel in **VSCodium or VS Code**? See our
 ## User Experience
 
 If the Pyproject Local kernel is used in a project where rye (or the relevant
-pyproject manager) is not installed, or the project does not have an ipykernel
+project manager) is not installed, or the project does not have an ipykernel
 in the environment, then starting the kernel fails.
 
 In that case a fallback kernel is started which that shows a message that it is
@@ -104,7 +104,7 @@ python-cmd = ["my", "custom", "python"]
 
 ## About Particular Project Managers
 
-The package manager command, be it rye, uv, pdm, etc needs to be
+The project manager command, be it rye, uv, pdm, etc needs to be
 available on the path where jupyterlab runs. Either install the project
 manager in the jupyterlab environment, or install the project manager
 user-wide (using something like pipx, rye tools, uv tool, brew, or
@@ -117,7 +117,8 @@ other method to install it.)
 
 ### Uv
 
-- Uv is detected if the pyproject.toml contains `tool.uv`
+- Uv is detected if the pyproject.toml contains `tool.uv`. It is also the
+  default fallback if no project manager is detected from a pyproject file.
 
 - pyproject-local-kernel requires uv 0.2.29 or later
 

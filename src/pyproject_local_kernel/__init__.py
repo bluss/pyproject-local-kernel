@@ -22,6 +22,7 @@ from dataclasses import dataclass
 import enum
 import logging
 import os
+import shutil
 import sys
 from pathlib import Path
 import typing as t
@@ -35,7 +36,6 @@ except ImportError:
 _logger = logging.getLogger(__name__)
 
 MY_TOOL_NAME = "pyproject-local-kernel"  # name of tool section in pyproject.toml for this tool
-DEFAULT_RYE_RUN_CMD = ["rye", "run", "python"]
 
 
 class ProjectKind(enum.Enum):
@@ -53,7 +53,7 @@ class ProjectKind(enum.Enum):
 
     def python_cmd(self):
         if self == ProjectKind.Rye:
-            return DEFAULT_RYE_RUN_CMD
+            return ["rye", "run", "python"]
         if self == ProjectKind.Poetry:
             return ['poetry', 'run', 'python']
         if self == ProjectKind.Pdm:
@@ -73,13 +73,27 @@ class ProjectDetection:
     python_cmd: t.Optional[t.List[str]] = None
     use_venv: t.Optional[str] = None
 
-    def get_python_cmd(self):
+    def get_python_cmd(self, allow_fallback=True):
         if self.use_venv is not None:
             assert self.path is not None
             return [self.path.parent / get_venv_bin_python(Path(self.use_venv))]
         if self.python_cmd is not None:
             return self.python_cmd
-        return self.kind.python_cmd() or DEFAULT_RYE_RUN_CMD
+        result = self.kind.python_cmd()
+        if not allow_fallback or result is not None:
+            return result
+
+        if self.kind not in (ProjectKind.NoProject, ProjectKind.InvalidData):
+            return self._fallback_project_kind().python_cmd()
+        return None
+
+    @classmethod
+    def _fallback_project_kind(cls) -> ProjectKind:
+        if shutil.which("uv") is not None:
+            return ProjectKind.Uv
+        if shutil.which("rye") is not None:
+            return ProjectKind.Rye
+        return ProjectKind.Unknown
 
 
 def find_pyproject_file_from(curdir, basename="pyproject.toml"):

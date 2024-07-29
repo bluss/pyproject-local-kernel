@@ -23,7 +23,9 @@ def test_ident(path, expected):
 
 
 @pytest.mark.parametrize("path,cmd", [
-    ("tests/identify/custom", ["my", "cmd"])
+    ("tests/identify/custom", ["my", "cmd"]),
+    # uv must be on the path, then we pick this fallback
+    ("tests/identify/fallback", ["uv", "run", "--with", "ipykernel", "python"]),
 ])
 def test_custom(path, cmd):
     pd = identify(path)

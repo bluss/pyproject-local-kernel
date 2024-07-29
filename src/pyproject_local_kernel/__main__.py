@@ -37,7 +37,7 @@ def main():
     logging.basicConfig(level=logging.INFO, format=f"{MY_TOOL_NAME}: %(message)s")
 
     find_project = identify(Path.cwd())
-    python_cmd = find_project.get_python_cmd()
+    python_cmd = find_project.get_python_cmd(allow_fallback=True)
 
     launched = False
     failure_to_start_msg = ""
