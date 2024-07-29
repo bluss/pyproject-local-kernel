@@ -20,15 +20,15 @@ else
     UPDATE=
 fi
 
-(cd server;
-    $UV python pin "$PYVERSION";
-    $UV sync $VERBOSE $UPDATE )
-(cd client-rye;
-    $UV python pin "$PYVERSION";
-    $UV sync $VERBOSE $UPDATE )
-(cd client-uv;
-    $UV python pin "$PYVERSION";
-    $UV sync $VERBOSE $UPDATE )
+directories=(server client-rye client-uv)
+
+for dir in ${directories[@]} ; do
+    (cd "$dir";
+        cp uv.lock uv.lock.orig;
+        $UV python pin "$PYVERSION";
+        $UV sync $VERBOSE $UPDATE ;
+    )
+done
 
 for nbdir in client-rye client-uv ; do
     # convert to ipynb
@@ -38,4 +38,10 @@ for nbdir in client-rye client-uv ; do
     # check for problems in the log and exit with error in that case
     $RYE run --pyproject $SPROJ papermill --cwd $nbdir $nbdir/notebook.ipynb $nbdir/notebook_out.ipynb 2>&1 | \
         awk 'BEGIN {status = 0} /Failed to start kernel|Traceback/ {status = 1} 1; END {exit(status)}'
+done
+
+for dir in ${directories[@]} ; do
+    (cd "$dir";
+        mv -f uv.lock.orig uv.lock;
+    )
 done
