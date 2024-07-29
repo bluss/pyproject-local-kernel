@@ -17,6 +17,13 @@ and it needs to be installed together with all the dependencies the notebook
 wants to import. The kernel and Jupyter however communicate over IPC and
 can be installed completely separately.
 
+## Does Pyproject Local Kernel depend on Uv or Rye
+
+No, neither of them are required to use. Any supported project manager or even
+none of them (for custom or vitualenv configurations) is sufficient.
+
+For development of the package, Rye and Uv are required.
+
 ## How to setup for VSCodium or VS Code
 
 The [vscode-jupyter][] extension instructs that you must install `jupyter`

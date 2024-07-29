@@ -30,15 +30,22 @@ figure out which kind of project it is:
 
 1. Install pyproject-local-kernel in your jupyterlab environment and restart
    jupyterlab
-2. Create a new directory and notebook, select the **Pyproject Local** kernel
-   for the notebook
-3. Run (Example for Rye)
+2. Create a new directory and notebook
+3. Select the **Pyproject Local** kernel for the notebook
+4. Run these to setup the new project:
+
+  (Example for Rye)
 
    * `!rye init --virtual`
    * `!rye add --sync ipykernel`
 
-4. Restart the kernel and you are good to go. Use `!rye add` to add further
-   dependencies.
+  (Example for Uv)
+
+   * `!uv init`
+   * `!uv add "ipykernel>=6"`
+
+5. Restart the kernel and you are good to go. Use more `add` commands to add
+   further dependencies.
 
 - See the examples directory for how to setup jupyterlab and notebook projects
   separately. JupyterLab and the notebook are installed in separate environments.
