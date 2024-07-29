@@ -5,40 +5,45 @@
 The regular IPython kernel for Jupyter is launched like this:
 `python -m ipykernel_launcher <arguments..>`
 
-If you just prefix that command with `rye run`, `poetry run`, `pdm run` etc,
-then you get a kernel invocation that executes in the current pyproject's
-environment. That's basically the whole magic of this package, it doesn't
-need to do more.
+If you just prefix that command with `rye run`, `uv run`, `poetry run`,
+`pdm run`, `hatch run`, etc, then you get a kernel invocation that executes in
+the current pyproject's environment. That's basically the whole magic of this
+package, it doesn't need to do more.
 
 ## Why do I have to install `ipykernel` manually?
 
 The IPython kernel is the interpreter that executes everything in the notebook,
 and it needs to be installed together with all the dependencies the notebook
-wants to import. The kernel and Jupyter however communicate over IPC and
-can be installed completely separately.
+wants to import. However only one installation of JupyterLab (or equivalent
+notebook program) is necessary, and should be separate from the notebook.
 
-## Does Pyproject Local Kernel depend on Uv or Rye
+For Uv, the default command is `uv run --with ipykernel` which creates an
+overlay environment containing ipykernel if it wasn't already installed. This
+makes it possible to skip ipykernel in the project dependencies if desired.
 
-No, neither of them are required to use. Any supported project manager or even
-none of them (for custom or vitualenv configurations) is sufficient.
+## Does Pyproject Local Kernel require Uv or Rye?
 
-For development of the package, Rye and Uv are required.
+No, neither of them are strictly required to use. Any supported project manager
+is enough, or even none for custom or vitualenv configurations.
 
-## How to setup for VSCodium or VS Code
+For development of the project and running tests, Rye and Uv are required.
+
+## How to setup for VSCodium or VS Code?
 
 The [vscode-jupyter][] extension instructs that you must install `jupyter`
 in a python environment to use the extension. Install `pyproject-local-kernel` in that
 particular environment, and it will work. If doing this from scratch, you can
 setup a new environment with both `jupyter` and `pyproject-local-kernel`.
 
-It's possible one needs to use the command *Python: Select Interpreter* to
+It's possible you need to use the command *Python: Select Interpreter* to
 select the environment.
 
 [vscode-jupyter]: https://github.com/microsoft/vscode-jupyter
 
 - The *jupyter* environment must install the `pyproject-local-kernel` package.
-- The notebook projects install `ipykernel` and the notebook dependencies,
-think of this as a separation of server and client.
+  (“server side”)
+- The notebook projects install `ipykernel` and the notebook dependencies
+  (“client side”)
 
 **Note** that code natively supports just using a directory local virtualenv
 for notebooks, such as Rye or Uv's `.venv` or similar. For this reason

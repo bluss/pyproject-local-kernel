@@ -3,8 +3,8 @@
 ## 0.7.1
 
 - Use Uv as first fallback if no explicit project manager can be identified
-  from the pyproject, if `uv` is in the command path, then use Rye as the
-  second fallback in the same way.
+  from the pyproject if `uv` is in the command path. Use Rye as the second
+  fallback in the same way.
 
 ## 0.7.0
 

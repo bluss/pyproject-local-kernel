@@ -7,8 +7,8 @@
 
 - Use per-directory python projects to run Python Jupyter kernels
 - Separate dependencies for notebooks in separate projects
-- Use Rye, Uv, PDM, Poetry, Hatch, or similar project setups to define and run
-  IPython kernels with dependencies for Jupyter notebooks.
+- Use Rye, Uv, PDM, Poetry, Hatch, or similar project/environment managers to
+  define and run IPython kernels with dependencies for Jupyter notebooks.
 
 Instead of installing a myriad of jupyter kernelspecs, one per project, instead
 have one "meta" kernel that enables the environment for the project the
@@ -51,14 +51,15 @@ figure out which kind of project it is:
   separately. JupyterLab and the notebook are installed in separate environments.
 
 
-Do you want to use pyproject-local-kernel in **VSCodium or VS Code**? See our
-[FAQ][] for more information.
+Do you want to use pyproject-local-kernel in other environments, like
+**VSCodium or VS Code**, or maybe using Pipenv? See our [FAQ][] for more
+information.
 
 [FAQ]: FAQ.md
 
 ## User Experience
 
-If the Pyproject Local kernel is used in a project where rye (or the relevant
+If the Pyproject Local kernel is used in a project where Rye (or the relevant
 project manager) is not installed, or the project does not have an ipykernel
 in the environment, then starting the kernel fails.
 
