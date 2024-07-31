@@ -634,7 +634,7 @@ wheels = [
 
 [[distribution]]
 name = "pyproject-local-kernel"
-version = "0.7.0"
+version = "0.7.1"
 source = { directory = "../../../" }
 dependencies = [
     { name = "tomli", marker = "python_version < '3.11'" },

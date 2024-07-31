@@ -182,7 +182,7 @@ pycparser==2.22
 pygments==2.18.0
     # via ipython
     # via nbconvert
-pyproject-local-kernel==0.7.0
+pyproject-local-kernel==0.7.1
 python-dateutil==2.9.0.post0
     # via arrow
     # via jupyter-client
