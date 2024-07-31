@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.7.2
+
+- Published documentation to a new website using mkdocs
+- Copyedited documentation
+
 ## 0.7.1
 
 - Use Uv as first fallback if no explicit project manager can be identified
