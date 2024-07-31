@@ -23,13 +23,14 @@ anyone who checks out your project structure from git, and easier to use.
 Pyproject Local supports the following systems, and reads pyproject.toml to
 figure out which kind of project it is:
 
-- Rye
-- Uv
-- Poetry
-- Hatch
-- Pdm
-- Custom command (for other setups)
-- Use venv at path (for other setups)
+Rye <br>
+Uv <br>
+Poetry <br>
+Hatch <br>
+PDM <br>
+
+In addition, a custom command or direct use of virtual environment can be
+configured.
 
 ## Quick Start (JupyterLab)
 
@@ -41,13 +42,13 @@ figure out which kind of project it is:
 
   (Example for Rye)
 
-   * `!rye init --virtual`
-   * `!rye add --sync ipykernel`
+  * `!rye init --virtual`
+  * `!rye add ipykernel`
 
   (Example for Uv)
 
-   * `!uv init`
-   * `!uv add "ipykernel>=6"`
+  * `!uv init`
+  * `!uv add "ipykernel>=6"`
 
 5. Restart the kernel and you are good to go. Use more `add` commands to add
    further dependencies.
@@ -87,33 +88,42 @@ steps to get it working. Example below is for Rye.
 
 ## Configuration
 
-Only one of the custom command and virtualenv path configurations can be used
-at a time.
+Configuration is optional and is read from `pyproject.toml`. Only the
+`pyproject.toml` closest to the notebook is read. Defaults are based on
+“sniffing” the `pyproject.toml` to detect which project manager is in use.
 
-### Virtualenv Path
+### `python-cmd`
 
-The key `tool.pyproject-local-kernel.use-venv` can be a path to a virtualenv,
-relative to the pyproject.toml file, which should be used.
+The key `tool.pyproject-local-kernel.python-cmd` should be a command that runs
+python from the environment you want to use for the project.
+
+If this is set then it overrides the default command.
+
+**Default:** *Depends on project manager*<br>
+**Type:** array of string<br>
+**Example:**
+
+```toml
+[tool.pyproject-local-kernel]
+python-cmd = ["hatch", "env", "run", "python"]
+```
+
+### `use-venv`
+
+Path to virtual environment that should be used, relative to the
+`pyproject.toml` file. Can also be an absolute path.
+
+If this is set then it overrides the default command.
+
+**Default:** Not set<br>
+**Type:** string<br>
+**Example:**
 
 ```toml
 [tool.pyproject-local-kernel]
 use-venv = ".venv"
 ```
 
-### Custom Command
-
-By default python from the local pyproject is run (using rye run, poetry run,
-etc.). A custom command can be configured in `pyproject.toml` - the pyproject
-file closest to the notebook is used (and no other means of configuration are
-supported).
-
-The key `tool.pyproject-local-kernel.python-cmd` should be a command that runs
-python in the virtual environment you want to use for the project.
-
-```toml
-[tool.pyproject-local-kernel]
-python-cmd = ["my", "custom", "python"]
-```
 
 ## About Particular Project Managers
 

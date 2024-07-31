@@ -3,7 +3,7 @@ site_description:
 repo_name: bluss/pyproject-local-kernel
 repo_url: https://github.com/bluss/pyproject-local-kernel
 docs_dir: docs
-edit_uri: edit/main/docs
+edit_uri: blob/main/docs
 copyright: Copyright &copy; 2024 “bluss” Ulrik Sverdrup
 
 nav:
@@ -19,7 +19,6 @@ theme:
     - content.code.annotate
     - content.code.copy
     - content.tabs.link
-    - content.action.edit
     - toc.integrate
     - toc.follow
     - navigation.path
