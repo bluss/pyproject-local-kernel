@@ -38,7 +38,11 @@ markdown_extensions:
   - pymdownx.keys
   - pymdownx.superfences
   - pymdownx.snippets:
-      base_path: ../../
+      base_path:
+      # Not pretty, but to look for files in this file's directory,
+      # either when we're running from ./tools/mkdocs-dev or from ./
+      - ../../
+      - .
   - pymdownx.tabbed:
       alternate_style: true
   - mdx_gh_links:
