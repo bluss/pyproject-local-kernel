@@ -1,16 +1,19 @@
-[Website][] - [PyPI][] [![PyPI - Python Version](https://img.shields.io/pypi/v/pyproject-local-kernel)][PyPi]
-{ .doc_hidden }
-
-[Website]: https://bluss.github.io/pyproject-local-kernel/
-[PyPi]: https://pypi.org/project/pyproject-local-kernel/
-
 
 # Pyproject Local Jupyter Kernel
 
-- Use per-directory python projects to run Python Jupyter kernels
-- Separate dependencies for notebooks in separate projects
-- Use Rye, Uv, PDM, Poetry, Hatch, or similar project/environment managers to
-  define and run IPython kernels with dependencies for Jupyter notebooks.
+<p class="web_hidden">
+
+[Website][] - [PyPI][] [![PyPI - Python Version](https://img.shields.io/pypi/v/pyproject-local-kernel)][PyPi]
+
+</p>
+
+Separate dependencies for Jupyter notebooks in separate projects.
+
+Use python project managers to define dependencies:  
+  supports Rye, Uv, PDM, Poetry, Hatch and so on.
+
+[Website]: https://bluss.github.io/pyproject-local-kernel/
+[PyPi]: https://pypi.org/project/pyproject-local-kernel/
 
 Instead of installing a myriad of jupyter kernelspecs, one per project, instead
 have one "meta" kernel that enables the environment for the project the
