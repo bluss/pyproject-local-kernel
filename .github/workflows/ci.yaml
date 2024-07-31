@@ -10,6 +10,7 @@ on:
 jobs:
   tests-linux:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
     - uses: actions/checkout@v4
     - name: Install Rye
@@ -30,6 +31,7 @@ jobs:
   tests-windows:
     runs-on: windows-latest
     name: tests-windows
+    timeout-minutes: 10
     steps:
     - uses: actions/checkout@v4
     - name: Install Rye
