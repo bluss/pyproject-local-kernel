@@ -1,0 +1,59 @@
+site_name: Pyproject Local Kernel
+site_description:
+repo_name: bluss/pyproject-local-kernel
+repo_url: https://github.com/bluss/pyproject-local-kernel
+docs_dir: docs
+edit_uri: edit/main/docs
+copyright: Copyright &copy; 2024 “bluss” Ulrik Sverdrup
+
+nav:
+  - README: README.md
+  - FAQ: FAQ.md
+  - Changelog: CHANGELOG.md
+
+theme:
+  name: material
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - content.code.annotate
+    - content.code.copy
+    - content.tabs.link
+    - content.action.edit
+    - toc.integrate
+    - toc.follow
+    - navigation.path
+    - navigation.top
+    - navigation.tabs
+    - navigation.footer
+  font:
+    text: Inter
+    monospace: Fira Mono
+
+markdown_extensions:
+  - attr_list
+  - admonition
+  - def_list
+  - pymdownx.details
+  - pymdownx.keys
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - mdx_gh_links:
+      user: bluss
+      repo: pyproject-local-kernel
+
+plugins:
+  - search
+  - mkdocs-version-annotations:
+      version_added_title: 'new in **\1**'
+      version_changed_title: 'changed in **\1**'
+      version_removed_title: 'removed in **\1**'
+  - include-markdown:
+      preserve_includer_indent: true
+
+extra:
+  social:
+
+extra_css:
+  - static/extra.css
