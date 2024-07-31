@@ -16,6 +16,8 @@ jobs:
     if: github.repository == 'bluss/pyproject-local-kernel'
     name: Deploy docs
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
       - name: Install Rye
@@ -29,7 +31,7 @@ jobs:
         run: |
           make docs-copy-files
           cd tools/mkdocs-dev/
-          uv sync && uv pip freeze > requirements.txt
+          uv sync && uv pip freeze --exclude-editable > requirements.txt
       - name: Deploy docs
         uses: mhausenblas/mkdocs-deploy-gh-pages@master
         env:
