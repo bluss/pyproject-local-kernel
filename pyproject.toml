@@ -24,6 +24,7 @@ classifiers = [
 ]
 
 [project.urls]
+Homepage = "https://bluss.github.io/pyproject-local-kernel/"
 Repository = "https://github.com/bluss/pyproject-local-kernel"
 
 [build-system]
