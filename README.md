@@ -1,6 +1,8 @@
-[![PyPI - Python Version](https://img.shields.io/pypi/v/pyproject-local-kernel)][pypi]
+[Website][] - [PyPI][] [![PyPI - Python Version](https://img.shields.io/pypi/v/pyproject-local-kernel)][PyPi]
+{ .doc_hidden }
 
-[pypi]: https://pypi.org/project/pyproject-local-kernel/
+[Website]: https://bluss.github.io/pyproject-local-kernel/
+[PyPi]: https://pypi.org/project/pyproject-local-kernel/
 
 
 # Pyproject Local Jupyter Kernel
