@@ -9,18 +9,19 @@
 
 Separate dependencies for Jupyter notebooks in separate projects.
 
-Use python project managers to define dependencies:  
-  supports Rye, Uv, PDM, Poetry, Hatch and so on.
+Use python project managers to define dependencies:
+  use one of Rye, Uv, PDM, Poetry, Hatch (and so on).
 
 [Website]: https://bluss.github.io/pyproject-local-kernel/
 [PyPi]: https://pypi.org/project/pyproject-local-kernel/
 
-Instead of installing a myriad of jupyter kernelspecs, one per project, instead
-have one "meta" kernel that enables the environment for the project the
-notebook file resides in. This approach should be more portable, usable to
-anyone who checks out your project structure from git, and easier to use.
+Instead of installing a myriad of jupyter kernelspecs, one per project, with
+this solution there is only one "meta" kernel that enables the environment for
+the project the notebook file resides in. This approach should be more
+portable, usable to anyone who checks out your project structure from git, and
+easier to use.
 
-Pyproject Local supports the following systems, and reads pyproject.toml to
+Pyproject Local supports the following systems, and reads `pyproject.toml` to
 figure out which kind of project it is:
 
 Rye <br>
@@ -29,8 +30,7 @@ Poetry <br>
 Hatch <br>
 PDM <br>
 
-In addition, a custom command or direct use of virtual environment can be
-configured.
+A custom command or direct use of virtual environment can also be configured.
 
 ## Quick Start (JupyterLab)
 
@@ -38,20 +38,18 @@ configured.
    jupyterlab
 2. Create a new directory and notebook
 3. Select the **Pyproject Local** kernel for the notebook
-4. Run these to setup the new project:
+4. Run these shell commands in the notebook to setup the new project:<br>
+   
+  (Example for Rye:)
 
-  (Example for Rye)
+  `!rye init --virtual && rye add ipykernel`
 
-  * `!rye init --virtual`
-  * `!rye add ipykernel`
+  (Example for Uv:)
 
-  (Example for Uv)
+  `!uv init && uv add ipykernel`
 
-  * `!uv init`
-  * `!uv add "ipykernel>=6"`
-
-5. Restart the kernel and you are good to go. Use more `add` commands to add
-   further dependencies.
+Now restart the kernel and you are good to go. Use more `add` commands to add
+further dependencies.
 
 See the examples directory for how to setup jupyterlab and notebook projects
 separately. JupyterLab and the notebook are installed in separate environments.

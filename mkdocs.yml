@@ -62,3 +62,6 @@ extra:
 
 extra_css:
   - static/extra.css
+
+watch:
+  - "."
