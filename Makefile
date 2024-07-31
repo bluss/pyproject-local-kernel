@@ -3,11 +3,11 @@ root_dir:=$(dir $(realpath $(firstword $(MAKEFILE_LIST))))
 .PHONY: test
 test:
 	# Test just current code / current version
-	uv run -q --with pytest pytest $(ARGS)
+	uv run --with pytest pytest $(ARGS)
 
 .PHONY: test-all
 test-all:
-	uvx -q nox --no-venv $(ARGS)
+	uvx nox --no-venv $(ARGS)
 
 .PHONY: build
 build:
@@ -15,4 +15,4 @@ build:
 
 .PHONY: build-test
 build-test:
-	uvx -q --reinstall --with dist/*.whl pytest $(ARGS)
+	uvx --reinstall --with dist/*.whl pytest $(ARGS)
