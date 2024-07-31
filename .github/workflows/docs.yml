@@ -1,0 +1,38 @@
+name: Publish docs via GitHub Pages
+
+on:
+  push:
+    paths:
+      - 'docs/**'
+      - 'tools/mkdocs-dev/**'
+      - '*.md'
+      - 'mkdocs.yml'
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    if: github.repository == 'bluss/pyproject-local-kernel'
+    name: Deploy docs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Rye
+        run: |
+          curl -sSf https://rye.astral.sh/get | RYE_TOOLCHAIN_VERSION=$(cat .python-version) RYE_INSTALL_OPTION="--yes" bash
+          echo "$HOME/.rye/shims" >> $GITHUB_PATH
+      - name: Install Uv
+        run: |
+          rye tools install -f uv
+      - name: Prepare docs
+        run: |
+          make docs-copy-files
+          cd tools/mkdocs-dev/
+          uv sync && uv pip freeze > requirements.txt
+      - name: Deploy docs
+        uses: mhausenblas/mkdocs-deploy-gh-pages@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CONFIG_FILE: mkdocs.yml
+          REQUIREMENTS: tools/mkdocs-dev/requirements.txt
