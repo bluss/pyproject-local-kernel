@@ -7,7 +7,7 @@ edit_uri: edit/main/docs
 copyright: Copyright &copy; 2024 “bluss” Ulrik Sverdrup
 
 nav:
-  - README: README.md
+  - Overview: README.md
   - FAQ: FAQ.md
   - Changelog: CHANGELOG.md
 
@@ -37,6 +37,8 @@ markdown_extensions:
   - pymdownx.details
   - pymdownx.keys
   - pymdownx.superfences
+  - pymdownx.snippets:
+      base_path: ../../
   - pymdownx.tabbed:
       alternate_style: true
   - mdx_gh_links:

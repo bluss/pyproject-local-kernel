@@ -18,10 +18,5 @@ build-test:
 	uvx --reinstall --with dist/*.whl pytest $(ARGS)
 
 .PHONY: docs-serve
-docs-serve: docs-copy-files
+docs-serve:
 	cd ./tools/mkdocs-dev/;  uv run --locked mkdocs serve $(ARGS) -f $(root_dir)/mkdocs.yml
-
-.PHONY: docs-copy-files
-docs-copy-files:
-	cp -v README.md FAQ.md CHANGELOG.md docs/
-

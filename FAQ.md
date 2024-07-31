@@ -1,4 +1,4 @@
-# Frequently asked questions
+# Frequently Asked Questions
 
 ## How does it work?
 

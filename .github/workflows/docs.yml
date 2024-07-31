@@ -24,7 +24,6 @@ jobs:
       run: curl -LsSf https://astral.sh/uv/install.sh | sh
     - name: Prepare docs
       run: |
-        make docs-copy-files
         cd tools/mkdocs-dev/
         uv sync && uv pip freeze --exclude-editable > requirements.txt
     - name: Deploy docs

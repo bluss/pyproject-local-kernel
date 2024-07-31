@@ -52,8 +52,8 @@ figure out which kind of project it is:
 5. Restart the kernel and you are good to go. Use more `add` commands to add
    further dependencies.
 
-- See the examples directory for how to setup jupyterlab and notebook projects
-  separately. JupyterLab and the notebook are installed in separate environments.
+See the examples directory for how to setup jupyterlab and notebook projects
+separately. JupyterLab and the notebook are installed in separate environments.
 
 
 Do you want to use pyproject-local-kernel in other environments, like
@@ -144,12 +144,11 @@ other method to install it.)
 
 ## Project Status
 
-Status: Working proof of concept, published to PyPI. Additional interest and
-maintainer help is welcomed.
+Additional interest and maintainer help is welcomed.
 
-See also:
+## Links
 
-* https://github.com/mitsuhiko/rye
-* https://github.com/astral-sh/uv
-* https://github.com/goerz/python-localvenv-kernel
-* https://github.com/pathbird/poetry-kernel
+* <https://github.com/mitsuhiko/rye>
+* <https://github.com/astral-sh/uv>
+* <https://github.com/goerz/python-localvenv-kernel>
+* <https://github.com/pathbird/poetry-kernel>
