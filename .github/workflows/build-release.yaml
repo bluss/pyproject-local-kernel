@@ -13,13 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - name: Install Rye
-      run: |
-        curl -sSf https://rye.astral.sh/get | RYE_TOOLCHAIN_VERSION=$(cat .python-version) RYE_INSTALL_OPTION="--yes" bash
-        echo "$HOME/.rye/shims" >> $GITHUB_PATH
     - name: Install Uv
-      run: |
-        rye tools install -f uv
+      run: curl -LsSf https://astral.sh/uv/install.sh | sh
     - name: Tests
       run: |
         make test
