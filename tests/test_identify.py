@@ -1,5 +1,6 @@
 import pathlib
 import os
+import shutil
 
 import pytest
 
@@ -30,6 +31,19 @@ def test_ident(path, expected):
 def test_custom(path, cmd):
     pd = identify(path)
     assert pd.get_python_cmd() == cmd
+    assert pd.path is not None and pd.path.name == "pyproject.toml"
+
+
+@pytest.mark.parametrize("path", [
+    "tests/identify/hatch",
+])
+def test_hatch(path):
+    if not shutil.which("hatch"):
+        pytest.skip("Skip: hatch not installed")
+    pd = identify(path)
+    cmd = pd.get_python_cmd(allow_hatch_workaround=True)
+    assert cmd and len(cmd) == 1
+    assert isinstance(cmd[0], pathlib.Path)
     assert pd.path is not None and pd.path.name == "pyproject.toml"
 
 

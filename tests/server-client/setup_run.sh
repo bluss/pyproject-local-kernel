@@ -26,11 +26,16 @@ for dir in ${directories[@]} ; do
     (cd "$dir";
         cp uv.lock uv.lock.orig;
         $UV python pin "$PYVERSION";
-        $UV sync $VERBOSE $UPDATE ;
+        $UV sync --reinstall-package pyproject-local-kernel $VERBOSE $UPDATE ;
     )
 done
 
-for nbdir in client-rye client-uv ; do
+# ensure client-hatch is synced
+(cd client-hatch;
+    hatch env run -- python -c "";
+)
+
+for nbdir in client-rye client-uv client-hatch ; do
     # convert to ipynb
     cp -v ./notebook.py $nbdir/
     $RYE run --pyproject $SPROJ jupytext --to ipynb $nbdir/notebook.py

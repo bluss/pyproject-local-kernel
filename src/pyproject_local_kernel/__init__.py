@@ -23,6 +23,7 @@ import enum
 import logging
 import os
 import shutil
+import subprocess
 import sys
 from pathlib import Path
 import typing as t
@@ -73,19 +74,33 @@ class ProjectDetection:
     python_cmd: t.Optional[t.List[str]] = None
     use_venv: t.Optional[str] = None
 
-    def get_python_cmd(self, allow_fallback=True):
-        if self.use_venv is not None:
+    def get_python_cmd(self, allow_fallback=True, allow_hatch_workaround=False):
+        """
+        allow_hatch_workaround: call out to `hatch env find`
+        """
+        # hatch quirk
+        use_venv = self.use_venv
+        if self.kind == ProjectKind.Hatch and allow_hatch_workaround:
+            if hatch_env := get_hatch_venv(self.path):
+                use_venv = hatch_env
+
+        # configuration: use-venv
+        if use_venv is not None:
             assert self.path is not None
-            return [self.path.parent / get_venv_bin_python(Path(self.use_venv))]
+            return [self.path.parent / get_venv_bin_python(Path(use_venv))]
+
+        # configuration: python-cmd
         if self.python_cmd is not None:
             return self.python_cmd
-        result = self.kind.python_cmd()
-        if not allow_fallback or result is not None:
-            return result
 
-        if self.kind not in (ProjectKind.NoProject, ProjectKind.InvalidData):
+        # project detection
+        result = self.kind.python_cmd()
+
+        if (result is None and allow_fallback and
+            self.kind not in (ProjectKind.NoProject, ProjectKind.InvalidData)):
             return self._fallback_project_kind().python_cmd()
-        return None
+
+        return result
 
     @classmethod
     def _fallback_project_kind(cls) -> ProjectKind:
@@ -200,3 +215,18 @@ def get_venv_bin_python(base_venv: Path):
     script_dir = "Scripts" if is_windows else "bin"
     extension = ".exe" if is_windows else ""
     return base_venv / script_dir / Path("python").with_suffix(extension)
+
+
+def get_hatch_venv(pyproject_toml: Path):
+    """
+    query hatch to get environment location.
+    Note that the path doesn't necessarily exist.
+    """
+    try:
+        proc = subprocess.run(["hatch", "env", "find"],
+                              cwd=pyproject_toml.parent,
+                              timeout=3, capture_output=True, check=True, encoding="utf-8")
+        return proc.stdout.strip()
+    except OSError as exc:
+        _logger.exception("Error calling hatch: %s", exc)
+        return None
