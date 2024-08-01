@@ -81,6 +81,7 @@ class ProjectDetection:
         # hatch quirk
         use_venv = self.use_venv
         if self.kind == ProjectKind.Hatch and allow_hatch_workaround:
+            assert self.path is not None
             if hatch_env := get_hatch_venv(self.path):
                 use_venv = hatch_env
 
