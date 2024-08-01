@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.8.0
+
+- Change how `hatch` projects are run: detect the (default) virtual env path
+  and run python from there. User has to ensure virtualenv dependencies are
+  synchronized. (#23)
+
 ## 0.7.2
 
 - Published documentation to a new website using mkdocs

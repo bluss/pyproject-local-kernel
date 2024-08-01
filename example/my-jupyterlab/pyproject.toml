@@ -14,7 +14,7 @@ classifiers = [
 dependencies = [
     "jupyterlab",
     "jupytext>=1.16.1",
-    "pyproject-local-kernel>=0.7.1",
+    "pyproject-local-kernel>=0.8.0",
 ]
 
 [build-system]
