@@ -20,6 +20,7 @@ jobs:
     - name: Install Uv
       run: |
         rye tools install -f uv
+        rye tools install -f hatch
     - name: Tests
       run: |
         make test-all
@@ -43,6 +44,7 @@ jobs:
       shell: bash
       run: |
         rye tools install -f uv
+        rye tools install -f hatch
     - name: Tests
       run: |
         make test-all ARGS='"-ktests"'

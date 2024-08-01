@@ -103,7 +103,7 @@ If this is set then it overrides the default command.
 
 ```toml
 [tool.pyproject-local-kernel]
-python-cmd = ["hatch", "env", "run", "python"]
+python-cmd = ["uv", "run", "--with", "ipykernel", "python"]
 ```
 
 ### `use-venv`
@@ -149,6 +149,22 @@ other method to install it.)
   `ipykernel` is used even if it's not already in the project(!). However, note that
   it uses an ephemeral virtual environment for ipykernel in that case. Add
   ipykernel to the project to avoid this.
+
+### PDM
+
+- PDM is detected if pyproject.toml contains `tool.pdm`
+
+### Hatch
+
+- Hatch is detected if pyproject.toml contains `tool.hatch.envs`
+
+- By default it calls out to `hatch env find`, to find the default virtualenv,
+  and runs from there. `hatch run` should not be used directly because
+  it's not compatible with how kernel interrupts work (as of this writing).
+
+- It's best to create the hatch project, add ipykernel as dependency and sync
+  dependencies in a terminal before starting (it does not work so well with
+  shell commands in a notebook).
 
 ## Project Status
 
