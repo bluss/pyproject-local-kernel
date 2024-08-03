@@ -6,6 +6,7 @@ requires-python = ">=3.11"
 dependencies = [
     "build>=1.2.1",
 ]
+classifiers = ["Private :: Do Not Upload"]
 
 [build-system]
 requires = ["hatchling"]

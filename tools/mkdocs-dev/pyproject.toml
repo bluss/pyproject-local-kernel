@@ -10,6 +10,7 @@ dependencies = [
     "mkdocs-version-annotations>=1.0",
     "mkdocs-include-markdown-plugin>=4.0.4",
 ]
+classifiers = ["Private :: Do Not Upload"]
 
 [build-system]
 requires = ["hatchling"]
