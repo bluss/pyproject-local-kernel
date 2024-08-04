@@ -11,7 +11,7 @@ test-all:
 
 .PHONY: build
 build:
-	cd ./tools/py-build/;  uv run --locked python -m build -s -w --installer uv $(ARGS) $(root_dir)
+	cd ./tools/build-tool/;  uv run --locked python -m build -s -w --installer uv $(ARGS) $(root_dir)
 
 .PHONY: build-test
 build-test:
@@ -19,4 +19,4 @@ build-test:
 
 .PHONY: docs-serve
 docs-serve:
-	cd ./tools/mkdocs-dev/;  uv run --locked mkdocs serve $(ARGS) -f $(root_dir)/mkdocs.yml
+	cd ./tools/mkdocs-tool/;  uv run --locked mkdocs serve $(ARGS) -f $(root_dir)/mkdocs.yml

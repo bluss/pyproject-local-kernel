@@ -39,7 +39,7 @@ markdown_extensions:
   - pymdownx.snippets:
       base_path:
       # Not pretty, but to look for files in this file's directory,
-      # either when we're running from ./tools/mkdocs-dev or from ./
+      # either when we're running from ./tools/mkdocs-tool or from ./
       - ../../
       - .
   - pymdownx.tabbed:
