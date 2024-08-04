@@ -1,5 +1,5 @@
 [project]
-name = "py-build"
+name = "build-tool"
 version = "0.1.0"
 description = "Lockfile for build package for creating the release."
 requires-python = ">=3.11"

@@ -4,7 +4,7 @@ on:
   push:
     paths:
       - 'docs/**'
-      - 'tools/mkdocs-dev/**'
+      - 'tools/mkdocs-tool/**'
       - '*.md'
       - 'mkdocs.yml'
     branches:
@@ -24,11 +24,11 @@ jobs:
       run: curl -LsSf https://astral.sh/uv/install.sh | sh
     - name: Prepare docs
       run: |
-        cd tools/mkdocs-dev/
+        cd tools/mkdocs-tool/
         uv sync && uv pip freeze --exclude-editable > requirements.txt
     - name: Deploy docs
       uses: mhausenblas/mkdocs-deploy-gh-pages@master
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         CONFIG_FILE: mkdocs.yml
-        REQUIREMENTS: tools/mkdocs-dev/requirements.txt
+        REQUIREMENTS: tools/mkdocs-tool/requirements.txt
