@@ -7,6 +7,7 @@ import pytest
 
 from pyproject_local_kernel import ProjectKind
 from pyproject_local_kernel import identify
+import testlib
 
 
 @pytest.mark.parametrize("path,expected", [
@@ -53,7 +54,7 @@ def test_hatch(path):
 
         python_path = cmd[0]
         assert isinstance(python_path, pathlib.Path)
-        assert python_path.is_relative_to(venv_dir)
+        assert testlib.is_relative_to(python_path, venv_dir)
 
 
 @pytest.mark.parametrize("path,unix_cmd,win_cmd", [
