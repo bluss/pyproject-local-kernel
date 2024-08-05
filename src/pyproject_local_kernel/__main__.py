@@ -55,11 +55,15 @@ def main():
             if platform.system() == 'Windows':
                 forward_signals = set(signal.Signals) - {signal.CTRL_BREAK_EVENT, signal.CTRL_C_EVENT, signal.SIGTERM}
             else:
-                forward_signals = set(signal.Signals) - {signal.SIGKILL, signal.SIGSTOP}
+                forward_signals = set(signal.Signals) - {signal.SIGKILL, signal.SIGSTOP, signal.SIGCHLD}
 
             def handle_signal(sig, _frame):
                 _logger.debug("Forwarding signal to kernel: %r", sig)
-                proc.send_signal(sig)
+                try:
+                    proc.send_signal(sig)
+                except ProcessLookupError as exc:
+                    # process is already dead
+                    _logger.error("Error when forwarding signal %r: %s", sig, exc)
 
             for sig in forward_signals:
                 signal.signal(sig, handle_signal)
