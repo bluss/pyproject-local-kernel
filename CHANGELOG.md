@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.8.1
+
+- Fix problem trying to forward SIGCHLD to kernel, which was maybe specific to
+  Python 3.8 (and not-windows) (#24)
+
 ## 0.8.0
 
 - Change how `hatch` projects are run: detect the (default) virtual env path
