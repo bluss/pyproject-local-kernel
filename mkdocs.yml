@@ -13,6 +13,7 @@ nav:
 
 theme:
   name: material
+  custom_dir: docs/overrides
   features:
     - navigation.instant
     - navigation.tracking
@@ -56,6 +57,10 @@ plugins:
 
 extra:
   social:
+  pypi:
+    name: pyproject-local-kernel
+    url: https://pypi.org/project/pyproject-local-kernel/
+    image: "https://img.shields.io/pypi/v/pyproject-local-kernel?style=for-the-badge&logo=python&logoColor=yellow&color=000050&labelColor=white"
 
 extra_css:
   - static/extra.css
