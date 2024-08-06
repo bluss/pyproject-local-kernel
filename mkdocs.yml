@@ -60,7 +60,7 @@ extra:
   pypi:
     name: pyproject-local-kernel
     url: https://pypi.org/project/pyproject-local-kernel/
-    image: "https://img.shields.io/pypi/v/pyproject-local-kernel?style=for-the-badge&logo=python&logoColor=yellow&color=000050&labelColor=white"
+    image: "https://img.shields.io/pypi/v/pyproject-local-kernel?style=for-the-badge&logo=python&logoColor=yellow&color=000050&labelColor=3f6ec6"
 
 extra_css:
   - static/extra.css
