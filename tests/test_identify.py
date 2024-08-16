@@ -75,11 +75,22 @@ def is_windows():
 
 @pytest.mark.parametrize("path", [
     "tests/identify/custom_broken",
+    "tests/identify/custom_broken2",
 ])
 def test_custom_error(path, caplog):
     # Test log error
     identify(path)
-    assert any('Is not a list or string' in rec.message for rec in caplog.records)
+    assert any("invalid config python-cmd =" in rec.message for rec in caplog.records)
+
+
+@pytest.mark.parametrize("path", [
+    "tests/identify/custom",
+])
+def test_custom_ignored_key(path, caplog):
+    # Test log error
+    identify(path)
+    assert any("unknown configuration key 'not-valid'" in rec.message for rec in caplog.records)
+
 
 def test_no_project(tmp_path):
     pd = identify(tmp_path)

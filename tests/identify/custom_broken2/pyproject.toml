@@ -1,0 +1,8 @@
+[project]
+name = "broken2"
+version = "0.1.0"
+description = "Add your description here"
+dependencies = []
+
+[tool.pyproject-local-kernel]
+python-cmd = ["hey", 1]
