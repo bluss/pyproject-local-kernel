@@ -26,4 +26,4 @@ def tests(session: nox.Session, py: str):
 @nox.session(reuse_venv=True)
 @nox.parametrize("py", python_versions, ids=python_ids)
 def server_client(session: nox.Session, py: str):
-    session.run("bash", "./tests/server-client/setup_run.sh", env=dict(PYVERSION=py))
+    session.run("bash", "./tests/server-client/setup_run.sh", env=dict(PYVERSION=py), external=True)
