@@ -1,7 +1,7 @@
 version = 1
 requires-python = ">=3.11"
 
-[[distribution]]
+[[package]]
 name = "build"
 version = "1.2.1"
 source = { registry = "https://pypi.org/simple" }
@@ -15,7 +15,7 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/e2/03/f3c8ba0a6b6e30d7d18c40faab90807c9bb5e9a1e3b2fe2008af624a9c97/build-1.2.1-py3-none-any.whl", hash = "sha256:75e10f767a433d9a86e50d83f418e83efc18ede923ee5ff7df93b6cb0306c5d4", size = 21911 },
 ]
 
-[[distribution]]
+[[package]]
 name = "build-tool"
 version = "0.1.0"
 source = { editable = "." }
@@ -23,7 +23,10 @@ dependencies = [
     { name = "build" },
 ]
 
-[[distribution]]
+[package.metadata]
+requires-dist = [{ name = "build", specifier = ">=1.2.1" }]
+
+[[package]]
 name = "colorama"
 version = "0.4.6"
 source = { registry = "https://pypi.org/simple" }
@@ -32,7 +35,7 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/d1/d6/3965ed04c63042e047cb6a3e6ed1a63a35087b6a609aa3a15ed8ac56c221/colorama-0.4.6-py2.py3-none-any.whl", hash = "sha256:4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6", size = 25335 },
 ]
 
-[[distribution]]
+[[package]]
 name = "packaging"
 version = "24.1"
 source = { registry = "https://pypi.org/simple" }
@@ -41,7 +44,7 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/08/aa/cc0199a5f0ad350994d660967a8efb233fe0416e4639146c089643407ce6/packaging-24.1-py3-none-any.whl", hash = "sha256:5b8f2217dbdbd2f7f384c41c628544e6d52f2d0f53c6d0c3ea61aa5d1d7ff124", size = 53985 },
 ]
 
-[[distribution]]
+[[package]]
 name = "pyproject-hooks"
 version = "1.1.0"
 source = { registry = "https://pypi.org/simple" }
