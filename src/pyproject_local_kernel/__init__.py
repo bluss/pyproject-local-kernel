@@ -18,7 +18,7 @@
 # IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-from dataclasses import dataclass
+import dataclasses
 import enum
 import logging
 import os
@@ -32,6 +32,9 @@ try:
     import tomllib as tomli
 except ImportError:
     import tomli as tomli
+
+
+from pyproject_local_kernel.configdata import Config
 
 
 _logger = logging.getLogger(__name__)
@@ -66,20 +69,19 @@ class ProjectKind(enum.Enum):
         return None
 
 
-@dataclass
+@dataclasses.dataclass
 class ProjectDetection:
     # pyproject.toml file path
     path: t.Optional[Path]
     kind: ProjectKind
-    python_cmd: t.Optional[t.List[str]] = None
-    use_venv: t.Optional[str] = None
+    config: Config = dataclasses.field(default_factory=Config)
 
     def get_python_cmd(self, allow_fallback=True, allow_hatch_workaround=False):
         """
         allow_hatch_workaround: call out to `hatch env find`
         """
         # hatch quirk
-        use_venv = self.use_venv
+        use_venv = self.config.use_venv
         if self.kind == ProjectKind.Hatch and allow_hatch_workaround:
             assert self.path is not None
             if hatch_env := get_hatch_venv(self.path):
@@ -91,8 +93,8 @@ class ProjectDetection:
             return [self.path.parent / get_venv_bin_python(Path(use_venv))]
 
         # configuration: python-cmd
-        if self.python_cmd is not None:
-            return self.python_cmd
+        if self.config.python_cmd is not None:
+            return self.config.python_cmd
 
         # project detection
         result = self.kind.python_cmd()
@@ -149,24 +151,8 @@ def is_hatch(data: dict):
     return (get_dotkey(data, 'tool.hatch.version', None) is not None or
             get_dotkey(data, 'tool.hatch.envs', None) is not None)
 
-def is_custom(data: dict):
-    python_cmd = get_dotkey(data, f'tool.{MY_TOOL_NAME}.python-cmd', None)
-    if isinstance(python_cmd, str):
-        python_cmd = [python_cmd]
-    if python_cmd is not None and not isinstance(python_cmd, (tuple, list)):
-        _logger.error("Is not a list or string: tool.%s.python-cmd=%r", MY_TOOL_NAME, python_cmd)
-        python_cmd = None
-    return python_cmd is not None, {'python_cmd': python_cmd}
-
-
 def is_uv(data: dict):
     return get_dotkey(data, 'tool.uv', None) is not None
-
-def is_use_venv(data: dict):
-    use_venv = get_dotkey(data, f'tool.{MY_TOOL_NAME}.use-venv', None)
-    if use_venv is not None and not isinstance(use_venv, str):
-        use_venv = None
-    return use_venv is not None, {'use_venv': use_venv}
 
 
 IDENTIFY_FUNCTIONS = {
@@ -178,19 +164,22 @@ IDENTIFY_FUNCTIONS = {
 }
 
 
-def _identify_toml(data):
+def _identify_toml(data) -> t.Tuple[ProjectKind, t.Optional[Config]]:
     if not isinstance(data, dict):
-        return ProjectKind.InvalidData, {}
-    custom, extra_vars = is_custom(data)
-    if custom:
-        return ProjectKind.CustomConfiguration, extra_vars
-    use_venv, extra_vars = is_use_venv(data)
-    if use_venv:
-        return ProjectKind.UseVenv, extra_vars
+        return ProjectKind.InvalidData, None
+    try:
+        config = Config.from_dict(get_dotkey(data, f"tool.{MY_TOOL_NAME}", {}))
+    except TypeError as exc:
+        _logger.warning("Error on reading pyproject.toml: %s", exc)
+        return ProjectKind.InvalidData, None
+    if config.python_cmd is not None:
+        return ProjectKind.CustomConfiguration, config
+    if config.use_venv is not None:
+        return ProjectKind.UseVenv, config
     for kind, func in IDENTIFY_FUNCTIONS.items():
         if func(data):
-            return kind, {}
-    return ProjectKind.Unknown, {}
+            return kind, None
+    return ProjectKind.Unknown, None
 
 
 def identify(file):
@@ -202,7 +191,9 @@ def identify(file):
         try:
             with open(pyproj, "rb") as tf:
                 toml_structure = tomli.load(tf)
-                identity, extra_vars = _identify_toml(toml_structure)
+                identity, config = _identify_toml(toml_structure)
+                if config:
+                    extra_vars['config'] = config
         except (IOError, tomli.TOMLDecodeError) as exc:
             print("Error: ", exc, file=sys.stderr)
             kind = ProjectKind.InvalidData
