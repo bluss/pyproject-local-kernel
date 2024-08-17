@@ -25,14 +25,11 @@ def _type_check(type_annot, obj):
 
 
 @dataclasses.dataclass
-class Config:
+class TypeCheckedFromDict:
     """
-    pyproject tool.MY_TOOL_NAME section
+    Add from_dict constructor which checks the types of fields;
+    enforces skewer case `like-this` for fields like `like_this`.
     """
-
-    python_cmd: t.Optional[t.Union[str, t.List[str]]] = None
-    use_venv: t.Optional[str] = None
-
     @classmethod
     def from_dict(cls, data: t.Dict[str, t.Any]):
         kwargs = {}
@@ -41,14 +38,22 @@ class Config:
             config_name = _to_skewer_case(field.name)
             try:
                 config_value = data[config_name]
-                if not _type_check(field.type, config_value):
-                    raise TypeError(f"invalid config {config_name} = {config_value!r}, expected value of type {field.type}")
-                kwargs[field.name] = config_value
-                used_configs.add(config_name)
             except KeyError:
-                pass
+                continue
+            if not _type_check(field.type, config_value):
+                raise TypeError(f"invalid config {config_name} = {config_value!r}, expected value of type {field.type}")
+            kwargs[field.name] = config_value
+            used_configs.add(config_name)
         for unknown_config_key in set(data).difference(used_configs):
             _logger.warning("Ignoring unknown configuration key %r", unknown_config_key)
         return cls(**kwargs)
 
 
+@dataclasses.dataclass
+class Config(TypeCheckedFromDict):
+    """
+    pyproject tool.MY_TOOL_NAME section
+    """
+
+    python_cmd: t.Optional[t.Union[str, t.List[str]]] = None
+    use_venv: t.Optional[str] = None
