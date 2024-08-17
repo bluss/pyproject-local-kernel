@@ -96,3 +96,27 @@ and run each notebook in its own pyproject environment with its dependencies
 this way.
 
 [1]: https://papermill.readthedocs.io/en/latest/
+
+
+## Isn't There a Less Complicated Way to Do It?
+
+Yes, there kind of is a way.
+
+If you install the following kernelspec, you can use `uv run` as
+the environment manager for your notebooks. You don't hardcode a virtual environment path,
+but you hardcode that you're using `uv run`.
+
+This example does more or less the same as what `pyproject-local-kernel` does, but without
+the indirections (and without the error handling).
+
+```json
+
+{
+  "argv": ["uv", "run", "--with", "ipykernel", "python", "-m", "ipykernel_launcher", "-f", "{connection_file}"],
+  "display_name": "Uv Run Ipykernel",
+  "language": "python",
+  "metadata": {
+    "debugger": true
+  }
+}
+```
