@@ -15,7 +15,7 @@ build:
 
 .PHONY: build-test
 build-test:
-	uvx --reinstall --with dist/*.whl pytest $(ARGS)
+	uvx --refresh-package pyproject-local-kernel --with dist/*.whl pytest $(ARGS)
 
 .PHONY: docs-serve
 docs-serve:
