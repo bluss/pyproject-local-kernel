@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.9.0
+
+- Check configuration value types strictly and warn on unknown configuration
+- Examples in the repository now use Uv
+
 ## 0.8.1
 
 - Fix problem trying to forward SIGCHLD to kernel, which was maybe specific to
