@@ -25,7 +25,7 @@ jobs:
     - name: Prepare docs
       run: |
         cd tools/mkdocs-tool/
-        uv sync && uv pip freeze --exclude-editable > requirements.txt
+        uv export --frozen --no-hashes > requirements.txt
     - name: Deploy docs
       uses: mhausenblas/mkdocs-deploy-gh-pages@master
       env:
