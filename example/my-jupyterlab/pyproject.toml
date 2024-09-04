@@ -1,6 +1,6 @@
 [project]
 name = "my-jupyterlab"
-version = "0.3.0"
+version = "0.4.0"
 description = "Jupyterlab install"
 authors = [
     { name = "Author", email = "author@example.com" }
@@ -12,25 +12,12 @@ classifiers = [
 ]
 
 dependencies = [
-    "jupyterlab",
+    "jupyterlab>=4.2",
     "jupytext>=1.16.1",
     "pyproject-local-kernel>=0.8.0",
 ]
 
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
-
-[tool.hatch.metadata]
-allow-direct-references = true
-
-[tool.hatch.build.targets.wheel]
-bypass-selection = true
-
-[tool.rye]
-managed = true
-universal = true
-virtual = true
+[tool.uv.workspace]
 
 [tool.uv.sources]
 pyproject-local-kernel = { path = "../..", editable = true }

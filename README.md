@@ -10,7 +10,7 @@
 Separate dependencies for Jupyter notebooks in separate projects.
 
 Use python project managers to define dependencies:
-  use one of Rye, Uv, PDM, Poetry, Hatch (and so on).
+  use one of Uv, Rye, PDM, Poetry, Hatch (and so on).
 
 [Website]: https://bluss.github.io/pyproject-local-kernel/
 [PyPi]: https://pypi.org/project/pyproject-local-kernel/
@@ -24,8 +24,8 @@ easier to use.
 Pyproject Local supports the following systems, and reads `pyproject.toml` to
 figure out which kind of project it is:
 
-Rye <br>
 Uv <br>
+Rye <br>
 Poetry <br>
 Hatch <br>
 PDM <br>
@@ -40,13 +40,14 @@ A custom command or direct use of virtual environment can also be configured.
 3. Select the **Pyproject Local** kernel for the notebook
 4. Run these shell commands in the notebook to setup the new project:<br>
    
+  (Example for Uv:)
+
+  `!uv init && uv add ipykernel`
+
   (Example for Rye:)
 
   `!rye init --virtual && rye add ipykernel`
 
-  (Example for Uv:)
-
-  `!uv init && uv add ipykernel`
 
 Now restart the kernel and you are good to go. Use more `add` commands to add
 further dependencies.
@@ -63,7 +64,7 @@ information.
 
 ## User Experience
 
-If the Pyproject Local kernel is used in a project where Rye (or the relevant
+If the Pyproject Local kernel is used in a project where Uv (or the relevant
 project manager) is not installed, or the project does not have an ipykernel
 in the environment, then starting the kernel fails.
 
