@@ -11,7 +11,7 @@ test-all:
 
 .PHONY: build
 build:
-	cd ./tools/build-tool/;  uv run --locked python -m build -s -w --installer uv $(ARGS) $(root_dir)
+	uv build
 
 .PHONY: build-test
 build-test:
