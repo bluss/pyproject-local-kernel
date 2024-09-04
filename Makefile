@@ -11,7 +11,7 @@ test-all:
 
 .PHONY: build
 build:
-	uv build
+	uv build $(ARGS)
 
 .PHONY: build-test
 build-test:
