@@ -142,10 +142,6 @@ other method to install it.)
 - Uv is detected if the pyproject.toml contains `tool.uv`. It is also the
   default fallback if no project manager is detected from a pyproject file.
 
-- pyproject-local-kernel requires uv 0.2.29 or later
-
-- Uses `uv run` which is a preview feature (could break on future uv changes)
-
 - The command used is `uv run --with ipykernel python` which means that it ensures
   `ipykernel` is used even if it's not already in the project(!). However, note that
   it uses an ephemeral virtual environment for ipykernel in that case. Add
