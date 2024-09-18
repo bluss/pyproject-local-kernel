@@ -19,4 +19,7 @@ build-test:
 
 .PHONY: docs-serve
 docs-serve:
-	cd ./tools/mkdocs-tool/;  uv run --locked mkdocs serve $(ARGS) -f $(root_dir)/mkdocs.yml
+	# I am: uv run --project ./tools/mkdocs-tool mkdocs serve
+	uv sync --locked --directory ./tools/mkdocs-tool/
+	$(eval MKDOCS_PY := $(shell uv python find ./tools/mkdocs-tool/.venv))
+	$(MKDOCS_PY) -m mkdocs serve $(ARGS)
