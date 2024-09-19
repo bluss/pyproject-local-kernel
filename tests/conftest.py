@@ -1,10 +1,14 @@
-"https://stackoverflow.com/a/75438209"
-
+import os
 import sys
+
 import pytest
+
+# for testlib
+sys.path.append(os.path.dirname(__file__))
 
 
 def is_debugging():
+    "https://stackoverflow.com/a/75438209"
     return "debugpy" in sys.modules
 
 

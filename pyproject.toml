@@ -62,6 +62,12 @@ packages = ["src/pyproject_local_kernel"]
 [tool.hatch.build.targets.wheel.shared-data]
 "./data/kernel.json" = "share/jupyter/kernels/pyproject_local_kernel/kernel.json"
 
+# Tests
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = [
+    "--import-mode=importlib",
+]
 
 # Editors and other tools below
 
