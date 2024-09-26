@@ -1,4 +1,3 @@
-import contextlib
 import pathlib
 import os
 import shutil
@@ -39,22 +38,23 @@ def test_custom(path, cmd):
 @pytest.mark.parametrize("path", [
     "tests/identify/hatch",
 ])
-def test_hatch(path):
+def test_hatch(path, monkeypatch: pytest.MonkeyPatch):
     if not shutil.which("hatch"):
         pytest.skip("Skip: hatch not installed")
     file_dir = pathlib.Path(__file__).parent
     hatch_config = str(file_dir / "hatch_config.toml")
-    with use_environ("HATCH_CONFIG", hatch_config):
-        venv_dir = pathlib.Path(path).absolute() / "the_virtualenv"
-        pd = identify(path)
-        assert pd.path is not None and pd.path.name == "pyproject.toml"
+    monkeypatch.setenv("HATCH_CONFIG", hatch_config)
 
-        cmd = pd.get_python_cmd(allow_hatch_workaround=True)
-        assert cmd and len(cmd) == 1
+    venv_dir = pathlib.Path(path).absolute() / "the_virtualenv"
+    pd = identify(path)
+    assert pd.path is not None and pd.path.name == "pyproject.toml"
 
-        python_path = cmd[0]
-        assert isinstance(python_path, pathlib.Path)
-        assert testlib.is_relative_to(python_path, venv_dir)
+    cmd = pd.get_python_cmd(allow_hatch_workaround=True)
+    assert cmd and len(cmd) == 1
+
+    python_path = cmd[0]
+    assert isinstance(python_path, pathlib.Path)
+    assert testlib.is_relative_to(python_path, venv_dir)
 
 
 @pytest.mark.parametrize("path,unix_cmd,win_cmd", [
@@ -96,17 +96,3 @@ def test_no_project(tmp_path):
     pd = identify(tmp_path)
     assert pd.kind == ProjectKind.NoProject
     assert pd.path is None
-
-
-@contextlib.contextmanager
-def use_environ(variable, value):
-    sen = object()
-    existing = os.environ.get(variable, default=sen)
-    try:
-        os.environ[variable] = value
-        yield
-    finally:
-        if existing is sen:
-            del os.environ[variable]
-        else:
-            os.environ[variable] = existing  # type: ignore
