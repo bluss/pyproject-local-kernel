@@ -21,11 +21,9 @@ build-backend = "hatchling.build"
 [tool.hatch.build.targets.wheel]
 bypass-selection = true
 
-[tool.rye]
+[tool.uv]
 managed = true
-universal = true
-virtual = true
-dev-dependencies = []
+package = false
 
 [tool.uv.workspace]
 [tool.uv.sources]
