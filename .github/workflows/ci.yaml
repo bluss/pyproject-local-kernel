@@ -7,27 +7,29 @@ on:
     branches: [ "main" ]
   workflow_dispatch:
 
+env:
+  FORCE_COLOR: 1
+
 jobs:
   tests-linux:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
     - uses: actions/checkout@v4
+    - name: Install Uv
+      uses: astral-sh/setup-uv@v3
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
     - name: Install Rye
       run: |
         curl -sSf https://rye.astral.sh/get | RYE_TOOLCHAIN_VERSION=$(cat .python-version) RYE_INSTALL_OPTION="--yes" bash
         echo "$HOME/.rye/shims" >> $GITHUB_PATH
-    - name: Install Uv
+    - name: Install Hatch
       run: |
-        rye tools install -f uv
-        rye tools install -f hatch
+        uv tool install hatch
     - name: Tests
       run: |
-        make test-all
-    - name: Test Build Wheel
-      run: |
-        make build
-        make build-test
+        ./nox
 
   tests-windows:
     runs-on: windows-latest
@@ -35,17 +37,16 @@ jobs:
     timeout-minutes: 10
     steps:
     - uses: actions/checkout@v4
+    - name: Install Uv
+      uses: astral-sh/setup-uv@v3
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
     - name: Install Rye
       uses: eifinger/setup-rye@v4
       with:
-        version: 'latest'
         github-token: ${{ secrets.GITHUB_TOKEN }}
-    - name: Install Uv
+    - name: Tests
       shell: bash
       run: |
-        rye tools install -f uv
-        rye tools install -f hatch
-    - name: Tests
-      run: |
-        make test-all ARGS='"-ktests"'
-        make test-all ARGS='"-sserver_client(py312)"'
+          ./nox -s tests
+          ./nox -s jupyter -k py312

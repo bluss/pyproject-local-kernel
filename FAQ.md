@@ -26,7 +26,7 @@ makes it possible to skip ipykernel in the project dependencies if desired.
 No, neither of them are strictly required to use. Any supported project manager
 is enough, or even none for custom or vitualenv configurations.
 
-For development of the project and running tests, Rye and Uv are required.
+For development of the project and running tests, Uv is required.
 
 ## How to setup for VSCodium or VS Code?
 

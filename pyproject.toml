@@ -32,15 +32,14 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.rye]
-managed = true
-universal = true
-dev-dependencies = [
-    "pytest>=8.1.1",
-]
+managed = false
 
 [tool.uv]
 managed = true
-dev-dependencies = []
+dev-dependencies = [
+    "pytest>=8.3.3",
+    "nox>=2024.4.15",
+]
 python-preference = "only-managed"
 
 [tool.uv.workspace]
@@ -66,6 +65,7 @@ packages = ["src/pyproject_local_kernel"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = [
+    "-v",
     "--import-mode=importlib",
 ]
 
@@ -82,3 +82,4 @@ typeCheckingMode = "basic"
 
 [tool.ruff]
 exclude = ["example", "tests/identify", "tests/server-client"]
+line-length = 150
