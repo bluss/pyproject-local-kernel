@@ -1,11 +1,14 @@
+"""
+Nox is the task runner for the project.
+"""
+
+import glob
+import os
+
 import nox
 
-
-nox.needs_version = ">=2024.3.2"
-nox.options.default_venv_backend = "uv"
-
-# Not using nox python parametrization: because it doesn't fetch the
-# requested version automatically.
+nox.options.default_venv_backend = "none"
+nox.options.reuse_venv = True
 
 python_versions = [
     "3.8",
@@ -14,16 +17,45 @@ python_versions = [
     "3.11",
     "3.12",
 ]
-python_ids = ["py" + ver.replace(".", "") for ver in python_versions]
+python_short = ["py" + p.replace(".", "") for p in python_versions]
 
 
-@nox.session(reuse_venv=True)
-@nox.parametrize("py", python_versions, ids=python_ids)
+@nox.session()
+def test(session: nox.Session):
+    "Run pytest unit tests"
+    tests(session, py=python_versions[-1])
+
+
+@nox.session()
+@nox.parametrize("py", python_versions, ids=python_short)
 def tests(session: nox.Session, py: str):
-    session.run("uv", "run", "-q", "--with", "pytest", "-p", py, "pytest", "-v")
+    "Run pytest unit tests"
+    session.run("uv", "run", "--isolated", "-p", py, "pytest", "-k", "identify", external=True)
 
 
-@nox.session(reuse_venv=True)
-@nox.parametrize("py", python_versions, ids=python_ids)
-def server_client(session: nox.Session, py: str):
-    session.run("bash", "./tests/server-client/setup_run.sh", env=dict(PYVERSION=py), external=True)
+@nox.session(tags=["jupyter"])
+@nox.parametrize("py", python_versions, ids=python_short)
+def jupyter(session: nox.Session, py):
+    "Run pytest integration tests with jupyter kernel"
+    session.run("uv", "run", "--isolated", "-p", py, "pytest", "-s", "-k", "jupyter", external=True)
+
+
+@nox.session()
+def build(session: nox.Session):
+    "Build the package to wheel"
+    session.run("uv", "build", external=True)
+
+
+@nox.session(name="build-test")
+def build_test(session: nox.Session):
+    "Test the built wheel"
+    wheel = glob.glob("dist/*.whl")
+    session.run("uvx", "--refresh-package", "pyproject-local-kernel", "--with", wheel[0], "pytest", "-k", "identify")
+
+
+@nox.session(name="docs-serve", default=False)
+def docs_serve(session: nox.Session):
+    "serve the website locally using mkdocs"
+    # spawn to avoid problems with Ctrl-c
+    args = "uv run --project ./tools/mkdocs-tool mkdocs serve".split()
+    os.execvp(args[0], args)

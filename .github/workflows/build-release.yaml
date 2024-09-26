@@ -17,11 +17,11 @@ jobs:
       run: curl -LsSf https://astral.sh/uv/install.sh | sh
     - name: Tests
       run: |
-        make test
+        ./nox -s build build-test
     - name: Build
       run: |
         git clean -fdx
-        make build
+        uv build
     - uses: actions/upload-artifact@v4
       with:
         name: dist

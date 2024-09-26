@@ -1,0 +1,6 @@
+#!/bin/sh
+
+# Nox is the task runner for the project.
+# Run ./nox -l to list available tasks.
+
+exec uv run nox "$@"
