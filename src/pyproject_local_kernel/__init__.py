@@ -215,7 +215,7 @@ def get_hatch_venv(pyproject_toml: Path):
     Note that the path doesn't necessarily exist.
     """
     try:
-        proc = subprocess.run(["hatch", "env", "find"],
+        proc = subprocess.run(["hatch", "--no-color", "env", "find"],
                               cwd=pyproject_toml.parent,
                               timeout=3, capture_output=True, check=True, encoding="utf-8")
         return proc.stdout.strip()
