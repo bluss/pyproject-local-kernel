@@ -5,7 +5,8 @@ import sys
 
 import pytest
 
-from testlib import run, save_restore_file
+from testlib import popen_capture, run, save_restore_file
+
 
 _REINSTALL = "--reinstall-package pyproject-local-kernel"
 
@@ -57,9 +58,11 @@ def impl_project_manager(python: str, manager, monkeypatch, tmp_path_factory):
 
         run(f"cp -v notebook.py {client_dir}")
         run(f"{uv} run --project server jupytext --to ipynb {client_dir}/notebook.py")
-        process = run(f"{uv} run --project server papermill --cwd {client_dir} {client_dir}/notebook.ipynb {client_dir}/notebook_out.ipynb",
-                    capture_output=True, encoding="utf-8")
-        print(process.stdout)
-        print(process.stderr)
-        assert "Traceback" not in process.stderr
-        assert "Failed to start kernel" not in process.stderr
+
+        args = f"{uv} run --project server papermill --cwd {client_dir} {client_dir}/notebook.ipynb {client_dir}/notebook_out.ipynb"
+        proc = popen_capture(args)
+        returncode = proc.returncode
+
+        assert "Traceback" not in proc.stderr
+        assert "Failed to start kernel" not in proc.stderr
+        assert returncode == 0

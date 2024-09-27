@@ -1,8 +1,11 @@
 import contextlib
+from dataclasses import dataclass
 from pathlib import Path
+import shlex
 import subprocess
 import shutil
 import sys
+import threading
 import typing as t
 
 
@@ -22,15 +25,44 @@ def run(argv: t.Union[str, t.List[str]], quiet=False, **kwargs) -> subprocess.Co
     if not quiet:
         print(">", " ".join(argv))
     ret = subprocess.run(argv, **kwargs)
-    try:
-        assert ret.returncode == 0
-    except AssertionError:
-        if ret.stdout is not None:
-            print(ret.stdout)
-        if ret.stderr is not None:
-            print(ret.stderr)
-        raise
+    assert ret.returncode == 0
     return ret
+
+
+@dataclass
+class Popen:
+    stdout: str
+    stderr: str
+    returncode: int
+
+
+def popen_capture(args: str, stream_to_stdout=True, popen_kwargs=None):
+    """
+    Run a subprocess using Popen, stream stdout, stderr to stdout/stderr, but also capture them.
+    """
+    argv = shlex.split(args)
+    proc = subprocess.Popen(argv, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8", **(popen_kwargs or {}))
+
+    stdout = []
+    stderr = []
+
+    def reader(from_file, to, collect_in: list):
+        for line in from_file:
+            to.write(line)
+            collect_in.append(line)
+
+
+    t1 = threading.Thread(target=reader, args=(proc.stdout, sys.stdout, stdout))
+    t2 = threading.Thread(target=reader, args=(proc.stderr, sys.stderr, stderr))
+
+    t1.start()
+    t2.start()
+
+    ret = proc.wait()
+    t1.join(timeout=1)
+    t2.join(timeout=1)
+
+    return Popen(stdout="".join(stdout), stderr="".join(stderr), returncode=ret)
 
 
 @contextlib.contextmanager
