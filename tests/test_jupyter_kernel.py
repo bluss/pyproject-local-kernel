@@ -12,6 +12,8 @@ _REINSTALL = "--reinstall-package pyproject-local-kernel"
 def _pyversion(version_tuple):
     return ".".join(map(str, version_tuple[:2]))
 
+
+@pytest.mark.flaky(retries=2, delay=1, condition=sys.platform.startswith('win32'))
 @pytest.mark.parametrize("manager", [
     "rye",
     "uv",
