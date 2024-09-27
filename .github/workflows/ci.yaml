@@ -45,6 +45,9 @@ jobs:
       uses: eifinger/setup-rye@v4
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
+    - name: Install Hatch
+      run: |
+        uv tool install hatch
     - name: Tests
       shell: bash
       run: |
