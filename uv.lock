@@ -1,5 +1,15 @@
 version = 1
 requires-python = ">=3.8"
+resolution-markers = [
+    "python_full_version < '3.11'",
+    "python_full_version == '3.11.*'",
+    "python_full_version >= '3.12'",
+]
+supported-markers = [
+    "python_full_version < '3.11'",
+    "python_full_version == '3.11.*'",
+    "python_full_version >= '3.12'",
+]
 
 [[package]]
 name = "argcomplete"
@@ -122,6 +132,7 @@ dependencies = [
 dev = [
     { name = "nox" },
     { name = "pytest" },
+    { name = "pytest-retry", marker = "python_full_version >= '3.12'" },
 ]
 
 [package.metadata]
@@ -131,6 +142,7 @@ requires-dist = [{ name = "tomli", marker = "python_full_version < '3.11'", spec
 dev = [
     { name = "nox", specifier = ">=2024.4.15" },
     { name = "pytest", specifier = ">=8.3.3" },
+    { name = "pytest-retry", marker = "python_full_version >= '3.12'", specifier = ">=1.6.3" },
 ]
 
 [[package]]
@@ -148,6 +160,18 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/8b/6c/62bbd536103af674e227c41a8f3dcd022d591f6eed5facb5a0f31ee33bbc/pytest-8.3.3.tar.gz", hash = "sha256:70b98107bd648308a7952b06e6ca9a50bc660be218d53c257cc1fc94fda10181", size = 1442487 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/6b/77/7440a06a8ead44c7757a64362dd22df5760f9b12dc5f11b6188cd2fc27a0/pytest-8.3.3-py3-none-any.whl", hash = "sha256:a6853c7375b2663155079443d2e45de913a911a11d669df02a50814944db57b2", size = 342341 },
+]
+
+[[package]]
+name = "pytest-retry"
+version = "1.6.3"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pytest", marker = "python_full_version >= '3.12'" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/9c/95/8e1be0250a5063c28a1e713b9665ce3bb76a7807096da1b8d6b36cb8856b/pytest_retry-1.6.3.tar.gz", hash = "sha256:36ccfa11c8c8f9ddad5e20375182146d040c20c4a791745139c5a99ddf1b557d", size = 19112 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/8f/b3/fa17695ab9096f75b498642e21db59c0cbcc7d97c709daa204ee0953a72c/pytest_retry-1.6.3-py3-none-any.whl", hash = "sha256:e96f7df77ee70b0838d1085f9c3b8b5b7d74bf8947a0baf32e2b8c71b27683c8", size = 13526 },
 ]
 
 [[package]]

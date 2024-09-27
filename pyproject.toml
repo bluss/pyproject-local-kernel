@@ -39,8 +39,14 @@ managed = true
 dev-dependencies = [
     "pytest>=8.3.3",
     "nox>=2024.4.15",
+    "pytest-retry>=1.6.3; python_version >= '3.12'",
 ]
 python-preference = "only-managed"
+environments = [
+    "python_version < '3.11'",
+    "python_version == '3.11.*'",
+    "python_version >= '3.12'",
+]
 
 [tool.uv.workspace]
 members = []
@@ -67,6 +73,10 @@ testpaths = ["tests"]
 addopts = [
     "-v",
     "--import-mode=importlib",
+]
+markers = [
+    # declare for pytest-retry when it's absent
+    "flaky: retry flaky test",
 ]
 
 # Editors and other tools below
