@@ -14,6 +14,11 @@ classifiers = [
     "Private :: Do Not Upload",
 ]
 
+[project.optional-dependencies]
+kernel = [
+    "ipykernel>=6.29.5",
+]
+
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"

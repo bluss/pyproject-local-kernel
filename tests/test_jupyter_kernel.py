@@ -14,11 +14,15 @@ def _pyversion(version_tuple):
     return ".".join(map(str, version_tuple[:2]))
 
 
+TEST_FALLBACK = "nokernel"
+
+
 @pytest.mark.flaky(retries=2, delay=1, condition=sys.platform.startswith('win32'))
 @pytest.mark.parametrize("manager", [
     "rye",
     "uv",
     "hatch",
+    TEST_FALLBACK,
 ])
 def test_project_manager(manager, monkeypatch, tmp_path_factory):
     """
@@ -28,12 +32,14 @@ def test_project_manager(manager, monkeypatch, tmp_path_factory):
 
 
 def impl_project_manager(python: str, manager, monkeypatch, tmp_path_factory):
-    if shutil.which(manager) is None:
-        pytest.skip()
+    if manager != TEST_FALLBACK and shutil.which(manager) is None:
+        pytest.skip(f"{manager} not installed")
 
     uv = "uv"
     server_args = f"{_REINSTALL}"
     update = "-U" if python == "3.12" else ""
+    if TEST_FALLBACK:
+        server_args += " --extra kernel"
 
     monkeypatch.chdir("tests/server-client")
 
@@ -63,6 +69,10 @@ def impl_project_manager(python: str, manager, monkeypatch, tmp_path_factory):
         proc = popen_capture(args)
         returncode = proc.returncode
 
-        assert "Traceback" not in proc.stderr
-        assert "Failed to start kernel" not in proc.stderr
-        assert returncode == 0
+        if manager == TEST_FALLBACK:
+            assert "Failed to start kernel! The detected project type is: UseVenv" in proc.stderr
+            assert "ModuleNotFoundError: No module named 'jinja2'" in proc.stderr
+        else:
+            assert "Traceback" not in proc.stderr
+            assert "Failed to start kernel" not in proc.stderr
+            assert returncode == 0

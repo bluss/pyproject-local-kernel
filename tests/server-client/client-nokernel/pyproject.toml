@@ -1,0 +1,19 @@
+[project]
+name = "client-nokernel"
+version = "0.1.0"
+description = "Add your description here"
+dependencies = []
+classifiers = ["Private :: Do Not Upload"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+bypass-selection = true
+
+[tool.uv]
+[tool.uv.workspace]
+
+[tool.pyproject-local-kernel]
+use-venv = ".venv"
