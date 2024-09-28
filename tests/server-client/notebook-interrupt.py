@@ -22,5 +22,8 @@ sys.executable
 sys.version_info
 
 # %%
-# try our local dependency
-import jinja2
+# let's calculate something slow
+acc = 0
+for x in range(1000_000_000_000):
+    acc += x
+print(acc)
