@@ -22,3 +22,5 @@ bypass-selection = true
 [tool.uv]
 dev-dependencies = []
 [tool.uv.workspace]
+
+[tool.pyproject-local-kernel]

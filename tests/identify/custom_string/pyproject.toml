@@ -1,0 +1,9 @@
+[project]
+name = "custom-string"
+version = "0.1.0"
+description = "Add your description here"
+dependencies = []
+requires-python = ">= 3.0"
+
+[tool.pyproject-local-kernel]
+python-cmd = "uv run --with 'custom string' -BI"

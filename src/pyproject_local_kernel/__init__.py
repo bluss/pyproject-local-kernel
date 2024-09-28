@@ -76,7 +76,7 @@ class ProjectDetection:
     kind: ProjectKind
     config: Config = dataclasses.field(default_factory=Config)
 
-    def get_python_cmd(self, allow_fallback=True, allow_hatch_workaround=False):
+    def get_python_cmd(self, allow_fallback=True, allow_hatch_workaround=False) -> t.Sequence[t.Union[str , Path]]:
         """
         allow_hatch_workaround: call out to `hatch env find`
         """
@@ -93,17 +93,22 @@ class ProjectDetection:
             return [self.path.parent / get_venv_bin_python(Path(use_venv))]
 
         # configuration: python-cmd
-        if self.config.python_cmd is not None:
-            return self.config.python_cmd
+        python_cmd = self.config.python_cmd_normalized()
+        if python_cmd is not None:
+            return python_cmd
 
         # project detection
         result = self.kind.python_cmd()
 
-        if (result is None and allow_fallback and
-            self.kind not in (ProjectKind.NoProject, ProjectKind.InvalidData)):
-            return self._fallback_project_kind().python_cmd()
+        if result is not None:
+            return result
 
-        return result
+        if (allow_fallback and
+            self.kind not in (ProjectKind.NoProject, ProjectKind.InvalidData)):
+            if fallback := self._fallback_project_kind().python_cmd():
+                return fallback
+        raise RuntimeError("No fallback available (uv not in PATH?) and cannot launch kernel")
+
 
     @classmethod
     def _fallback_project_kind(cls) -> ProjectKind:
@@ -202,7 +207,7 @@ def identify(file):
     return ProjectDetection(pyproj, identity, **extra_vars)
 
 
-def get_venv_bin_python(base_venv: Path):
+def get_venv_bin_python(base_venv: Path) -> Path:
     is_windows = os.name == "nt"
     script_dir = "Scripts" if is_windows else "bin"
     extension = ".exe" if is_windows else ""
