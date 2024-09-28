@@ -33,7 +33,9 @@ def test_project_manager(manager, monkeypatch, tmp_path_factory):
     return impl_project_manager(_pyversion(sys.version_info), manager, monkeypatch, tmp_path_factory)
 
 
-def impl_project_manager(python: str, manager, monkeypatch, tmp_path_factory):
+def impl_project_manager(python: str, manager: str,
+                         monkeypatch: pytest.MonkeyPatch,
+                         tmp_path_factory: pytest.TempPathFactory):
     if manager not in (TEST_VENV, TEST_FALLBACK) and shutil.which(manager) is None:
         pytest.skip(f"{manager} not installed")
 
