@@ -22,6 +22,7 @@
 import logging
 from pathlib import Path
 import platform
+import os
 import signal
 import subprocess
 import sys
@@ -32,9 +33,16 @@ from pyproject_local_kernel import identify, find_pyproject_file_from
 
 _logger = logging.getLogger(__name__)
 
+_ENABLE_DEBUG_ENV = "PYPROJECT_LOCAL_KERNEL_DEBUG"
+
+
+def _setup_logging():
+    log_level = logging.DEBUG if os.environ.get(_ENABLE_DEBUG_ENV, "") not in ("0", "") else logging.INFO
+    logging.basicConfig(level=log_level, format=f"{MY_TOOL_NAME}: %(message)s")
+
 
 def main():
-    logging.basicConfig(level=logging.INFO, format=f"{MY_TOOL_NAME}: %(message)s")
+    _setup_logging()
 
     find_project = identify(Path.cwd())
     python_cmd = list(find_project.get_python_cmd(allow_fallback=True, allow_hatch_workaround=True))
