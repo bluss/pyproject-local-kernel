@@ -1,5 +1,6 @@
 import dataclasses
 import logging
+import shlex
 import typing as t
 
 _logger = logging.getLogger(__name__)
@@ -18,7 +19,7 @@ def _type_check(type_annot, obj):
     orig = t.get_origin(type_annot) or type_annot
     if args != () and (orig == t.Union or orig == t.Optional):
         return any(_type_check(arg, obj) for arg in args)
-    elif args != () and orig == list:
+    elif args != () and orig is list:
         return _type_check(list, obj) and all(_type_check(args[0], elt) for elt in obj)
     ret = isinstance(obj, orig)
     return ret
@@ -57,3 +58,8 @@ class Config(TypeCheckedFromDict):
 
     python_cmd: t.Optional[t.Union[str, t.List[str]]] = None
     use_venv: t.Optional[str] = None
+
+    def python_cmd_normalized(self) -> t.Optional[t.List[str]]:
+        if isinstance(self.python_cmd, str):
+            return shlex.split(self.python_cmd)
+        return self.python_cmd

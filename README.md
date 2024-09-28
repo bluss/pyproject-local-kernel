@@ -99,7 +99,7 @@ python from the environment you want to use for the project.
 If this is set then it overrides the default command.
 
 **Default:** *Depends on project manager*<br>
-**Type:** array of string<br>
+**Type:** `list[str] | str`<br>
 **Example:**
 
 ```toml
@@ -115,7 +115,7 @@ Path to virtual environment that should be used, relative to the
 If this is set then it overrides the default command.
 
 **Default:** Not set<br>
-**Type:** string<br>
+**Type:** `str`<br>
 **Example:**
 
 ```toml
