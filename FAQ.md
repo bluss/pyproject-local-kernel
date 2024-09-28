@@ -83,13 +83,13 @@ Y=2
 
 Other project managers have similar features (PDM, at least).
 
-## Does Pyproject Local Kernel work with [Papermill][1]?
+## Does Pyproject Local Kernel work with Nbconvert and [Papermill][1]?
 
-Yes it does.
+Yes it works, with both Nbconvert and Papermill.
 
 Pyproject Local Kernel relies on jupyter's working directory: the working
 directory is always the same as the notebook's location - and it will work as
-long as you run papermill the same way, using its --cwd argument.
+long as you run papermill the same way, using its `--cwd` argument.
 
 You can install papermill and pyproject-local-kernel in a separate environment,
 and run each notebook in its own pyproject environment with its dependencies
