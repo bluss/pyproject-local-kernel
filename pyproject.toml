@@ -6,6 +6,7 @@ authors = [
     { name = "Ulrik Sverdrup", email = "ulrik.sverdrup@gmail.com" }
 ]
 dependencies = [
+    "jupyter-client>=8.6.3",
     "tomli>=2.0.1; python_version < '3.11'",
 ]
 readme = "README.md"
@@ -39,11 +40,12 @@ managed = true
 dev-dependencies = [
     "pytest>=8.3.3",
     "nox>=2024.4.15",
-    "pytest-retry>=1.6.3; python_version >= '3.12'",
+    "pytest-retry>=1.6.3; python_version >= '3.11'",
 ]
 python-preference = "only-managed"
 environments = [
-    "python_version < '3.11'",
+    "python_version < '3.10'",
+    "python_version == '3.10.*'",
     "python_version == '3.11.*'",
     "python_version >= '3.12'",
 ]
