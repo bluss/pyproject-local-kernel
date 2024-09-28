@@ -1,0 +1,14 @@
+[project]
+name = "client-interrupt"
+version = "0.1.0"
+description = "Add your description here"
+dependencies = [
+    "ipykernel>=6.29.5",
+]
+classifiers = ["Private :: Do Not Upload"]
+
+[tool.uv]
+package = false
+[tool.uv.workspace]
+
+[tool.pyproject-local-kernel]
