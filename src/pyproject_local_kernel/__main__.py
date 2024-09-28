@@ -21,14 +21,16 @@
 
 import logging
 from pathlib import Path
-import platform
 import os
-import signal
-import subprocess
 import sys
+import time
+
+import jupyter_client
 
 from pyproject_local_kernel import MY_TOOL_NAME, ProjectKind
 from pyproject_local_kernel import identify, find_pyproject_file_from
+from pyproject_local_kernel.signal import ForwardKernelSignals
+from pyproject_local_kernel.jpy_vars import JpyVars
 
 
 _logger = logging.getLogger(__name__)
@@ -51,30 +53,21 @@ def main():
     failure_to_start_msg = ""
 
     if python_cmd is not None:
-        cmd = python_cmd + [
-            "-m", "ipykernel_launcher",
-            *sys.argv[1:],
-        ]
+        kernel_cmd = python_cmd + ["-m", "ipykernel_launcher", *sys.argv[1:]]
 
-        _logger.info("Starting kernel: %r", cmd)
+        # first set up the signal handler, then start the kernel
+        # read jupyter-client variables from upstream launcher
+        signal_handler = ForwardKernelSignals(JpyVars())
+        _logger.info("Starting kernel: %r", kernel_cmd)
         try:
-            proc = subprocess.Popen(cmd)
+            proc = jupyter_client.launch_kernel(kernel_cmd, independent=False)  # type: ignore
+            _logger.debug("Kernel started with pid=%s.", proc.pid)
 
-            if platform.system() == 'Windows':
-                forward_signals = set(signal.Signals) - {signal.CTRL_BREAK_EVENT, signal.CTRL_C_EVENT, signal.SIGTERM}
-            else:
-                forward_signals = set(signal.Signals) - {signal.SIGKILL, signal.SIGSTOP, signal.SIGCHLD}
-
-            def handle_signal(sig, _frame):
-                _logger.debug("Forwarding signal to kernel: %r", sig)
-                try:
-                    proc.send_signal(sig)
-                except ProcessLookupError as exc:
-                    # process is already dead
-                    _logger.error("Error when forwarding signal %r: %s", sig, exc)
-
-            for sig in forward_signals:
-                signal.signal(sig, handle_signal)
+            # give the process some time to start. We are just a guardian/parent process now,
+            # and the kernel loses no time here.
+            signal_handler.process_exists(proc)
+            time.sleep(0.5)
+            signal_handler.process_started(proc)
 
             exit_code = proc.wait()
             if exit_code != 0:
@@ -120,7 +113,6 @@ def start_fallback_kernel(project_kind: ProjectKind, failure_to_start_msg: str =
     if failure_to_start_msg:
         help_messages += ["Error: " + failure_to_start_msg]
 
-
     sync_kernel_env_messages = [
         f"Failed to start kernel! The detected project type is: {project_kind.name}",
         "Is the virtual environment created, and does it have ipykernel in the project?",
@@ -143,7 +135,7 @@ def start_fallback_kernel(project_kind: ProjectKind, failure_to_start_msg: str =
         ]
     else:
         sync_kernel_env_messages += [
-            "Add ipykernel as a dependency in the project and sync the virtualenv."
+            "Add ipykernel as a dependency in the project and sync the virtualenv.",
             "",
             "Then restart the kernel to try again.",
         ]
