@@ -55,7 +55,7 @@ class ProjectKind(enum.Enum):
     NoProject = enum.auto()
     InvalidData = enum.auto()
 
-    def python_cmd(self):
+    def python_cmd(self) -> t.Optional[t.List[str]]:
         if self == ProjectKind.Rye:
             return ["rye", "run", "python"]
         if self == ProjectKind.Poetry:
