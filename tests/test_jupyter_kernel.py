@@ -14,6 +14,7 @@ def _pyversion(version_tuple):
     return ".".join(map(str, version_tuple[:2]))
 
 
+TEST_VENV = "venv"
 TEST_FALLBACK = "nokernel"
 
 
@@ -22,6 +23,7 @@ TEST_FALLBACK = "nokernel"
     "rye",
     "uv",
     "hatch",
+    TEST_VENV,
     TEST_FALLBACK,
 ])
 def test_project_manager(manager, monkeypatch, tmp_path_factory):
@@ -32,7 +34,7 @@ def test_project_manager(manager, monkeypatch, tmp_path_factory):
 
 
 def impl_project_manager(python: str, manager, monkeypatch, tmp_path_factory):
-    if manager != TEST_FALLBACK and shutil.which(manager) is None:
+    if manager not in (TEST_VENV, TEST_FALLBACK) and shutil.which(manager) is None:
         pytest.skip(f"{manager} not installed")
 
     uv = "uv"
