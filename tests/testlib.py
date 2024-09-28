@@ -30,13 +30,13 @@ def run(argv: t.Union[str, t.List[str]], quiet=False, **kwargs) -> subprocess.Co
 
 
 @dataclass
-class Popen:
+class PopenResult:
     stdout: str
     stderr: str
     returncode: int
 
 
-def popen_capture(args: str, stream_to_stdout=True, popen_kwargs=None):
+def popen_capture(args: str, popen_kwargs=None) -> PopenResult:
     """
     Run a subprocess using Popen, stream stdout, stderr to stdout/stderr, but also capture them.
     """
@@ -62,7 +62,7 @@ def popen_capture(args: str, stream_to_stdout=True, popen_kwargs=None):
     t1.join(timeout=1)
     t2.join(timeout=1)
 
-    return Popen(stdout="".join(stdout), stderr="".join(stderr), returncode=ret)
+    return PopenResult(stdout="".join(stdout), stderr="".join(stderr), returncode=ret)
 
 
 @contextlib.contextmanager
