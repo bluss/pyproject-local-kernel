@@ -41,7 +41,7 @@ def test_custom(path, cmd):
 ])
 def test_hatch(path, monkeypatch: pytest.MonkeyPatch):
     if not shutil.which("hatch"):
-        pytest.skip("Skip: hatch not installed")
+        pytest.skip("hatch not installed")
     file_dir = pathlib.Path(__file__).parent
     hatch_config = str(file_dir / "hatch_config.toml")
     monkeypatch.setenv("HATCH_CONFIG", hatch_config)
