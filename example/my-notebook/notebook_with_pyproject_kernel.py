@@ -31,7 +31,7 @@ np.__version__
 
 # %% [markdown]
 # If you use other project managers such as for example rye you might need to run `rye sync` or similar to sync
-# the notebook before starting. This can be run directly in the notebook, and then you restart the kernel in the jupyterlab interface.
+# the notebook before starting. This can be run directly in the notebook, and *then* you restart the kernel in the jupyterlab interface.
 
 # %% [raw]
 # !rye sync

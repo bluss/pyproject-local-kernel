@@ -14,10 +14,12 @@ classifiers = [
 dependencies = [
     "jupyterlab>=4.2",
     "jupytext>=1.16.1",
-    "pyproject-local-kernel>=0.8.0",
+    "pyproject-local-kernel>=0.9.0",
 ]
 
 [tool.uv.workspace]
 
 [tool.uv.sources]
+# This local path is only used in this repository.
+# You remove this if you copy the example - then you use pyproject-local-kernel from pypi
 pyproject-local-kernel = { path = "../..", editable = true }

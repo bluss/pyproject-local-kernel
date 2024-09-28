@@ -1,11 +1,12 @@
 [project]
 name = "my-notebook"
-version = "0.2.0"
+version = "0.3.0"
 description = "Notebook project with custom deps"
 authors = [
     { name = "Author", email = "author@example.com" }
 ]
 dependencies = [
+    # If you change anything in dependencies, Restart the kernel in jupyterlab
     "ipykernel>=6.29.3",
     "numpy>=1.26.4",
 ]
@@ -16,3 +17,6 @@ classifiers = [
 ]
 
 [tool.uv.workspace]
+
+[tool.pyproject-local-kernel]
+# If you change anything in configuration, Restart the kernel in jupyterlab

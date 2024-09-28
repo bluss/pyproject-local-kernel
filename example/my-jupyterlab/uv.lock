@@ -960,11 +960,18 @@ wheels = [
 
 [[package]]
 name = "pyproject-local-kernel"
-version = "0.9.0"
+version = "0.9.1"
 source = { editable = "../../" }
 
 [package.metadata]
 requires-dist = [{ name = "tomli", marker = "python_full_version < '3.11'", specifier = ">=2.0.1" }]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "nox", specifier = ">=2024.4.15" },
+    { name = "pytest", specifier = ">=8.3.3" },
+    { name = "pytest-retry", marker = "python_full_version >= '3.12'", specifier = ">=1.6.3" },
+]
 
 [[package]]
 name = "python-dateutil"
