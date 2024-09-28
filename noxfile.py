@@ -30,14 +30,16 @@ def test(session: nox.Session):
 @nox.parametrize("py", python_versions, ids=python_short)
 def tests(session: nox.Session, py: str):
     "Run pytest unit tests"
-    session.run("uv", "run", "--isolated", "-p", py, "pytest", "-k", "identify", external=True)
+    pytest_args = session.posargs
+    session.run("uv", "run", "--isolated", "-p", py, "pytest", "-k", "identify", *pytest_args, external=True)
 
 
 @nox.session(tags=["jupyter"])
 @nox.parametrize("py", python_versions, ids=python_short)
 def jupyter(session: nox.Session, py):
     "Run pytest integration tests with jupyter kernel"
-    session.run("uv", "run", "--isolated", "-p", py, "pytest", "-s", "-k", "jupyter", external=True)
+    pytest_args = session.posargs
+    session.run("uv", "run", "--isolated", "-p", py, "pytest", "-s", "-k", "jupyter", *pytest_args, external=True)
 
 
 @nox.session()
@@ -58,4 +60,5 @@ def docs_serve(session: nox.Session):
     "serve the website locally using mkdocs"
     # spawn to avoid problems with Ctrl-c
     args = "uv run --project ./tools/mkdocs-tool mkdocs serve".split()
+    args += session.posargs
     os.execvp(args[0], args)
