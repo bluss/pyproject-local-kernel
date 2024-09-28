@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.9.1
+
+- Call `hatch env find` using `--no-color` for robustness (#27)
+- Support a command string for `python-cmd` configuration (#28)
+- Better test setup for jupyter using pytest (#27)
+
 ## 0.9.0
 
 - Check configuration value types strictly and warn on unknown configuration
