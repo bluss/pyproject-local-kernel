@@ -1,0 +1,16 @@
+[project]
+name = "client-venv"
+version = "0.1.0"
+description = "Add your description here"
+dependencies = [
+    "ipykernel>=6.29.5",
+    "jinja2>=3.1.4",
+]
+classifiers = ["Private :: Do Not Upload"]
+
+[tool.uv]
+package = false
+[tool.uv.workspace]
+
+[tool.pyproject-local-kernel]
+use-venv = ".venv"
