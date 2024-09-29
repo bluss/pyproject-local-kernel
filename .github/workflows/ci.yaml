@@ -12,6 +12,18 @@ env:
   PYPROJECT_LOCAL_KERNEL_DEBUG: 1
 
 jobs:
+  lints:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+    - uses: actions/checkout@v4
+    - name: Install Uv
+      uses: astral-sh/setup-uv@v3
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+    - name: Lint check
+      run: ./nox -s check
+
   tests-linux:
     runs-on: ubuntu-latest
     timeout-minutes: 10
