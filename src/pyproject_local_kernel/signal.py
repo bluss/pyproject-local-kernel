@@ -1,3 +1,21 @@
+"""
+Forward signals to the kernel process.
+
+We fit into a hierarchy of processes like this:
+
+- JupyterLab
+- Uses `jupyter-client`
+  - Starts `pyproject_local_kernel`
+  - Uses `jupyter-client`
+    - Starts project kernel `uv run python -m ipykernel_launcher ...`
+      - Starts `ipykernel`
+
+`jupyter-client` to child interrupts use SIGINT on posix platforms. On windows it uses an interrupt event handle by some other mechanism that
+`jupyter-client` and `ipykernel` agree upon. When the kernel is launched, the launcher sets the environment variable `JPY_INTERRUPT_EVENT` for the
+child with an integer handle for the interrupt event.
+
+We handle one interrupt channel from jupyterlab to us and one from us to the `ipykernel`.
+"""
 
 import logging
 import os
