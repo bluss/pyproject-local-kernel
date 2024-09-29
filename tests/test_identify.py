@@ -1,11 +1,13 @@
 import pathlib
 import os
 import shutil
+import sys
 
 import pytest
 
 from pyproject_local_kernel import ProjectKind
 from pyproject_local_kernel import identify
+from pyproject_local_kernel.jpy_vars import JpyVars
 import testlib
 
 
@@ -97,3 +99,28 @@ def test_no_project(tmp_path):
     pd = identify(tmp_path)
     assert pd.kind == ProjectKind.NoProject
     assert pd.path is None
+
+
+def test_jpy_vars(monkeypatch: pytest.MonkeyPatch):
+    j1 = JpyVars()
+    assert j1.parent_pid == 0
+    assert j1.interrupt_event == 0
+
+    for platform, interrupt in zip(['linux', 'win32'], [0, 31]):
+        with monkeypatch.context() as m:
+            m.setenv("JPY_PARENT_PID", "10")
+            m.setenv("JPY_INTERRUPT_EVENT", "31")
+            m.setattr(sys, "platform", platform)
+
+            j2 = JpyVars()
+            assert j2.parent_pid == 10
+            assert j2.interrupt_event == interrupt
+
+        with monkeypatch.context() as m:
+            m.setenv("JPY_PARENT_PID", " ")
+            m.setenv("JPY_INTERRUPT_EVENT", " x")
+            m.setattr(sys, "platform", platform)
+
+            j3 = JpyVars()
+            assert j3.parent_pid == 0
+            assert j3.interrupt_event == 0
