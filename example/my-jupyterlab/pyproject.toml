@@ -19,6 +19,9 @@ dependencies = [
 
 [tool.uv.workspace]
 
+[tool.uv]
+reinstall-package = ["pyproject-local-kernel"]
+
 [tool.uv.sources]
 # This local path is only used in this repository.
 # You remove this if you copy the example - then you use pyproject-local-kernel from pypi
