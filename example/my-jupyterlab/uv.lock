@@ -976,7 +976,6 @@ requires-dist = [
 dev = [
     { name = "nox", specifier = ">=2024.4.15" },
     { name = "pytest", specifier = ">=8.3.3" },
-    { name = "pytest-retry", marker = "python_full_version >= '3.11'", specifier = ">=1.6.3" },
 ]
 
 [[package]]
