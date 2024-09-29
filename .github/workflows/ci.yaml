@@ -9,7 +9,6 @@ on:
 
 env:
   FORCE_COLOR: 1
-  PYPROJECT_LOCAL_KERNEL_DEBUG: 1
 
 jobs:
   lints:
