@@ -62,3 +62,9 @@ def docs_serve(session: nox.Session):
     args = "uv run --project ./tools/mkdocs-tool mkdocs serve".split()
     args += session.posargs
     os.execvp(args[0], args)
+
+
+@nox.session()
+def check(session: nox.Session):
+    "lint check; extra args are passed to ruff"
+    session.run("uvx", "ruff@0.6.8", "check", "--output-format=concise", *session.posargs)
