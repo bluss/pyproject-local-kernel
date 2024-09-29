@@ -173,3 +173,8 @@ Additional interest and maintainer help is welcomed.
 * <https://github.com/astral-sh/uv>
 * <https://github.com/goerz/python-localvenv-kernel>
 * <https://github.com/pathbird/poetry-kernel>
+
+## License
+
+`pyproject-local-kernel` is open source. See the LICENSE.md file in the source
+distribution for more information.
