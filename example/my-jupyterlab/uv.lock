@@ -483,7 +483,7 @@ wheels = [
 
 [[package]]
 name = "jupyter-client"
-version = "8.6.2"
+version = "8.6.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "jupyter-core" },
@@ -492,9 +492,9 @@ dependencies = [
     { name = "tornado" },
     { name = "traitlets" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/ff/61/3cd51dea7878691919adc34ff6ad180f13bfe25fb8c7662a9ee6dc64e643/jupyter_client-8.6.2.tar.gz", hash = "sha256:2bda14d55ee5ba58552a8c53ae43d215ad9868853489213f37da060ced54d8df", size = 341102 }
+sdist = { url = "https://files.pythonhosted.org/packages/71/22/bf9f12fdaeae18019a468b68952a60fe6dbab5d67cd2a103cac7659b41ca/jupyter_client-8.6.3.tar.gz", hash = "sha256:35b3a0947c4a6e9d589eb97d7d4cd5e90f910ee73101611f01283732bd6d9419", size = 342019 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/cf/d3/c4bb02580bc0db807edb9a29b2d0c56031be1ef0d804336deb2699a470f6/jupyter_client-8.6.2-py3-none-any.whl", hash = "sha256:50cbc5c66fd1b8f65ecb66bc490ab73217993632809b6e505687de18e9dea39f", size = 105901 },
+    { url = "https://files.pythonhosted.org/packages/11/85/b0394e0b6fcccd2c1eeefc230978a6f8cb0c5df1e4cd3e7625735a0d7d1e/jupyter_client-8.6.3-py3-none-any.whl", hash = "sha256:e8a19cc986cc45905ac3362915f410f3af85424b4c0905e94fa5f2cb08e8f23f", size = 106105 },
 ]
 
 [[package]]
@@ -962,15 +962,21 @@ wheels = [
 name = "pyproject-local-kernel"
 version = "0.9.1"
 source = { editable = "../../" }
+dependencies = [
+    { name = "jupyter-client" },
+]
 
 [package.metadata]
-requires-dist = [{ name = "tomli", marker = "python_full_version < '3.11'", specifier = ">=2.0.1" }]
+requires-dist = [
+    { name = "jupyter-client", specifier = ">=8.6.3" },
+    { name = "tomli", marker = "python_full_version < '3.11'", specifier = ">=2.0.1" },
+]
 
 [package.metadata.requires-dev]
 dev = [
     { name = "nox", specifier = ">=2024.4.15" },
     { name = "pytest", specifier = ">=8.3.3" },
-    { name = "pytest-retry", marker = "python_full_version >= '3.12'", specifier = ">=1.6.3" },
+    { name = "pytest-retry", marker = "python_full_version >= '3.11'", specifier = ">=1.6.3" },
 ]
 
 [[package]]
