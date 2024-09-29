@@ -21,7 +21,6 @@ TEST_INTERRUPT = "interrupt"
 SPECIAL_SCENARIOS = (TEST_VENV, TEST_FALLBACK, TEST_INTERRUPT)
 
 
-@pytest.mark.flaky(retries=2, delay=1, condition=sys.platform.startswith('win32'))
 @pytest.mark.parametrize("scenario", [
     "rye",
     "uv",
