@@ -1,5 +1,6 @@
 """
 Nox is the task runner for the project.
+Run ./nox -l to list available tasks, extra arguments after -- are passed to the task.
 """
 
 import glob
@@ -22,8 +23,12 @@ python_short = ["py" + p.replace(".", "") for p in python_versions]
 
 @nox.session()
 def test(session: nox.Session):
-    "Run pytest unit tests"
-    tests(session, py=python_versions[-1])
+    "Run pytest unit tests. With extra args, run pytest with those args."
+    pytest_args = session.posargs
+    if not pytest_args:
+        tests(session, py=python_versions[-1])
+    else:
+        session.run("uv", "run", "--isolated", "pytest", *pytest_args, external=True)
 
 
 @nox.session()
