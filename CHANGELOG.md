@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.10.0
+
+- Support interrupting the kernel on windows (#30, #32)
+- Now uses `jupyter-client` to launch the kernel process (#30)
+- License was updated after we copied one file from ipykernel,
+  now a combination of MIT and BSD 3-clause.
+
 ## 0.9.1
 
 - Call `hatch env find` using `--no-color` for robustness (#27)
