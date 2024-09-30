@@ -21,14 +21,13 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Install Uv
-      run: curl -LsSf https://astral.sh/uv/install.sh | sh
-    - name: Prepare docs
-      run: |
-        cd tools/mkdocs-tool/
-        uv export --frozen --no-hashes > requirements.txt
+      uses: astral-sh/setup-uv@v3
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
     - name: Deploy docs
-      uses: mhausenblas/mkdocs-deploy-gh-pages@master
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         CONFIG_FILE: mkdocs.yml
         REQUIREMENTS: tools/mkdocs-tool/requirements.txt
+      run: |
+        uv run --project tools/mkdocs-tool mkdocs gh-deploy --force -v
