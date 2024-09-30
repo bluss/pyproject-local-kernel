@@ -49,6 +49,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 BSD 3-Clause License
 
+Copyright (c) 2024, Ulrik Sverdrup "bluss"
 Copyright (c) 2015, IPython Development Team
 
 All rights reserved.

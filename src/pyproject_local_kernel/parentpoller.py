@@ -1,4 +1,5 @@
 """A parent poller for unix."""
+# Copyright (c) 2024 Ulrik Sverdrup "bluss"
 # Copyright (c) IPython Development Team.
 # Distributed under the terms of the Modified BSD License.
 
@@ -53,7 +54,7 @@ class ParentPollerWindows(Thread):
     when the parent process no longer exists.
     """
 
-    def __init__(self, interrupt_handle=None, parent_handle=None):
+    def __init__(self, interrupt_handle=None, parent_handle=None, interrupt_callback=None):
         """Create the poller. At least one of the optional parameters must be
         provided.
 
@@ -65,6 +66,8 @@ class ParentPollerWindows(Thread):
         parent_handle : HANDLE (int), optional
             If provided, the program will terminate immediately when this
             handle is signaled.
+        interrupt_callback : Callable (), optional
+            If provided, call (on the poller thread) when interrupt is triggered
         """
         assert interrupt_handle or parent_handle
         super().__init__()
@@ -74,6 +77,7 @@ class ParentPollerWindows(Thread):
         self.daemon = True
         self.interrupt_handle = interrupt_handle
         self.parent_handle = parent_handle
+        self.interrupt_callback = interrupt_callback
 
     def run(self):
         """Run the poll loop. This method never returns."""
@@ -105,9 +109,11 @@ class ParentPollerWindows(Thread):
 
                 if handle == self.interrupt_handle:
                     _logger.debug("ParentPollerWindows: got interrupt event")
+                    if self.interrupt_callback:
+                        self.interrupt_callback()
                     # check if signal handler is callable
                     # to avoid 'int not callable' error (Python issue #23395)
-                    if callable(signal.getsignal(signal.SIGINT)):
+                    elif callable(signal.getsignal(signal.SIGINT)):
                         interrupt_main()
 
                 elif handle == self.parent_handle:
