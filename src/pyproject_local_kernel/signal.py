@@ -67,10 +67,12 @@ class ForwardKernelSignals:
                 if sig == signal.SIGINT and is_windows():
                     from jupyter_client.win_interrupt import send_interrupt
 
+                    _logger.debug("win32 send interrupt event")
                     # win32_interrupt_event set by launcher_kernel
                     send_interrupt(self.process.win32_interrupt_event)  # type: ignore
                     return
                 if self.process_group_id:
+                    _logger.debug("posix killpg(%r, %r)", self.process_group_id, sig)
                     os.killpg(self.process_group_id, sig)
                     return
                 _logger.debug("fallback to process.send_signal(%d)", sig)
@@ -80,6 +82,10 @@ class ForwardKernelSignals:
                 _logger.error("Error when forwarding signal %r: %s", sig, exc)
         else:
             _logger.error("No process!")
+
+    def _windows_interrupt_callback(self):
+        # will be called on the poller thread, but that should be ok
+        self.handle_signal(int(signal.SIGINT))
 
     def process_exists(self, proc: subprocess.Popen):
         "Call when process exists (has started) but not marked as started yet"
@@ -92,7 +98,8 @@ class ForwardKernelSignals:
                 self.process_group_id = 0
 
         if self.interrupt_handle and is_windows():
-            self.poller = ParentPollerWindows(self.interrupt_handle)
+            self.poller = ParentPollerWindows(self.interrupt_handle,
+                                              interrupt_callback=self._windows_interrupt_callback)
             self.poller.start()
             _logger.debug("Started %s", type(self.poller).__name__)
 
