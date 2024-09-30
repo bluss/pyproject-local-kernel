@@ -111,3 +111,12 @@ def _assert_notebook_recorded_interrupt(nb_path: Path):
         print("Notebook file", nb_path.name, file=sys.stderr)
         print(notebook_text, file=sys.stderr)
         raise
+
+
+def test_no_pyproject_toml(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, pytestconfig: pytest.Config):
+    monkeypatch.chdir(tmp_path)
+    uv = "uv"
+    proc = popen_capture(f"{uv} run --project '{pytestconfig.rootpath}' python -m pyproject_local_kernel")
+
+    assert 'No pyproject.toml found - do you need to create a new project?' in proc.stderr
+    assert proc.returncode != 0

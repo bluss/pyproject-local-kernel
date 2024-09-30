@@ -47,13 +47,13 @@ def main() -> int:
     _setup_logging()
 
     find_project = identify(Path.cwd())
-    python_cmd = list(find_project.get_python_cmd(allow_fallback=True, allow_hatch_workaround=True))
+    python_cmd = find_project.get_python_cmd(allow_fallback=True, allow_hatch_workaround=True)
 
     launched = False
     failure_to_start_msg = ""
 
     if python_cmd is not None:
-        kernel_cmd = python_cmd + ["-m", "ipykernel_launcher", *sys.argv[1:]]
+        kernel_cmd = list(python_cmd) + ["-m", "ipykernel_launcher", *sys.argv[1:]]
 
         # first set up the signal handler, then start the kernel
         # read jupyter-client variables from upstream launcher
