@@ -32,4 +32,4 @@ package = false
 
 [tool.uv.workspace]
 [tool.uv.sources]
-pyproject-local-kernel = { path = "../../../../pyproject-local-kernel" }
+pyproject-local-kernel = { path = "../../../" }
