@@ -1,4 +1,5 @@
 import contextlib
+import json
 from pathlib import Path
 import shutil
 import signal
@@ -48,7 +49,7 @@ def impl_project_manager(python: str, scenario: str,
     if scenario == TEST_FALLBACK:
         server_args += " --extra kernel"
     elif scenario == TEST_INTERRUPT:
-        papermill_args = "--execution-timeout 1"
+        papermill_args += " --execution-timeout 1"
         notebook = "notebook-interrupt.py"
 
 
@@ -87,13 +88,26 @@ def impl_project_manager(python: str, scenario: str,
             assert "Failed to start kernel! The detected project type is: UseVenv" in proc.stderr
             assert "ModuleNotFoundError: No module named 'jinja2'" in proc.stderr
         elif scenario == TEST_INTERRUPT:
-            # Ensure signal forwarding is working
             assert 'A cell timed out while it was being executed' in proc.stderr
-            if sys.platform != "win32":
-                assert 'Parent appears to have exited' not in proc.stderr
+            assert 'Parent appears to have exited' not in proc.stderr
+            _assert_notebook_recorded_interrupt(Path(client_dir) / "notebook_out.ipynb")
         else:
             assert "Traceback" not in proc.stderr
             assert "Failed to start kernel" not in proc.stderr
             assert returncode == 0
             # Ensure signal forwarding is working
             assert f'Forwarding signal to kernel: {signal.SIGINT:d}' in proc.stderr
+
+
+
+def _assert_notebook_recorded_interrupt(nb_path: Path):
+    # One cell output will record the KeyboardInterrupt error
+    with open(nb_path, "r") as nb_file:
+        notebook_text = nb_file.read()
+        notebook_json = json.loads(notebook_text)
+    try:
+        assert any('KeyboardInterrupt' in str(cell["outputs"]) for cell in notebook_json["cells"])
+    except AssertionError:
+        print("Notebook file", nb_path.name, file=sys.stderr)
+        print(notebook_text, file=sys.stderr)
+        raise
