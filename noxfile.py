@@ -69,7 +69,7 @@ def docs_serve(session: nox.Session):
     os.execvp(args[0], args)
 
 
-@nox.session()
+@nox.session(default=False)
 def check(session: nox.Session):
     "lint check; extra args are passed to ruff"
     session.run("uvx", "ruff@0.6.8", "check", "--output-format=concise", *session.posargs)
