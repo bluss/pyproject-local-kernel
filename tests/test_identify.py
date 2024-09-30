@@ -1,4 +1,4 @@
-import pathlib
+from pathlib import Path
 import os
 import shutil
 import sys
@@ -44,11 +44,11 @@ def test_custom(path, cmd):
 def test_hatch(path, monkeypatch: pytest.MonkeyPatch):
     if not shutil.which("hatch"):
         pytest.skip("hatch not installed")
-    file_dir = pathlib.Path(__file__).parent
+    file_dir = Path(__file__).parent
     hatch_config = str(file_dir / "hatch_config.toml")
     monkeypatch.setenv("HATCH_CONFIG", hatch_config)
 
-    venv_dir = pathlib.Path(path).absolute() / "the_virtualenv"
+    venv_dir = Path(path).absolute() / "the_virtualenv"
     pd = identify(path)
     assert pd.path is not None and pd.path.name == "pyproject.toml"
 
@@ -56,7 +56,7 @@ def test_hatch(path, monkeypatch: pytest.MonkeyPatch):
     assert cmd and len(cmd) == 1
 
     python_path = cmd[0]
-    assert isinstance(python_path, pathlib.Path)
+    assert isinstance(python_path, Path)
     assert testlib.is_relative_to(python_path, venv_dir)
 
 
@@ -66,9 +66,9 @@ def test_hatch(path, monkeypatch: pytest.MonkeyPatch):
 def test_use_venv(path, unix_cmd, win_cmd):
     # venv resolves to absolute path
     pd = identify(path)
-    base_dir = pathlib.Path(path).absolute()
+    base_dir = Path(path).absolute()
     expected = base_dir / (win_cmd if is_windows() else unix_cmd)
-    assert pd.get_python_cmd() == [pathlib.Path(expected)]
+    assert pd.get_python_cmd() == [Path(expected)]
     assert pd.path is not None and pd.path.name == "pyproject.toml"
 
 
@@ -95,10 +95,11 @@ def test_custom_ignored_key(path, caplog):
     assert any("unknown configuration key 'not-valid'" in rec.message for rec in caplog.records)
 
 
-def test_no_project(tmp_path):
+def test_no_project(tmp_path: Path):
     pd = identify(tmp_path)
     assert pd.kind == ProjectKind.NoProject
     assert pd.path is None
+    assert pd.get_python_cmd() is None
 
 
 def test_jpy_vars(monkeypatch: pytest.MonkeyPatch):

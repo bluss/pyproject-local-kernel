@@ -18,6 +18,8 @@
 # IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+from __future__ import annotations
+
 import dataclasses
 import enum
 import logging
@@ -55,7 +57,7 @@ class ProjectKind(enum.Enum):
     NoProject = enum.auto()
     InvalidData = enum.auto()
 
-    def python_cmd(self) -> t.Optional[t.List[str]]:
+    def python_cmd(self) -> list[str] | None:
         if self == ProjectKind.Rye:
             return ["rye", "run", "python"]
         if self == ProjectKind.Poetry:
@@ -72,11 +74,11 @@ class ProjectKind(enum.Enum):
 @dataclasses.dataclass
 class ProjectDetection:
     # pyproject.toml file path
-    path: t.Optional[Path]
+    path: Path | None
     kind: ProjectKind
     config: Config = dataclasses.field(default_factory=Config)
 
-    def get_python_cmd(self, allow_fallback=True, allow_hatch_workaround=False) -> t.Sequence[t.Union[str , Path]]:
+    def get_python_cmd(self, allow_fallback=True, allow_hatch_workaround=False) -> t.Sequence[str | Path] | None:
         """
         allow_hatch_workaround: call out to `hatch env find`
         """
@@ -107,7 +109,7 @@ class ProjectDetection:
             self.kind not in (ProjectKind.NoProject, ProjectKind.InvalidData)):
             if fallback := self._fallback_project_kind().python_cmd():
                 return fallback
-        raise RuntimeError("No fallback available (uv not in PATH?) and cannot launch kernel")
+        return None
 
 
     @classmethod
