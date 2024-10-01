@@ -1030,7 +1030,7 @@ wheels = [
 
 [[package]]
 name = "pyproject-local-kernel"
-version = "0.10.0"
+version = "0.10.1"
 source = { directory = "../../../" }
 dependencies = [
     { name = "jupyter-client" },
