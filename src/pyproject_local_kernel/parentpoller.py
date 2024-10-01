@@ -16,7 +16,6 @@ import warnings
 from _thread import interrupt_main  # Py 3
 from threading import Thread
 
-from traitlets.log import get_logger
 
 _logger = logging.getLogger(__name__)
 
@@ -39,7 +38,7 @@ class ParentPollerUnix(Thread):
         while True:
             try:
                 if os.getppid() == 1:
-                    get_logger().warning("Parent appears to have exited, shutting down.")
+                    _logger.warning("Parent appears to have exited, shutting down.")
                     os._exit(1)
                 time.sleep(1.0)
             except OSError as e:
@@ -117,7 +116,7 @@ class ParentPollerWindows(Thread):
                         interrupt_main()
 
                 elif handle == self.parent_handle:
-                    get_logger().warning("Parent appears to have exited, shutting down.")
+                    _logger.warning("Parent appears to have exited, shutting down.")
                     os._exit(1)
             elif result < 0:
                 # wait failed, just give up and stop polling.
