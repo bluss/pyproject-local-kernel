@@ -112,7 +112,9 @@ python-cmd = ["uv", "run", "--with", "ipykernel", "python"]
 Path to virtual environment that should be used, relative to the
 `pyproject.toml` file. Can also be an absolute path.
 
-If this is set then it overrides the default command.
+If this is set then it overrides the default command - the virtualenv is used
+directly without invoking any project manager. Remember to explicitly install
+or sync required dependencies.
 
 **Default:** Not set<br>
 **Type:** `str`<br>
