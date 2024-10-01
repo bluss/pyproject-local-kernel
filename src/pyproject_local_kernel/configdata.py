@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import dataclasses
 import logging
 import shlex
@@ -32,16 +34,18 @@ class TypeCheckedFromDict:
     enforces skewer case `like-this` for fields like `like_this`.
     """
     @classmethod
-    def from_dict(cls, data: t.Dict[str, t.Any]):
+    def from_dict(cls, data: dict[str, t.Any]):
         kwargs = {}
         used_configs = set()
+        self_type_hints = t.get_type_hints(cls)
         for field in dataclasses.fields(cls):
             config_name = _to_skewer_case(field.name)
             try:
                 config_value = data[config_name]
             except KeyError:
                 continue
-            if not _type_check(field.type, config_value):
+            field_type = self_type_hints[field.name]
+            if not _type_check(field_type, config_value):
                 raise TypeError(f"invalid config {config_name} = {config_value!r}, expected value of type {field.type}")
             kwargs[field.name] = config_value
             used_configs.add(config_name)
