@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.10.1
+
+- If there is no `pyproject.toml` at all, show an error message to the user
+  instead of throwing an exception. Fixes a regression. (#34)
+- Fix running tests in sdist (#33)
+
 ## 0.10.0
 
 - Support interrupting the kernel on windows (#30, #32)
