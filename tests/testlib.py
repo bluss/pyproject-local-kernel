@@ -80,6 +80,7 @@ async def _areadlines(thread_pool: ThreadPoolExecutor, name: str, f: t.IO[str]) 
 @contextlib.contextmanager
 def save_restore_file(filename: Path, tmp_path: Path, if_exists=True):
     """Save filename, then restore it after the context ends"""
+    filename = filename.absolute()
     if filename.exists():
         dest = tmp_path / filename.name
         shutil.copyfile(filename, dest)
