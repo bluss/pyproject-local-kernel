@@ -27,7 +27,5 @@ jobs:
     - name: Deploy docs
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        CONFIG_FILE: mkdocs.yml
-        REQUIREMENTS: tools/mkdocs-tool/requirements.txt
       run: |
         uv run --project tools/mkdocs-tool mkdocs gh-deploy --force -v
