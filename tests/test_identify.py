@@ -11,6 +11,9 @@ from pyproject_local_kernel.jpy_vars import JpyVars
 import testlib
 
 
+pytestmark = pytest.mark.unit
+
+
 @pytest.mark.parametrize("path,expected", [
     ("tests/identify/rye", ProjectKind.Rye),
     ("tests/identify/poetry", ProjectKind.Poetry),
