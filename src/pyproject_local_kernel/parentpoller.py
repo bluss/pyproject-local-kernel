@@ -10,10 +10,8 @@ except ImportError:
 import logging
 import os
 import platform
-import signal
 import time
 import warnings
-from _thread import interrupt_main  # Py 3
 from threading import Thread
 
 
@@ -110,10 +108,6 @@ class ParentPollerWindows(Thread):
                     _logger.debug("ParentPollerWindows: got interrupt event")
                     if self.interrupt_callback:
                         self.interrupt_callback()
-                    # check if signal handler is callable
-                    # to avoid 'int not callable' error (Python issue #23395)
-                    elif callable(signal.getsignal(signal.SIGINT)):
-                        interrupt_main()
 
                 elif handle == self.parent_handle:
                     _logger.warning("Parent appears to have exited, shutting down.")
@@ -121,10 +115,7 @@ class ParentPollerWindows(Thread):
             elif result < 0:
                 # wait failed, just give up and stop polling.
                 warnings.warn(
-                    """Parent poll failed.  If the frontend dies,
-                the kernel may be left running.  Please let us know
-                about your system (bitness, Python, etc.) at
-                ipython-dev@scipy.org""",
+                    "Parent poll failed.  If the frontend dies, the kernel may be left running.",
                     stacklevel=2,
                 )
                 return
