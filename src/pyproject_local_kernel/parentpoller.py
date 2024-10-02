@@ -23,9 +23,17 @@ class ParentPollerUnix(Thread):
     when the parent process no longer exists.
     """
 
-    def __init__(self):
-        """Initialize the poller."""
+    def __init__(self, parent_pid, parent_callback=None):
+        """
+        Initialize the poller.
+
+        parent_pid: pid of the parent process
+        parent_callback : Callable (), optional
+            If provided, call (on the poller thread) when parent handle is triggered
+        """
         super().__init__()
+        self.parent_pid = parent_pid
+        self.parent_callback = parent_callback
         self.daemon = True
 
     def run(self):
@@ -35,9 +43,13 @@ class ParentPollerUnix(Thread):
 
         while True:
             try:
-                if os.getppid() == 1:
-                    _logger.warning("Parent appears to have exited, shutting down.")
-                    os._exit(1)
+                if os.getppid() != self.parent_pid:
+                    _logger.warning("Parent appears to have exited, shutting down. Parent pid=%r.", self.parent_pid)
+                    if self.parent_callback:
+                        self.parent_callback()
+                        break
+                    else:
+                        os._exit(1)
                 time.sleep(1.0)
             except OSError as e:
                 if e.errno == EINTR:
@@ -51,7 +63,7 @@ class ParentPollerWindows(Thread):
     when the parent process no longer exists.
     """
 
-    def __init__(self, interrupt_handle=None, parent_handle=None, interrupt_callback=None):
+    def __init__(self, interrupt_handle=None, parent_handle=None, interrupt_callback=None, parent_callback=None):
         """Create the poller. At least one of the optional parameters must be
         provided.
 
@@ -65,6 +77,8 @@ class ParentPollerWindows(Thread):
             handle is signaled.
         interrupt_callback : Callable (), optional
             If provided, call (on the poller thread) when interrupt is triggered
+        parent_callback : Callable (), optional
+            If provided, call (on the poller thread) when parent handle is triggered
         """
         assert interrupt_handle or parent_handle
         super().__init__()
@@ -75,6 +89,7 @@ class ParentPollerWindows(Thread):
         self.interrupt_handle = interrupt_handle
         self.parent_handle = parent_handle
         self.interrupt_callback = interrupt_callback
+        self.parent_callback = parent_callback
 
     def run(self):
         """Run the poll loop. This method never returns."""
@@ -111,7 +126,11 @@ class ParentPollerWindows(Thread):
 
                 elif handle == self.parent_handle:
                     _logger.warning("Parent appears to have exited, shutting down.")
-                    os._exit(1)
+                    if self.parent_callback:
+                        self.parent_callback()
+                        break
+                    else:
+                        os._exit(1)
             elif result < 0:
                 # wait failed, just give up and stop polling.
                 warnings.warn(
