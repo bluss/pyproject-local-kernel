@@ -6,6 +6,8 @@ from pathlib import Path
 import shutil
 import signal
 import sys
+import threading
+import time
 
 import pytest
 
@@ -13,7 +15,6 @@ from testlib import PopenResult, popen_capture, run, save_restore_file
 
 
 pytestmark = pytest.mark.jupyter
-
 
 _PACKAGE_REINSTALL = "--reinstall-package pyproject-local-kernel"
 
@@ -53,6 +54,7 @@ class ScenarioSetup:
             self.stack.enter_context(save_restore_file(Path("uv.lock"), self.tmp_path_factory.mktemp("server")))
             server_args += " -U" if update else ""
             run(f"uv python pin -q {self.python}")
+            run("uv venv -q")
             run(f"uv sync -q {server_args}")
 
     def scenario(self, name: str, update: bool = False, notebook: str | None = "notebook.py") -> str:
@@ -67,19 +69,16 @@ class ScenarioSetup:
             else:
                 update_arg = "-U" if update else ""
                 run(f"uv python pin -q {self.python}")
+                run("uv venv -q")
                 run(f"uv sync -q {update_arg}")
         self.client_dir = (self.base_dir / client_dir).absolute()
         if notebook:
-            self._prepare_notebook(notebook, client_dir)
+            with self.monkeypatch.context() as m:
+                m.chdir(self.base_dir)
+                run(f"uv run --project server jupytext --to ipynb {notebook} -o {client_dir}/notebook.ipynb")
         return client_dir
 
-    def _prepare_notebook(self, name: str, client_dir: str):
-        with self.monkeypatch.context() as m:
-            m.chdir(self.base_dir)
-            run(f"cp -v {name} {client_dir}/notebook.py")
-            run(f"uv run --project server jupytext --to ipynb {client_dir}/notebook.py")
-
-    def papermill(self, client_dir: str, papermill_args: str = "") -> PopenResult:
+    def papermill(self, client_dir: str, papermill_args: str = "", launch_callback=None) -> PopenResult:
         "Run papermill and return result with stdout/stderr"
         with self.monkeypatch.context() as m:
             m.chdir(self.base_dir)
@@ -87,7 +86,7 @@ class ScenarioSetup:
             m.setenv("PYPROJECT_LOCAL_KERNEL_DEBUG", "1")
 
             args = f"uv run --project server papermill {papermill_args} --cwd {client_dir} {client_dir}/notebook.ipynb {client_dir}/notebook_out.ipynb"
-            proc = popen_capture(args)
+            proc = popen_capture(args, launch_callback=launch_callback)
             return proc
 
 
@@ -159,6 +158,42 @@ def test_interrupt(python_version: str, scenario_setup: ScenarioSetup):
         print("Notebook file", notebook_path.name, file=sys.stderr)
         print(notebook_text, file=sys.stderr)
         raise
+
+
+def test_interrupt_parent_gone(scenario_setup: ScenarioSetup):
+    scenario = "interrupt"
+    papermill_args = "--execution-timeout 10"
+    notebook = "notebook-interrupt.py"
+
+    scenario_setup.server()
+    dir = scenario_setup.scenario(scenario, notebook=notebook)
+    proc = scenario_setup.papermill(dir, papermill_args, launch_callback=_kill_the_parent)
+    returncode = proc.returncode
+
+    assert 'Parent appears to have exited' in proc.stderr
+    assert returncode != 0
+
+
+def _kill_the_parent(proc):
+    # local import - so that unit tests don't need to depend on it
+    import psutil
+
+    def thread_body():
+        has_kernel = False
+        while True:
+            try:
+                for child in psutil.Process(proc.pid).children(recursive=True):
+                    if "ipykernel_launcher" in child.cmdline():
+                        has_kernel = True
+                    elif has_kernel and (child.name().startswith("papermill") or
+                        any("bin/papermill" in part for part in child.cmdline())):
+                        print("terminating process", child)
+                        child.terminate()
+            except psutil.NoSuchProcess:
+                break
+            time.sleep(0.3)
+    thread = threading.Thread(target=thread_body, daemon=True)
+    thread.start()
 
 
 def test_no_pyproject_toml(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, pytestconfig: pytest.Config):
