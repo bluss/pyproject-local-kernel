@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from dataclasses import dataclass, field
 import logging
 import sys
@@ -11,7 +13,7 @@ _logger = logging.getLogger(__name__)
 class JpyVars:
     """
     Variables set by jupyter-client when launching kernel
-    JPY_PARENT_PID: process id of parent process
+    JPY_PARENT_PID: process id of parent process (posix) parent exit handle (windows)
     JPY_INTERRUPT_EVENT: interrupt event handle (windows only)
     """
 
@@ -19,7 +21,7 @@ class JpyVars:
     interrupt_event: int = field(init=False)
 
     def __post_init__(self):
-        def int_parse_from_text(text):
+        def int_parse_from_text(text: str | None):
             if text:
                 try:
                     value = int(text)
@@ -29,7 +31,7 @@ class JpyVars:
                     pass
             return 0
 
-        def int_from_env(name):
+        def int_from_env(name: str):
             "read integer from environment variable and validate > 0"
             text = os.environ.get(name)
             result = int_parse_from_text(text)

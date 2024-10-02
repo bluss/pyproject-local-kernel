@@ -23,14 +23,10 @@ import logging
 from pathlib import Path
 import os
 import sys
-import time
-
-import jupyter_client
 
 from pyproject_local_kernel import MY_TOOL_NAME, ProjectKind
 from pyproject_local_kernel import identify, find_pyproject_file_from
-from pyproject_local_kernel.signal import ForwardKernelSignals
-from pyproject_local_kernel.jpy_vars import JpyVars
+from pyproject_local_kernel.signal import KernelLifecycleHandler
 
 
 _logger = logging.getLogger(__name__)
@@ -55,26 +51,11 @@ def main() -> int:
     if python_cmd is not None:
         kernel_cmd = list(python_cmd) + ["-m", "ipykernel_launcher", *sys.argv[1:]]
 
-        # first set up the signal handler, then start the kernel
-        # read jupyter-client variables from upstream launcher
-        signal_handler = ForwardKernelSignals(JpyVars())
-        _logger.info("Starting kernel: %r", kernel_cmd)
         try:
-            proc = jupyter_client.launch_kernel(kernel_cmd, independent=False)  # type: ignore
-            _logger.debug("Kernel started with pid=%s.", proc.pid)
-
-            # give the process some time to start. We are just a guardian/parent process now,
-            # and the kernel loses no time here.
-            signal_handler.process_exists(proc)
-            time.sleep(0.5)
-            signal_handler.process_started(proc)
-
-            exit_code = proc.wait()
-            if exit_code != 0:
-                _logger.error("kernel exited with error code: %r", exit_code)
-            else:
+            exit_code = KernelLifecycleHandler.run(kernel_cmd)
+            if exit_code == 0:
                 launched = True
-        except (IOError, OSError) as exc:
+        except OSError as exc:
             failure_to_start_msg = str(exc)
             _logger.error("kernel could not be started: %s", failure_to_start_msg)
         except Exception as exc:
