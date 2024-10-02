@@ -12,6 +12,9 @@ import pytest
 from testlib import PopenResult, popen_capture, run, save_restore_file
 
 
+pytestmark = pytest.mark.jupyter
+
+
 _PACKAGE_REINSTALL = "--reinstall-package pyproject-local-kernel"
 
 

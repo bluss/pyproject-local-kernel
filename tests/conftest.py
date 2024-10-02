@@ -21,3 +21,8 @@ if is_debugging():
     @pytest.hookimpl(tryfirst=True)
     def pytest_internalerror(excinfo):
         raise excinfo.value
+
+
+def pytest_configure(config: pytest.Config):
+    config.addinivalue_line("markers", "unit: unit test")
+    config.addinivalue_line("markers", "jupyter: jupyter integration test")

@@ -36,7 +36,7 @@ def test(session: nox.Session):
 def tests(session: nox.Session, py: str):
     "Run pytest unit tests"
     pytest_args = session.posargs
-    session.run("uv", "run", "--isolated", "-p", py, "pytest", "-k", "identify", *pytest_args, external=True)
+    session.run("uv", "run", "--isolated", "-p", py, "pytest", "-m", "unit", *pytest_args, external=True)
 
 
 @nox.session(tags=["jupyter"])
@@ -44,7 +44,7 @@ def tests(session: nox.Session, py: str):
 def jupyter(session: nox.Session, py):
     "Run pytest integration tests with jupyter kernel"
     pytest_args = session.posargs
-    session.run("uv", "run", "--isolated", "-p", py, "pytest", "-s", "-k", "jupyter", *pytest_args, external=True)
+    session.run("uv", "run", "--isolated", "-p", py, "pytest", "-s", "-m", "jupyter", *pytest_args, external=True)
 
 
 @nox.session()
@@ -57,7 +57,7 @@ def build(session: nox.Session):
 def build_test(session: nox.Session):
     "Test the built wheel"
     for wheel in glob.glob("dist/pyproject_local_kernel*.whl"):
-        session.run("uvx", "--refresh-package", "pyproject-local-kernel", "--with", wheel, "pytest", "-k", "identify")
+        session.run("uvx", "--refresh-package", "pyproject-local-kernel", "--with", wheel, "pytest", "-k", "unit")
 
 
 @nox.session(name="docs-serve", default=False)
