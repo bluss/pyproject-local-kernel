@@ -24,5 +24,6 @@ if is_debugging():
 
 
 def pytest_configure(config: pytest.Config):
+    config.addinivalue_line("markers", "server_args: extra uv sync arguments for server directory")
     config.addinivalue_line("markers", "unit: unit test")
     config.addinivalue_line("markers", "jupyter: jupyter integration test")
