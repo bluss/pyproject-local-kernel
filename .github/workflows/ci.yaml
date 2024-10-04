@@ -21,7 +21,7 @@ jobs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
     - name: Lint check
-      run: ./nox -s check
+      run: ./nox -t check
 
   tests-linux:
     runs-on: ubuntu-latest
@@ -41,7 +41,7 @@ jobs:
         uv tool install hatch
     - name: Tests
       run: |
-        ./nox
+        ./nox -t ci-linux
 
   tests-windows:
     runs-on: windows-latest
@@ -63,6 +63,4 @@ jobs:
     - name: Tests
       shell: bash
       run: |
-          ./nox -s tests
-          ./nox -s jupyter -k py311
-          ./nox -s jupyter -k py312
+          ./nox -t ci-windows
