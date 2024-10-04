@@ -19,14 +19,6 @@ pytestmark = pytest.mark.jupyter
 _PACKAGE_REINSTALL = "--reinstall-package pyproject-local-kernel"
 
 
-@pytest.fixture(scope="session")
-def python_version() -> str:
-    "current python major version, like '3.12'"
-    version_tuple = sys.version_info
-    return ".".join(map(str, version_tuple[:2]))
-
-
-
 @contextlib.contextmanager
 def chdir(path):
     with pytest.MonkeyPatch.context() as m:
