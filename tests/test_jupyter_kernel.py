@@ -26,18 +26,53 @@ def python_version() -> str:
     return ".".join(map(str, version_tuple[:2]))
 
 
+
+@contextlib.contextmanager
+def chdir(path):
+    with pytest.MonkeyPatch.context() as m:
+        m.chdir(path)
+        yield
+
+
+@pytest.fixture(scope="session")
+def server_dir(python_version: str):
+    "setup dirver side directory with python version and empty virtual environment"
+    base_dir = Path("tests/server-client") / "server"
+    with chdir(base_dir):
+        run(f"uv python pin -q {python_version}")
+        run("uv venv -q")
+    yield base_dir
+    with chdir(base_dir):
+        run("uv venv -q")
+
+
 @pytest.fixture(scope="function")
-def scenario_setup(python_version: str, monkeypatch: pytest.MonkeyPatch, tmp_path_factory: pytest.TempPathFactory):
+def server_sync(server_dir: Path, python_version: str,
+                tmp_path_factory: pytest.TempPathFactory, request: pytest.FixtureRequest):
+    "sync driver/pyproject-local-kernel side project"
+    extra_args = [m.args[0] for m in request.node.iter_markers() if m.name == "server_args"]
+    update = python_version == "3.12"
+    with save_restore_file(server_dir / "uv.lock", tmp_path_factory.mktemp("server")):
+        with chdir(server_dir):
+            server_args = _PACKAGE_REINSTALL + (" -U" if update else "")
+            if extra_args:
+                server_args += " " + extra_args[0]
+            run(f"uv sync -q {server_args}")
+        yield
+        # now we can restore uv.lock
+
+
+@pytest.fixture(scope="function")
+def scenario_setup(server_sync, python_version: str, tmp_path_factory: pytest.TempPathFactory):
+    "setup project manager side and notebook"
     with contextlib.ExitStack() as stack:
-        yield ScenarioSetup(python_version, stack, monkeypatch, tmp_path_factory)
+        yield ScenarioSetup(python_version, stack, tmp_path_factory)
 
 
 class ScenarioSetup:
-    def __init__(self, python_version: str, stack: contextlib.ExitStack,
-                 mp: pytest.MonkeyPatch, tmp: pytest.TempPathFactory):
+    def __init__(self, python_version: str, stack: contextlib.ExitStack, tmp: pytest.TempPathFactory):
         self.python = python_version
         self.stack = stack
-        self.monkeypatch = mp
         self.tmp_path_factory = tmp
         self.base_dir = Path("tests/server-client")
         self.client_dir = None
@@ -47,21 +82,10 @@ class ScenarioSetup:
             raise RuntimeError("Did not build client directory")
         return self.client_dir
 
-    def server(self, server_args: str = _PACKAGE_REINSTALL, update: bool = False):
-        "prepare driver/pyproject-local-kernel side project"
-        with self.monkeypatch.context() as m:
-            m.chdir(self.base_dir / "server")
-            self.stack.enter_context(save_restore_file(Path("uv.lock"), self.tmp_path_factory.mktemp("server")))
-            server_args += " -U" if update else ""
-            run(f"uv python pin -q {self.python}")
-            run("uv venv -q")
-            run(f"uv sync -q {server_args}")
-
-    def scenario(self, name: str, update: bool = False, notebook: str | None = "notebook.py") -> str:
+    def scenario(self, name: str, update: bool = False, notebook: str | None = "notebook.py"):
         "prepare the ipykernel side project"
         client_dir = f"client-{name}"
-        with self.monkeypatch.context() as m:
-            m.chdir(self.base_dir / client_dir)
+        with chdir(self.base_dir / client_dir):
             self.stack.enter_context(save_restore_file(Path("uv.lock"), self.tmp_path_factory.mktemp(client_dir)))
             if name == "hatch":
                 run("hatch env remove")
@@ -73,22 +97,20 @@ class ScenarioSetup:
                 run(f"uv sync -q {update_arg}")
         self.client_dir = (self.base_dir / client_dir).absolute()
         if notebook:
-            with self.monkeypatch.context() as m:
-                m.chdir(self.base_dir)
+            with chdir(self.base_dir):
                 run(f"uv run --project server jupytext --to ipynb {notebook} -o {client_dir}/notebook.ipynb")
-        return client_dir
 
-    def papermill(self, client_dir: str, papermill_args: str = "", launch_callback=None) -> PopenResult:
-        "Run papermill and return result with stdout/stderr"
-        with self.monkeypatch.context() as m:
+    def papermill(self, papermill_args: str = "", launch_callback=None) -> PopenResult:
+        "Run papermill on scenario notebook and return result with stdout/stderr"
+        with pytest.MonkeyPatch.context() as m:
             m.chdir(self.base_dir)
             # enable debug logging so we can assert on it
             m.setenv("PYPROJECT_LOCAL_KERNEL_DEBUG", "1")
+            client_dir = self.get_client_dir().name
 
             args = f"uv run --project server papermill {papermill_args} --cwd {client_dir} {client_dir}/notebook.ipynb {client_dir}/notebook_out.ipynb"
             proc = popen_capture(args, launch_callback=launch_callback)
             return proc
-
 
 
 @pytest.mark.parametrize("scenario", [
@@ -106,9 +128,8 @@ def test_project_manager(scenario: str, python_version: str, scenario_setup: Sce
 
     update = python_version == "3.12"
 
-    scenario_setup.server(update=update)
-    dir = scenario_setup.scenario(scenario, update)
-    proc = scenario_setup.papermill(dir)
+    scenario_setup.scenario(scenario, update)
+    proc = scenario_setup.papermill()
     returncode = proc.returncode
 
     assert "Traceback" not in proc.stderr
@@ -118,15 +139,13 @@ def test_project_manager(scenario: str, python_version: str, scenario_setup: Sce
     assert f'Forwarding signal to kernel: {signal.SIGINT:d}' in proc.stderr
 
 
+@pytest.mark.server_args("--extra kernel")
 def test_no_kernel(scenario_setup: ScenarioSetup):
     "Project with no kernel installed"
     scenario = "nokernel"
-    server_args = _PACKAGE_REINSTALL
-    server_args += " --extra kernel"
 
-    scenario_setup.server(server_args)
-    dir = scenario_setup.scenario(scenario)
-    proc = scenario_setup.papermill(dir)
+    scenario_setup.scenario(scenario)
+    proc = scenario_setup.papermill()
 
     assert "Failed to start kernel! The detected project type is: UseVenv" in proc.stderr
     assert "ModuleNotFoundError: No module named 'jinja2'" in proc.stderr
@@ -139,9 +158,8 @@ def test_interrupt(python_version: str, scenario_setup: ScenarioSetup):
     notebook = "notebook-interrupt.py"
     update = python_version == "3.12"
 
-    scenario_setup.server(update=update)
-    dir = scenario_setup.scenario(scenario, update=update, notebook=notebook)
-    proc = scenario_setup.papermill(dir, papermill_args)
+    scenario_setup.scenario(scenario, update=update, notebook=notebook)
+    proc = scenario_setup.papermill(papermill_args)
 
     assert 'A cell timed out while it was being executed' in proc.stderr
     assert 'Parent appears to have exited' not in proc.stderr
@@ -165,9 +183,8 @@ def test_interrupt_parent_gone(scenario_setup: ScenarioSetup):
     papermill_args = "--execution-timeout 10"
     notebook = "notebook-interrupt.py"
 
-    scenario_setup.server()
-    dir = scenario_setup.scenario(scenario, notebook=notebook)
-    proc = scenario_setup.papermill(dir, papermill_args, launch_callback=_kill_the_parent)
+    scenario_setup.scenario(scenario, notebook=notebook)
+    proc = scenario_setup.papermill(papermill_args, launch_callback=_kill_the_parent)
     returncode = proc.returncode
 
     assert 'Parent appears to have exited' in proc.stderr
@@ -196,9 +213,9 @@ def _kill_the_parent(proc):
     thread.start()
 
 
-def test_no_pyproject_toml(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, pytestconfig: pytest.Config):
-    monkeypatch.chdir(tmp_path)
-    proc = popen_capture(f"uv run --project '{pytestconfig.rootpath}' python -m pyproject_local_kernel")
+def test_no_pyproject_toml(python_version: str, tmp_path: Path, pytestconfig: pytest.Config):
+    with chdir(tmp_path):
+        proc = popen_capture(f"uv run -p {python_version}  --project '{pytestconfig.rootpath}' python -m pyproject_local_kernel")
 
     assert 'No pyproject.toml found - do you need to create a new project?' in proc.stderr
     assert proc.returncode != 0
