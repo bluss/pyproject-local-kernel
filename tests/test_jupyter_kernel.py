@@ -207,7 +207,7 @@ def _kill_the_parent(proc):
 
 def test_no_pyproject_toml(python_version: str, tmp_path: Path, pytestconfig: pytest.Config):
     with chdir(tmp_path):
-        proc = popen_capture(f"uv run -p {python_version}  --project '{pytestconfig.rootpath}' python -m pyproject_local_kernel")
+        proc = popen_capture(f"uv run --no-dev --isolated -p {python_version}  --project '{pytestconfig.rootpath}' python -m pyproject_local_kernel")
 
     assert 'No pyproject.toml found - do you need to create a new project?' in proc.stderr
     assert proc.returncode != 0
