@@ -67,3 +67,7 @@ class Config(TypeCheckedFromDict):
         if isinstance(self.python_cmd, str):
             return shlex.split(self.python_cmd)
         return self.python_cmd
+
+    def merge_with(self, other: Config) -> Config:
+        "Merge with self taking precedence over other"
+        return Config(python_cmd=self.python_cmd or other.python_cmd, use_venv=self.use_venv or other.use_venv)

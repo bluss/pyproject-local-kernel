@@ -8,6 +8,7 @@ authors = [
 dependencies = [
     "jupyter-client>=8.6.3",
     "tomli>=2.0.1; python_version < '3.11'",
+    "traitlets>=5.14.3",
 ]
 readme = "README.md"
 license = {file = "LICENSE.md"}
@@ -29,6 +30,12 @@ classifiers = [
 Homepage = "https://bluss.github.io/pyproject-local-kernel/"
 Repository = "https://github.com/bluss/pyproject-local-kernel"
 
+[project.scripts]
+pyproject_local_kernel = "pyproject_local_kernel.main:main"
+
+[project.entry-points."jupyter_client.kernel_provisioners"]
+pyproject-local-kernel-provisioner = "pyproject_local_kernel.provisioner:PyprojectKernelProvisioner"
+
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
@@ -44,6 +51,8 @@ dev-dependencies = [
     "psutil>=6.0.0",
 ]
 python-preference = "only-managed"
+
+cache-keys = [{ file = "data/*.json" }, { file = "src/**/*.py" }]
 
 [tool.uv.workspace]
 members = []
@@ -63,6 +72,7 @@ packages = ["src/pyproject_local_kernel"]
 
 [tool.hatch.build.targets.wheel.shared-data]
 "./data/kernel.json" = "share/jupyter/kernels/pyproject_local_kernel/kernel.json"
+"./data/kernel_use_venv.json" = "share/jupyter/kernels/pyproject_local_kernel_use_venv/kernel.json"
 
 # Tests
 [tool.pytest.ini_options]
@@ -86,3 +96,6 @@ typeCheckingMode = "basic"
 [tool.ruff]
 exclude = ["example", "tests/identify", "tests/server-client"]
 line-length = 150
+
+[tool.pyproject_local_kernel]
+#use-venv = ".venv"  # for test
