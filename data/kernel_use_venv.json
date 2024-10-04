@@ -1,6 +1,6 @@
 {
-  "argv": ["pyproject_local_kernel", "-f", "{connection_file}"],
-  "display_name": "Pyproject Local",
+  "argv": ["pyproject_local_kernel", "--use-venv", "-f", "{connection_file}"],
+  "display_name": "Pyproject Local (Use .venv)",
   "language": "python",
   "metadata": {
     "debugger": true,
@@ -8,6 +8,7 @@
       "provisioner_name": "pyproject-local-kernel-provisioner",
       "config": {
         "python_kernel_args": ["-m", "ipykernel_launcher", "-f", "{connection_file}"],
+        "use_venv": ".venv",
         "sanity_check": true
       }
     }

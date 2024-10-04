@@ -42,6 +42,7 @@ from pyproject_local_kernel.configdata import Config
 _logger = logging.getLogger(__name__)
 
 MY_TOOL_NAME = "pyproject-local-kernel"  # name of tool section in pyproject.toml for this tool
+ENABLE_DEBUG_ENV = "PYPROJECT_LOCAL_KERNEL_DEBUG"
 
 
 class ProjectKind(enum.Enum):

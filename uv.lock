@@ -263,6 +263,7 @@ source = { editable = "." }
 dependencies = [
     { name = "jupyter-client" },
     { name = "tomli", marker = "python_full_version < '3.11'" },
+    { name = "traitlets" },
 ]
 
 [package.dev-dependencies]
@@ -276,6 +277,7 @@ dev = [
 requires-dist = [
     { name = "jupyter-client", specifier = ">=8.6.3" },
     { name = "tomli", marker = "python_full_version < '3.11'", specifier = ">=2.0.1" },
+    { name = "traitlets", specifier = ">=5.14.3" },
 ]
 
 [package.metadata.requires-dev]
