@@ -1,5 +1,6 @@
 # Frequently Asked Questions
 
+
 ## How does it work?
 
 The regular IPython kernel for Jupyter is launched like this:
@@ -15,6 +16,7 @@ To break it down:
 - You install `jupyterlab` and `pyproject-local-kernel` together.
 - Then you have projects defined in a `pyproject.toml` for each notebook project
 
+
 ## Why do I have to install `ipykernel` manually?
 
 The IPython kernel is the interpreter that executes everything in the notebook,
@@ -26,15 +28,22 @@ For Uv, the default command is `uv run --with ipykernel` which creates an
 overlay environment containing ipykernel if it wasn't already installed. This
 makes it possible to skip ipykernel in the project dependencies if desired.
 
-## How can I debug my project?
 
-In general it is a good idea to look at these variables, in a notebook,
-to try to understand which python and which python environment it is using:
+## How can I see which python environment I am using?
 
-- `sys.prefix` - the path to the virtual environment
-- `sys.executable`
-- `sys.path`
-- `sys.version_info`
+In general it is a good idea to look at these variables in a notebook
+to understand which python version and python environment it is using:
+
+```python
+sys.prefix
+sys.executable
+sys.path
+sys.version_info
+```
+
+You can also start JupyterLab with debug logs, and look for
+`pyproject-local-kernel` debug info in the output.
+
 
 ## What is the benefit of the `use-venv` setting?
 
@@ -48,7 +57,7 @@ configuration, both in a uv-defined project, then they stack up like this:
 
 * Runs `uv run --with ipykernel python`
 * Installs `ipykernel` automatically
-* Syncs dependencies automatically on every run
+* Syncs dependencies automatically on every start/restart
 
 **`use-venv = ".venv"`**
 
@@ -56,6 +65,7 @@ configuration, both in a uv-defined project, then they stack up like this:
   indirection and overhead
 * Does not create or change the environment, only uses it as it is
 * Requires `ipykernel` to be installed
+
 
 ## Does Pyproject Local Kernel work with Nbconvert and [Papermill][1]?
 
@@ -71,12 +81,6 @@ this way.
 
 [1]: https://papermill.readthedocs.io/en/latest/
 
-## Does Pyproject Local Kernel require Uv or Rye?
-
-No, neither of them are strictly required to use. Any supported project manager
-is enough, or even none for custom or vitualenv configurations.
-
-For development of the project and running tests, Uv is required.
 
 ## How to setup for VSCodium or VS Code?
 
@@ -118,27 +122,12 @@ python-cmd = ["env", "PIPENV_IGNORE_VIRTUALENVS=1", "pipenv", "run", "python"]
 ```
 
 
-## How change environment variables for the kernel?
+## Does Pyproject Local Kernel require Uv or Rye?
 
-For example in Rye you can set environment variables for scripts, and you can
-configure pyproject-local-kernel to use the script for its kernel invocation.
+No, neither of them are strictly required to use. Any supported project manager
+is enough, or even none for custom or vitualenv configurations.
 
-Here is an example (the name `kernelpython` is arbitrary).
-
-
-```toml
-[tool.pyproject-local-kernel]
-python-cmd = ["rye", "run", "kernelpython"]
-
-[tool.rye.scripts.kernelpython]
-cmd = ["python"]
-
-[tool.rye.scripts.kernelpython.env]
-X=1
-Y=2
-```
-
-Other project managers have similar features (PDM, at least).
+For development of the project and running tests, Uv is required.
 
 
 ## Isn't There a Less Complicated Way to Do It?
@@ -170,17 +159,12 @@ If you have such a `.json` file, `jupyter kernelspec install --user` can help yo
 
 ### Why is the python environment path weird?
 
-If you run the following when using uv and pyproject local kernel:
-
-```python
-import sys
-sys.prefix
-```
-
+If you look at `sys.prefix` when using **uv** and pyproject local kernel,
 and you see a prefix like this or similar:
 `'~/.cache/uv/archive-v0/n2G3HHDzRZ7cjiFgGXIwC'`, then uv is using an ephemeral
-environment to run. It should work just fine in most cases, it means that
-`ipykernel` is not installed in your base environment. If you want to fix this,
+environment to run the kernel.<br>
+It should work just fine in most cases, but it means that `ipykernel` is not
+installed in your base environment. If you want to fix this,
 use `uv add ipykernel` and restart the kernel.
 
 ### Can I nest projects?
