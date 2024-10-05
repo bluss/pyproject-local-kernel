@@ -150,7 +150,7 @@ the environment manager for your notebooks. You don't hardcode a virtual environ
 but you hardcode that you're using `uv run`.
 
 This example does more or less the same as what `pyproject-local-kernel` does, but without
-the indirections (and without the error handling).
+the error handling and configurability:
 
 ```json
 
@@ -164,6 +164,8 @@ the indirections (and without the error handling).
 }
 ```
 
+If you have such a `.json` file, `jupyter kernelspec install --user` can help you install it.
+
 ## More questions about Uv
 
 ### Why is the python environment path weird?
@@ -175,11 +177,11 @@ import sys
 sys.prefix
 ```
 
-and you see a prefix like this, or similar
-`'~/.cache/uv/archive-v0/n2G3HHDzRZ7cjiFgGXIwC'` then uv is using an ephemeral
-environment to run. It should work just fine, it means that `ipykernel` is not
-installed in your base environment. If you want to fix this, use `uv add
-ipykernel` and restart the kernel.
+and you see a prefix like this or similar:
+`'~/.cache/uv/archive-v0/n2G3HHDzRZ7cjiFgGXIwC'`, then uv is using an ephemeral
+environment to run. It should work just fine in most cases, it means that
+`ipykernel` is not installed in your base environment. If you want to fix this,
+use `uv add ipykernel` and restart the kernel.
 
 ### Can I nest projects?
 
