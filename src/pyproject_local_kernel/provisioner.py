@@ -27,9 +27,10 @@ Use `uv add ipykernel` or other command to install ipykernel into the environmen
 
 
 class PyprojectKernelProvisioner(LocalProvisioner):
-    use_venv: Unicode = Unicode(default_value=None, config=True, allow_none=True)
-    python_kernel_args = List[str](config=True, allow_none=False)
-    sanity_check = Bool(config=True)
+    use_venv: Unicode = Unicode(default_value=None, config=True, allow_none=True,
+                                help="Default setting for use-venv for projects using the kernel")
+    python_kernel_args = List[str](config=True, allow_none=False, help="Arguments for kernel process")
+    sanity_check = Bool(config=True, help="Enable sanity check for 'ipykernel' package in environment")
 
     def _log_info(self, message, *args):
         self.__log(logging.INFO, message, *args)
