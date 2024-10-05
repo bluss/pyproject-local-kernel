@@ -171,8 +171,8 @@ Additional interest and maintainer help is welcomed.
 
 ## Links
 
-* <https://github.com/mitsuhiko/rye>
 * <https://github.com/astral-sh/uv>
+* <https://github.com/renan-r-santos/pixi-kernel>
 * <https://github.com/goerz/python-localvenv-kernel>
 * <https://github.com/pathbird/poetry-kernel>
 
