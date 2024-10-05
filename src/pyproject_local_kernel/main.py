@@ -138,12 +138,13 @@ def start_fallback_kernel(failure_to_start_msg: str):
     if failure_to_start_msg:
         help_messages += ["Error: " + failure_to_start_msg]
 
+    python_major_version = ".".join(map(str, sys.version_info[:2]))
     init_messages = [
         "Do you need to create a new project?",
         "",
         "Use a command like one of these to start:",
         "" "!uv init && uv add ipykernel",
-        "!pdm init --python 3.12 -n && pdm add ipykernel",
+        f"!pdm init --python {python_major_version} -n && pdm add ipykernel",
         "!poetry init -n && poetry add ipykernel",
         "",
         "Some project managers work better in a terminal than in a notebook",
