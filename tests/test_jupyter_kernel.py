@@ -3,9 +3,10 @@ from __future__ import annotations
 import contextlib
 import json
 from pathlib import Path
+import re
 import shutil
-import signal
 import sys
+import textwrap
 import threading
 import time
 
@@ -211,4 +212,27 @@ def test_no_pyproject_toml(python_version: str, tmp_path: Path, pytestconfig: py
         proc = popen_capture(f"uv run --no-dev --isolated -p {python_version}  --project '{pytestconfig.rootpath}' python -m pyproject_local_kernel")
 
     assert 'no pyproject.toml' in proc.stderr
+    assert proc.returncode != 0
+
+
+def test_direct_run(python_version: str, tmp_path: Path, pytestconfig: pytest.Config, monkeypatch: pytest.MonkeyPatch):
+    monkeypatch.setenv("PYPROJECT_LOCAL_KERNEL_DEBUG", "1")
+    pyproject = f"""
+    [project]
+    name = "x"
+    version = "1"
+    dependencies = []
+    requires-python = ">={python_version}"
+    [tool.pyproject-local-kernel]
+    """
+    with chdir(tmp_path):
+        pyproj = tmp_path / "pyproject.toml"
+        cfile = tmp_path / "connection.json"
+        with open(pyproj, "w") as pf:
+            pf.write(textwrap.dedent(pyproject))
+        proc = popen_capture(f"uv run --no-dev --with ipykernel --isolated -p {python_version} "
+                             f"--project '{pytestconfig.rootpath}' pyproject_local_kernel -f '{cfile}' --test-interrupt --test-quit")
+
+    assert re.search(r'send signal.*SIGINT', proc.stderr)
+    assert re.search(r'send signal.*SIGTERM', proc.stderr)
     assert proc.returncode != 0
