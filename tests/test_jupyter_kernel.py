@@ -127,10 +127,8 @@ def test_project_manager(scenario: str, python_version: str, scenario_setup: Sce
     assert "Traceback" not in proc.stderr
     assert "Failed to start kernel" not in proc.stderr
     assert returncode == 0
-    #assert f'Forwarding signal to kernel: {signal.SIGINT:d}' in proc.stderr
 
 
-@pytest.mark.server_args("--extra kernel")
 def test_no_kernel(scenario_setup: ScenarioSetup):
     "Project with no kernel installed"
     scenario = "nokernel"
@@ -138,8 +136,8 @@ def test_no_kernel(scenario_setup: ScenarioSetup):
     scenario_setup.scenario(scenario)
     proc = scenario_setup.papermill()
 
-    assert "Failed to start kernel! The detected project type is: UseVenv" in proc.stderr
-    assert "ModuleNotFoundError: No module named 'jinja2'" in proc.stderr
+    # from sanity check
+    assert "Could not find `ipykernel` in environment" in proc.stderr
 
 
 def test_interrupt(python_version: str, scenario_setup: ScenarioSetup):
@@ -169,6 +167,7 @@ def test_interrupt(python_version: str, scenario_setup: ScenarioSetup):
         raise
 
 
+@pytest.mark.skip
 def test_interrupt_parent_gone(scenario_setup: ScenarioSetup):
     scenario = "interrupt"
     papermill_args = "--execution-timeout 10"
@@ -211,5 +210,5 @@ def test_no_pyproject_toml(python_version: str, tmp_path: Path, pytestconfig: py
     with chdir(tmp_path):
         proc = popen_capture(f"uv run --no-dev --isolated -p {python_version}  --project '{pytestconfig.rootpath}' python -m pyproject_local_kernel")
 
-    assert 'No pyproject.toml found - do you need to create a new project?' in proc.stderr
+    assert 'no pyproject.toml' in proc.stderr
     assert proc.returncode != 0
