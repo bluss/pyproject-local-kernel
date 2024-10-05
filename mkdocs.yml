@@ -32,6 +32,7 @@ theme:
 
 markdown_extensions:
   - attr_list
+  - sane_lists
   - admonition
   - def_list
   - pymdownx.details

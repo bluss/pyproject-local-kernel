@@ -8,7 +8,12 @@ The regular IPython kernel for Jupyter is launched like this:
 If you just prefix that command with `rye run`, `uv run`, `poetry run`,
 `pdm run`, `hatch run`, etc, then you get a kernel invocation that executes in
 the current pyproject's environment. That's basically the whole magic of this
-package, it doesn't need to do more.
+package, it doesn't need to do more (well, if it only were *that* easy..)
+
+To break it down:
+
+- You install `jupyterlab` and `pyproject-local-kernel` together.
+- Then you have projects defined in a `pyproject.toml` for each notebook project
 
 ## Why do I have to install `ipykernel` manually?
 
@@ -21,6 +26,51 @@ For Uv, the default command is `uv run --with ipykernel` which creates an
 overlay environment containing ipykernel if it wasn't already installed. This
 makes it possible to skip ipykernel in the project dependencies if desired.
 
+## How can I debug my project?
+
+In general it is a good idea to look at these variables, in a notebook,
+to try to understand which python and which python environment it is using:
+
+- `sys.prefix` - the path to the virtual environment
+- `sys.executable`
+- `sys.path`
+- `sys.version_info`
+
+## What is the benefit of the `use-venv` setting?
+
+It is used for more flexibility. It means that pyproject local does not
+depend on any particular project manager and can use any virtual environment.
+
+And, if you for example compare the uv default configuration vs a `use-venv`
+configuration, both in a uv-defined project, then they stack up like this:
+
+**uv default**
+
+* Runs `uv run --with ipykernel python`
+* Installs `ipykernel` automatically
+* Syncs dependencies automatically on every run
+
+**`use-venv = ".venv"`**
+
+* Runs `python` from the virtual environment directly which has less
+  indirection and overhead
+* Does not create or change the environment, only uses it as it is
+* Requires `ipykernel` to be installed
+
+## Does Pyproject Local Kernel work with Nbconvert and [Papermill][1]?
+
+Yes it works, with both Nbconvert and Papermill.
+
+Pyproject Local Kernel relies on jupyter's working directory: the working
+directory is always the same as the notebook's location - and it will work as
+long as you run papermill the same way, using its `--cwd` argument.
+
+You can install papermill and pyproject-local-kernel in a separate environment,
+and run each notebook in its own pyproject environment with its dependencies
+this way.
+
+[1]: https://papermill.readthedocs.io/en/latest/
+
 ## Does Pyproject Local Kernel require Uv or Rye?
 
 No, neither of them are strictly required to use. Any supported project manager
@@ -30,25 +80,32 @@ For development of the project and running tests, Uv is required.
 
 ## How to setup for VSCodium or VS Code?
 
-The [vscode-jupyter][] extension instructs that you must install `jupyter`
-in a python environment to use the extension. Install `pyproject-local-kernel` in that
-particular environment, and it will work. If doing this from scratch, you can
-setup a new environment with both `jupyter` and `pyproject-local-kernel`.
+**Note** that code natively supports using virtual environments in a local
+directory directly. For this reason `pyproject-local-kernel` is almost always
+unecessary with VSCodium or VS Code ("code").
 
-It's possible you need to use the command *Python: Select Interpreter* to
-select the environment.
+Code does not launch the kernel in the same way that jupyterlab does
+(jupyterlab uses `jupyter-client` and enables kernel provisioning), for this reason
+`pyproject-local-kernel` is launched using a less reliable way when
+using code, and this is a - for now - unsupported way to use this project.
+
+However, it should more or less work. Here are some suggestions:
+
+Install both `jupyter` and `pyproject-local-kernel` in a central python
+environment that you choose. (The [vscode-jupyter][] extension instructs that
+you should install `jupyter` and tell it where this installation is).
+
+Then you need need to use the command *Python: Select Interpreter* to select
+the environment where you installed `jupyter`.
+
+When this is done, you can use *Select Kernel* → *Jupyter Kernel* → *Pyproject
+Local* to use this project from code.
 
 [vscode-jupyter]: https://github.com/microsoft/vscode-jupyter
 
-- The *jupyter* environment must install the `pyproject-local-kernel` package.
-  (“server side”)
-- The notebook projects install `ipykernel` and the notebook dependencies
-  (“client side”)
+The output panel has a *Jupyter* section with logs from the jupyter kernel,
+which can help in debugging.
 
-**Note** that code natively supports just using a directory local virtualenv
-for notebooks, such as Rye or Uv's `.venv` or similar. For this reason
-`pyproject-local-kernel` does not matter so much in this case, it's
-mainly useful for JupyterLab!
 
 ## Does it work with with Pipenv?
 
@@ -83,20 +140,6 @@ Y=2
 
 Other project managers have similar features (PDM, at least).
 
-## Does Pyproject Local Kernel work with Nbconvert and [Papermill][1]?
-
-Yes it works, with both Nbconvert and Papermill.
-
-Pyproject Local Kernel relies on jupyter's working directory: the working
-directory is always the same as the notebook's location - and it will work as
-long as you run papermill the same way, using its `--cwd` argument.
-
-You can install papermill and pyproject-local-kernel in a separate environment,
-and run each notebook in its own pyproject environment with its dependencies
-this way.
-
-[1]: https://papermill.readthedocs.io/en/latest/
-
 
 ## Isn't There a Less Complicated Way to Do It?
 
@@ -120,3 +163,29 @@ the indirections (and without the error handling).
   }
 }
 ```
+
+## More questions about Uv
+
+### Why is the python environment path weird?
+
+If you run the following when using uv and pyproject local kernel:
+
+```python
+import sys
+sys.prefix
+```
+
+and you see a prefix like this, or similar
+`'~/.cache/uv/archive-v0/n2G3HHDzRZ7cjiFgGXIwC'` then uv is using an ephemeral
+environment to run. It should work just fine, it means that `ipykernel` is not
+installed in your base environment. If you want to fix this, use `uv add
+ipykernel` and restart the kernel.
+
+### Can I nest projects?
+
+You can, but `pyproject-local-kernel` always looks at the closest
+`pyproject.toml` only, not at the whole workspace.
+
+If you want to “isolate” a `pyproject.toml` insert an empty
+`[tool.uv.workspace]` in the `pyproject.toml`, that way it is not part of any
+other workspace from directories above it.
