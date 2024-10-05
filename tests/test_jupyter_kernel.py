@@ -130,6 +130,7 @@ def test_project_manager(scenario: str, python_version: str, scenario_setup: Sce
     assert returncode == 0
 
 
+@pytest.mark.server_args("--extra kernel")
 def test_no_kernel(scenario_setup: ScenarioSetup):
     "Project with no kernel installed"
     scenario = "nokernel"
@@ -139,6 +140,7 @@ def test_no_kernel(scenario_setup: ScenarioSetup):
 
     # from sanity check
     assert "Could not find `ipykernel` in environment" in proc.stderr
+    assert "ModuleNotFoundError: No module named 'jinja2'" in proc.stderr
 
 
 def test_interrupt(python_version: str, scenario_setup: ScenarioSetup):

@@ -17,13 +17,9 @@ from pyproject_local_kernel.configdata import Config
 
 
 _SCRIPT_CHECK_HAS_KERNEL = """import importlib.util; assert importlib.util.find_spec("ipykernel")"""
-
-_MESSAGE_GENERIC = """Could not start project - no pyproject.toml or malformed pyproject.toml?"""
-
-_MESSAGE_NO_PYPROJECT = _MESSAGE_GENERIC
-
-_MESSAGE_NO_IPYKERNEL = """Could not find `ipykernel` in environment
-Use `uv add ipykernel` or other command to install ipykernel into the environment."""
+_MESSAGE_NO_PYPROJECT = """Could not start project - no pyproject.toml or malformed pyproject.toml?"""
+_MESSAGE_NO_IPYKERNEL = """Could not find `ipykernel` in environment.
+Add `ipykernel` as a dependency in your project and update the virtual environment."""
 
 
 class PyprojectKernelProvisioner(LocalProvisioner):
@@ -44,10 +40,8 @@ class PyprojectKernelProvisioner(LocalProvisioner):
         logger = t.cast(logging.Logger, self.log)
         logger.log(level, MY_TOOL_NAME + ": " + message, *args)
 
-    async def pre_launch(self, **kwargs) -> t.Dict[str, t.Any]:
+    def _pplk_pre_launch(self, **kwargs):
         """prepare kernel launch"""
-        # can raise an exception here and JupyterLab will show the message
-        # in a modal.
         kernel_spec = t.cast(KernelSpec, self.kernel_spec)
         self._log_debug("kernel_id=%r", self.kernel_id)
         self._log_debug("connection_info=%r", self.connection_info)
@@ -69,13 +63,13 @@ class PyprojectKernelProvisioner(LocalProvisioner):
         if find_project.path is None:
             raise RuntimeError(_MESSAGE_NO_PYPROJECT)
 
+        if find_project.kind == ProjectKind.InvalidData:
+            raise RuntimeError("\n".join([_MESSAGE_NO_PYPROJECT, f"Reason: {find_project.error_context}"]))
+
         python_cmd = find_project.get_python_cmd(allow_fallback=True, allow_hatch_workaround=True)
 
         if python_cmd is None:
-            if find_project.kind == ProjectKind.InvalidData:
-                raise RuntimeError("\n".join([_MESSAGE_GENERIC, f"Reason: {find_project.error_context}"]))
-            else:
-                raise RuntimeError("No python cmd - unknown project\n" + _MESSAGE_NO_PYPROJECT)
+            raise RuntimeError(_MESSAGE_NO_PYPROJECT)
 
         # convert path to string and update kernel spec argv
         python_cmd = list(map(str, python_cmd))
@@ -84,6 +78,13 @@ class PyprojectKernelProvisioner(LocalProvisioner):
         if self.sanity_check:
             self._python_environment_sanity_check(find_project, python_cmd, cwd, kwargs)
 
+    async def pre_launch(self, **kwargs) -> t.Dict[str, t.Any]:
+        # note: we could raise an exception here and JupyterLab will show the message
+        try:
+            self._pplk_pre_launch(**kwargs)
+        except Exception as exc:
+            # an error was encountered, run the fallback kernel instead to present the error
+            self.kernel_spec.argv[:] = ["pyproject_local_kernel", f"--fallback-kernel={exc}"] + self.python_kernel_args
         self._log_debug("launching kernel from process pid=%d", os.getpid())
         return await super().pre_launch(**kwargs)
 
