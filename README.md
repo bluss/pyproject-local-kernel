@@ -16,10 +16,10 @@ Use python project managers to define dependencies:
 [PyPi]: https://pypi.org/project/pyproject-local-kernel/
 
 Instead of installing a myriad of jupyter kernelspecs, one per project, with
-this solution there is only one "meta" kernel that enables the environment for
-the project the notebook file resides in. This approach should be more
-portable, usable to anyone who checks out your project structure from git, and
-easier to use.
+this solution there is only one [kernel provisioner][kp] that enables the
+environment for the project the notebook file resides in. This approach should
+be more portable, usable to anyone who checks out your project structure from
+git, and easier to use.
 
 Pyproject Local supports the following systems, and reads `pyproject.toml` to
 figure out which kind of project it is:
@@ -32,58 +32,81 @@ PDM <br>
 
 A custom command or direct use of virtual environment can also be configured.
 
+[kp]: https://jupyter-client.readthedocs.io/
+
 ## Quick Start (JupyterLab)
 
 1. Install pyproject-local-kernel in your jupyterlab environment and restart
    jupyterlab
-2. Create a new directory and notebook
-3. Select the **Pyproject Local** kernel for the notebook
-4. Run these shell commands in the notebook to setup the new project:<br>
-   
+2. Create a new directory for the notebook project
+3. Create a new notebook and select the **Pyproject Local** kernel
+4. In the *“fallback”* environment that appears - because it is an empty
+   project - create a new project.
+
   (Example for Uv:)
 
   `!uv init && uv add ipykernel`
 
-  (Example for Rye:)
+5. Use the restart button in JupyterLab to restart the kernel after these changes.
+6. Dependencies will quickly sync and you are good to go!
+7. Use more `add` commands to add further dependencies.
 
-  `!rye init --virtual && rye add ipykernel`
-
-
-Now restart the kernel and you are good to go. Use more `add` commands to add
-further dependencies.
 
 See the examples directory for how to setup jupyterlab and notebook projects
 separately. JupyterLab and the notebook are installed in separate environments.
 
 
-Do you want to use pyproject-local-kernel in other environments, like
-**VSCodium or VS Code**, or maybe using Pipenv? See our [FAQ][] for more
+Do you want to use pyproject-local-kernel in other environments, like with
+papermill, **VSCodium or VS Code**, or or other ways? See our [FAQ][] for more
 information.
 
 [FAQ]: FAQ.md
 
 ## User Experience
 
-If the Pyproject Local kernel is used in a project where Uv (or the relevant
-project manager) is not installed, or the project does not have an ipykernel
-in the environment, then starting the kernel fails.
+If started in an empty directory or where a project is not correctly set up,
+the Pyproject Local will fail to start normally, but it will start a fallback
+kernel so that you can fix the project.
 
-In that case a fallback kernel is started which that shows a message that it is
-not setup as expected in this environment. This is a regular ipython kernel which
-allows you to run shell commands and hopefully fix the configuration of the project.
-
-It will give you some hints in the Jupyter notebook interface about the next
-steps to get it working. Example below is for Rye.
+It will show a message like this - with some details about the error.
 
 ```diff
-! Failed to start kernel! The detected project type is: Rye
-! Is the virtual environment created, and does it have ipykernel in the project?
+! Error: Could not find `ipykernel` in environment.
+! Add `ipykernel` as a dependency in your project and update the virtual environment.
+! Failed to start kernel! The detected project type is: Unknown
 !
-! Run this:
-! !rye add --sync ipykernel
 !
-! Then restart the kernel to try again.
+! This is a fallback - pyproject-local-kernel failed to start.
+! The purpose of the fallback is to let you run shell commands to fix the
+! environment - when you are done, restart the kernel and try again!
 ```
+
+Remember that you can also use jupyterlab's embedded terminal to help setting
+up a project.
+
+### No `pyproject.toml`
+
+If the Pyproject Local kernel is selected in a project where there is no `pyproject.toml`,
+then starting the kernel fails. On first run it should show an error message in JupyterLab.
+
+If this happens, create a new `pyproject.toml` with the editor or use
+one of the project init commands to create a new project.
+
+### No `ipykernel` in the project
+
+The notebook project needs to install `ipykernel` as a dependency.
+
+Edit the `pyproject.toml` to include `ipykernel` in dependencies:
+
+```toml
+dependencies = [
+    "ipykernel>=6.29",
+    # .. more dependencies
+]
+```
+
+sync the changes to the project using sync command for the project
+manager you use, then restart the Pyproject Local kernel in jupyterlab.
 
 ## Configuration
 
@@ -134,11 +157,6 @@ manager in the jupyterlab environment, or install the project manager
 user-wide (using something like pipx, rye tools, uv tool, brew, or
 other method to install it.)
 
-### Rye
-
-- Rye is detected if the pyproject.toml contains `tool.rye.managed = true`
-  which Rye sets by default for its new projects.
-
 ### Uv
 
 - Uv is detected if the pyproject.toml contains `tool.uv`. It is also the
@@ -148,6 +166,11 @@ other method to install it.)
   `ipykernel` is used even if it's not already in the project(!). However, note that
   it uses an ephemeral virtual environment for ipykernel in that case. Add
   ipykernel to the project to avoid this.
+
+### Rye
+
+- Rye is detected if the pyproject.toml contains `tool.rye.managed = true`
+  which Rye sets by default for its new projects.
 
 ### PDM
 
@@ -164,6 +187,13 @@ other method to install it.)
 - It's best to create the hatch project, add ipykernel as dependency and sync
   dependencies in a terminal before starting (it does not work so well with
   shell commands in a notebook).
+
+### Poetry
+
+- Poetry is detected if pyproject.toml contains `tool.poetry.name`
+
+- Some commands are interactive by default and don't work in a notebook,
+  but they have an `-n` switch to make them non-interactive.
 
 ## Project Status
 
