@@ -79,6 +79,9 @@ addopts = [
     "-v",
     "--import-mode=importlib",
 ]
+filterwarnings = [
+    "ignore:Jupyter is migrating its paths",
+]
 
 # Editors and other tools below
 
