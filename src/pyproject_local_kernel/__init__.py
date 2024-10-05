@@ -42,6 +42,7 @@ _logger = logging.getLogger(__name__)
 
 MY_TOOL_NAME = "pyproject-local-kernel"  # name of tool section in pyproject.toml for this tool
 ENABLE_DEBUG_ENV = "PYPROJECT_LOCAL_KERNEL_DEBUG"
+KERNEL_SPEC_NAME = "pyproject_local_kernel"
 
 
 class ProjectKind(enum.Enum):
