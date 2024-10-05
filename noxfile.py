@@ -5,6 +5,7 @@ Run ./nox -l to list available tasks, extra arguments after -- are passed to the
 
 import glob
 import os
+from pathlib import Path
 import sys
 
 import nox
@@ -84,3 +85,17 @@ def docs_serve(session: nox.Session):
 def check(session: nox.Session):
     "lint check; extra args are passed to ruff"
     session.run("uvx", "ruff@0.6.8", "check", "--output-format=concise", *session.posargs)
+
+
+@nox.session(tags=[])
+def update_test_lockfiles(session: nox.Session):
+    "update lockfiles for test projects"
+    # lock for the range >= python_versions[0]
+    base_dir = Path("tests/server-client")
+    directories = [base_dir / "server"]
+    client_lockfiles = glob.glob(str(base_dir / "client-*/uv.lock"))
+    directories.extend([Path(l).parent for l in client_lockfiles])
+    for dir in directories:
+        with session.chdir(dir):
+            session.run("uv", "python", "pin", python_versions[0], external=True)
+            session.run("uv", "lock", "-U")
