@@ -77,6 +77,7 @@ class ProjectDetection:
     path: Path | None
     kind: ProjectKind
     config: Config = dataclasses.field(default_factory=Config)
+    error_context: str | None = None
 
     def get_python_cmd(self, allow_fallback=True, allow_hatch_workaround=False) -> t.Sequence[str | Path] | None:
         """
@@ -171,22 +172,23 @@ IDENTIFY_FUNCTIONS = {
 }
 
 
-def _identify_toml(data) -> t.Tuple[ProjectKind, t.Optional[Config]]:
+def _identify_toml(data) -> t.Tuple[ProjectKind, t.Optional[Config], t.Optional[str]]:
     if not isinstance(data, dict):
-        return ProjectKind.InvalidData, None
+        return ProjectKind.InvalidData, None, "Could not read pyproject.toml"
     try:
         config = Config.from_dict(get_dotkey(data, f"tool.{MY_TOOL_NAME}", {}))
     except TypeError as exc:
-        _logger.warning("Error on reading pyproject.toml: %s", exc)
-        return ProjectKind.InvalidData, None
+        error_message = f"Error on reading pyproject.toml: {exc}"
+        _logger.warning(error_message)
+        return ProjectKind.InvalidData, None, error_message
     if config.python_cmd is not None:
-        return ProjectKind.CustomConfiguration, config
+        return ProjectKind.CustomConfiguration, config, None
     if config.use_venv is not None:
-        return ProjectKind.UseVenv, config
+        return ProjectKind.UseVenv, config, None
     for kind, func in IDENTIFY_FUNCTIONS.items():
         if func(data):
-            return kind, None
-    return ProjectKind.Unknown, None
+            return kind, None, None
+    return ProjectKind.Unknown, None, None
 
 
 def identify(file):
@@ -198,13 +200,15 @@ def identify(file):
         try:
             with open(pyproj, "rb") as tf:
                 toml_structure = tomli.load(tf)
-                identity, config = _identify_toml(toml_structure)
+                identity, config, error_context = _identify_toml(toml_structure)
                 if config:
                     extra_vars['config'] = config
+                if error_context:
+                    extra_vars['error_context'] = error_context
         except (IOError, tomli.TOMLDecodeError) as exc:
             print("Error: ", exc, file=sys.stderr)
             kind = ProjectKind.InvalidData
-            return ProjectDetection(pyproj, kind)
+            return ProjectDetection(pyproj, kind, error_context=str(exc))
 
     return ProjectDetection(pyproj, identity, **extra_vars)
 
