@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.11.0
+
+- Use [local kernel provisioning][lkp] to launch the kernel. This is
+  a more standard way to do it, with less overhead and less compatibility
+  issues. (#39)
+- Improved fallback mode on errors and documentation around this
+- License update again, more or less reverting what was done in v0.10.0,
+  because the relevant code has been removed. (#39)
+- The package now installs an executable `pyproject_local_kernel` that is
+  used interally (#39)
+- This one goes to eleven, it really does
+
+[lkp]: https://jupyter-client.readthedocs.io/en/latest/provisioning.html
+
 ## 0.10.1
 
 - If there is no `pyproject.toml` at all, show an error message to the user
