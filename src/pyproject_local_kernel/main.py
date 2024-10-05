@@ -32,7 +32,7 @@ from jupyter_client import KernelProvisionerBase  # type: ignore
 from jupyter_client.provisioning.factory import KernelProvisionerFactory
 import jupyter_client.kernelspec
 
-from pyproject_local_kernel import MY_TOOL_NAME, ENABLE_DEBUG_ENV, ProjectKind, find_pyproject_file_from, identify
+from pyproject_local_kernel import MY_TOOL_NAME, ENABLE_DEBUG_ENV, ProjectKind, find_pyproject_file_from, identify, KERNEL_SPEC_NAME
 
 
 _logger = logging.getLogger(__name__)
@@ -87,7 +87,6 @@ def main() -> int:
     _setup_logging()
     _logger.debug("Started with argv=%s", sys.argv)
     parser = argparse.ArgumentParser()
-    parser.add_argument("--use-venv", action="store_true")
     parser.add_argument("-f", type=str, dest="connection_file")
     parser.add_argument("--test-interrupt", action="store_true", help=argparse.SUPPRESS)
     parser.add_argument("--test-quit", action="store_true", help=argparse.SUPPRESS)
@@ -99,14 +98,13 @@ def main() -> int:
     if args.fallback_kernel:
         return start_fallback_kernel(failure_to_start_msg=args.fallback_kernel)
 
-    kernel_spec_name = "pyproject_local_kernel" if not args.use_venv else "pyproject_local_kernel_use_venv"
     _logger.warning("Unsupported: direct launch of %s - but will attempt to work with this", MY_TOOL_NAME)
     _logger.warning("Must use jupyter-client to launch kernel with kernel provisioning")
 
     try:
-        kernel_spec = jupyter_client.kernelspec.get_kernel_spec(kernel_spec_name)
+        kernel_spec = jupyter_client.kernelspec.get_kernel_spec(KERNEL_SPEC_NAME)
     except KeyError:
-        _logger.error("Could not find kernel spec %r", kernel_spec_name)
+        _logger.error("Could not find kernel spec %r", KERNEL_SPEC_NAME)
         return 1
     prov = KernelProvisionerFactory().create_provisioner_instance(str(uuid.uuid4()), kernel_spec, parent=None)
     _logger.debug("provisioner=%s", prov)
