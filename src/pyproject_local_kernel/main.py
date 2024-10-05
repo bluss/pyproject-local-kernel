@@ -120,7 +120,7 @@ def main() -> int:
 
 
 def start_fallback_kernel(failure_to_start_msg: str):
-    """"
+    """
     Start a fallback kernel - for the purpose having a good interface for the user
     to fix their environment.
     """
@@ -131,6 +131,8 @@ def start_fallback_kernel(failure_to_start_msg: str):
     except Exception:
         project = None
 
+    project_kind = project and project.kind
+
     help_messages = []
 
     if failure_to_start_msg:
@@ -140,14 +142,37 @@ def start_fallback_kernel(failure_to_start_msg: str):
         "Do you need to create a new project?",
         "",
         "Use a command like one of these to start:",
-        ""
-        "!uv init && uv add ipykernel",
+        "" "!uv init && uv add ipykernel",
         "!pdm init --python 3.12 -n && pdm add ipykernel",
         "!poetry init -n && poetry add ipykernel",
         "",
         "Some project managers work better in a terminal than in a notebook",
-        "in that case, set up your project separately."
+        "in that case, set up your project separately.",
     ]
+
+    if pyproject_file is None:
+        help_messages += init_messages
+
+    if project_kind is not None:
+        help_messages += [f"The detected project type is: {project_kind.name}"]
+
+    help_messages += [""]
+    if project_kind == ProjectKind.Rye:
+        help_messages += [
+            "Run this:",
+            "!rye add --sync ipykernel",
+        ]
+    elif project_kind == ProjectKind.Uv:
+        help_messages += [
+            "Run this:",
+            "!uv add ipykernel",
+        ]
+    elif project_kind is not None and project_kind.python_cmd() is not None:
+        help_messages += [
+            "Add ipykernel as a dependency in the project and sync the virtual environment.",
+            "",
+            "Then restart the kernel to try again.",
+        ]
 
     message_explainer = [
         "",
@@ -156,40 +181,11 @@ def start_fallback_kernel(failure_to_start_msg: str):
         "environment - when you are done, restart the kernel and try again!",
     ]
 
-    if pyproject_file is None:
-        help_messages += init_messages
-
-
-    project_kind = project and project.kind
-
-    if project_kind is not None:
-        help_messages += [f"Failed to start kernel! The detected project type is: {project_kind.name}"]
-
-    sync_kernel_env_messages = [""]
-    if project_kind == ProjectKind.Rye:
-        sync_kernel_env_messages += [
-            "Run this:",
-            "!rye add --sync ipykernel",
-        ]
-    elif project_kind == ProjectKind.Uv:
-        sync_kernel_env_messages += [
-            "Run this:",
-            "!uv add ipykernel",
-        ]
-    elif project_kind is not None and project_kind.python_cmd() is not None:
-        sync_kernel_env_messages += [
-            "Add ipykernel as a dependency in the project and sync the virtual environment.",
-            "",
-            "Then restart the kernel to try again.",
-        ]
-
-    help_messages += sync_kernel_env_messages
     help_messages += message_explainer
 
     _logger.info("starting fallback kernel")
     for msg in help_messages:
         _logger.info(msg)
-
 
     try:
         import ipykernel.ipkernel
@@ -203,7 +199,6 @@ def start_fallback_kernel(failure_to_start_msg: str):
             for msg in help_messages:
                 print(msg, file=sys.stderr)
             return super().do_execute(*args, **kwargs)
-
 
     # clean arguments before ipython sees them
     _clean_sys_argv()
@@ -219,7 +214,7 @@ def _clean_sys_argv():
         arg = next(argv_iter, None)
         if arg is None:
             break
-        if arg in ("--fallback-kernel", ):
+        if arg in ("--fallback-kernel",):
             next(argv_iter, None)
         else:
             clean_args.append(arg)
