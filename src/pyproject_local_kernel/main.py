@@ -29,7 +29,7 @@ import sys
 import uuid
 
 from jupyter_client import KernelProvisionerBase  # type: ignore
-from jupyter_client.provisioning.factory import KernelProvisionerFactory
+from jupyter_client.provisioning import KernelProvisionerFactory as KPF  # type: ignore
 import jupyter_client.kernelspec
 
 from pyproject_local_kernel import MY_TOOL_NAME, ENABLE_DEBUG_ENV, ProjectKind, find_pyproject_file_from, identify, KERNEL_SPEC_NAME
@@ -106,7 +106,7 @@ def main() -> int:
     except KeyError:
         _logger.error("Could not find kernel spec %r", KERNEL_SPEC_NAME)
         return 1
-    prov = KernelProvisionerFactory().create_provisioner_instance(str(uuid.uuid4()), kernel_spec, parent=None)
+    prov = KPF.instance().create_provisioner_instance(str(uuid.uuid4()), kernel_spec, parent=None)
     _logger.debug("provisioner=%s", prov)
 
     asyncio.run(async_kernel_start(prov, args, extra_args))
