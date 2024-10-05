@@ -960,21 +960,24 @@ wheels = [
 
 [[package]]
 name = "pyproject-local-kernel"
-version = "0.10.1"
+version = "0.11.0"
 source = { editable = "../../" }
 dependencies = [
     { name = "jupyter-client" },
+    { name = "traitlets" },
 ]
 
 [package.metadata]
 requires-dist = [
     { name = "jupyter-client", specifier = ">=8.6.3" },
     { name = "tomli", marker = "python_full_version < '3.11'", specifier = ">=2.0.1" },
+    { name = "traitlets", specifier = ">=5.14.3" },
 ]
 
 [package.metadata.requires-dev]
 dev = [
     { name = "nox", specifier = ">=2024.4.15" },
+    { name = "psutil", specifier = ">=6.0.0" },
     { name = "pytest", specifier = ">=8.3.3" },
 ]
 
