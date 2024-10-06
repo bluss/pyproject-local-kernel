@@ -73,8 +73,7 @@ It will show a message like this - with some details about the error.
 ```diff
 ! Error: Could not find `ipykernel` in environment.
 ! Add `ipykernel` as a dependency in your project and update the virtual environment.
-! Failed to start kernel! The detected project type is: Unknown
-!
+! The detected project type is: Unknown
 !
 ! This is a fallback - pyproject-local-kernel failed to start.
 ! The purpose of the fallback is to let you run shell commands to fix the
