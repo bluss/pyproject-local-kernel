@@ -71,6 +71,7 @@ packages = ["src/pyproject_local_kernel"]
 
 [tool.hatch.build.targets.wheel.shared-data]
 "./data/kernel.json" = "share/jupyter/kernels/pyproject_local_kernel/kernel.json"
+"./data/kernel_use_venv.json" = "share/jupyter/kernels/pyproject_local_kernel_use_venv/kernel.json"
 
 # Tests
 [tool.pytest.ini_options]
@@ -100,4 +101,3 @@ line-length = 150
 lint.ignore = ["E741"]
 
 [tool.pyproject_local_kernel]
-#use-venv = ".venv"  # for test

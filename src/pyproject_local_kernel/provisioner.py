@@ -23,10 +23,14 @@ Add `ipykernel` as a dependency in your project and update the virtual environme
 
 
 class PyprojectKernelProvisioner(LocalProvisioner):
-    use_venv: Unicode = Unicode(default_value=None, config=True, allow_none=True,
-                                help="Default setting for use-venv for projects using the kernel")
-    python_kernel_args = List[str](config=True, allow_none=False, help="Arguments for kernel process")
-    sanity_check = Bool(config=True, help="Enable sanity check for 'ipykernel' package in environment")
+    # only active if metadata pyproject_local_kernel.venv=true
+    use_venv = Unicode(default_value=".venv", allow_none=True,
+                       help="Default setting for use-venv for projects using the kernel").tag(config=True)
+    sanity_check = Bool(default_value=True, help="Enable sanity check for 'ipykernel' package in environment").tag(config=True)
+    python_kernel_args = List[str](allow_none=False, help="Arguments for kernel process")
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
     def _log_info(self, message, *args):
         self.__log(logging.INFO, message, *args)
@@ -43,14 +47,17 @@ class PyprojectKernelProvisioner(LocalProvisioner):
     def _pplk_pre_launch(self, **kwargs):
         """prepare kernel launch"""
         kernel_spec = t.cast(KernelSpec, self.kernel_spec)
-        self._log_debug("kernel_id=%r", self.kernel_id)
-        self._log_debug("connection_info=%r", self.connection_info)
-        self._log_debug("config=%r", self.config)
-        self._log_debug("spec=%r", kernel_spec.to_dict())
         cwd = Path(kwargs.get("cwd", Path.cwd()))
+
+        for tname in ["config", "kernel_id", "use_venv", "sanity_check"]:
+            self._log_debug("%s=%r", tname, getattr(self, tname, None))
+        self._log_debug("kernel_spec=%r", kernel_spec.to_dict())
         self._log_debug("cwd=%s", cwd)
 
-        spec_config = Config(use_venv=self.use_venv)
+        enable_venv_from_spec = kernel_spec.metadata.get("pyproject_local_kernel", {}).get("venv", False)
+
+        spec_use_venv = self.use_venv if enable_venv_from_spec else None
+        spec_config = Config(use_venv=spec_use_venv)
 
         if not self.python_kernel_args:
             raise RuntimeError("pyproject_local_kernel metadata missing from kernelspec")

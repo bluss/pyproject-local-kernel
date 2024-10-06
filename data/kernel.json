@@ -4,11 +4,13 @@
   "language": "python",
   "metadata": {
     "debugger": true,
+    "pyproject_local_kernel": {
+        "description": "Pyproject Kernel enables the environment defined by the project."
+    },
     "kernel_provisioner": {
       "provisioner_name": "pyproject-local-kernel-provisioner",
       "config": {
-        "python_kernel_args": ["-m", "ipykernel_launcher", "-f", "{connection_file}"],
-        "sanity_check": true
+        "python_kernel_args": ["-m", "ipykernel_launcher", "-f", "{connection_file}"]
       }
     }
   }

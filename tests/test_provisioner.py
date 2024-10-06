@@ -9,19 +9,20 @@ import pytest
 import jupyter_client.kernelspec
 from jupyter_client.kernelspec import KernelSpec
 from jupyter_client.provisioning import KernelProvisionerFactory as KPF  # type: ignore
+from traitlets.config import Config
 
 
 from pyproject_local_kernel.provisioner import PyprojectKernelProvisioner
-from pyproject_local_kernel import KERNEL_SPEC_NAME
+from pyproject_local_kernel import KERNEL_SPECS
 from pyproject_local_kernel import ProjectKind
 
 
 pytestmark = pytest.mark.unit
 
 
-@pytest.fixture(scope="function")
-def kernel_spec() -> KernelSpec:
-    return jupyter_client.kernelspec.get_kernel_spec(KERNEL_SPEC_NAME)
+@pytest.fixture(scope="function", params=KERNEL_SPECS)
+def kernel_spec(request: pytest.FixtureRequest) -> KernelSpec:
+    return jupyter_client.kernelspec.get_kernel_spec(request.param)
 
 
 def test_instantiate(kernel_spec: KernelSpec):
@@ -38,23 +39,30 @@ class Expected(enum.Enum):
     NoPyproject = enum.auto()
 
 
-@pytest.mark.parametrize("scenario,python_case,use_venv,sanity", [
-    ("", Expected.NoPyproject, None, False),
-    ("client-venv", Expected.Venv, None, False),
-    ("client-venv", Expected.Fallback, None, True),
-    ("client-uv", Expected.Uv, None, False),
-    ("client-uv", Expected.Fallback, None, True),
-    ("client-uv", Expected.Venv, ".venv", False),
-])
-def test_pre_launch(scenario: str, python_case, use_venv: bool | None, sanity: bool,
-                    kernel_spec: KernelSpec, tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
+KS_REGULAR = KERNEL_SPECS[0]
+KS_VENV = KERNEL_SPECS[1]
+
+
+@pytest.mark.parametrize("scenario,expected,sanity,kernel_spec", [
+    ("", Expected.NoPyproject, False, KS_REGULAR),
+    ("", Expected.NoPyproject, False, KS_VENV),
+    ("client-venv", Expected.Venv, False, KS_REGULAR),
+    ("client-venv", Expected.Venv, False, KS_VENV),
+    ("client-uv", Expected.Uv, False, KS_REGULAR),
+    ("client-uv", Expected.Venv, False, KS_VENV),
+    ("client-uv", Expected.Fallback, True, KS_REGULAR),
+    ("client-uv", Expected.Fallback, True, KS_VENV),
+], indirect=["kernel_spec"])
+def test_pre_launch(scenario: str, expected, sanity: bool, kernel_spec: KernelSpec,
+                    tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
     prov = PyprojectKernelProvisioner()
-    prov.use_venv = use_venv
+    prov.use_venv = ".venv"
     prov.python_kernel_args = ["command", "-f", "{connection_file}"]
     prov.sanity_check = sanity
     prov.kernel_spec = kernel_spec
 
     cwd = tmp_path
+
     if scenario:
         scenario_dir = Path("tests/server-client") / scenario
         shutil.copy(scenario_dir / "pyproject.toml", cwd)
@@ -69,15 +77,36 @@ def test_pre_launch(scenario: str, python_case, use_venv: bool | None, sanity: b
 
     python_cmd = list(prov.kernel_spec.argv)
 
-    if python_case == Expected.Venv:
+    if expected == Expected.Venv:
         assert python_cmd[0].startswith(str(cwd.absolute() / ".venv"))
-    elif python_case == Expected.Uv:
+    elif expected == Expected.Uv:
         uv_cmd = list(ProjectKind.Uv.python_cmd() or ["x"])
         assert python_cmd[:len(uv_cmd)] == uv_cmd
-    elif python_case == Expected.Fallback:
+    elif expected == Expected.Fallback:
         assert python_cmd[1] == "--fallback-kernel=not sane"
-    elif python_case == Expected.NoPyproject:
+    elif expected == Expected.NoPyproject:
         assert python_cmd[1].startswith("--fallback-kernel")
         assert 'no pyproject.toml' in python_cmd[1]
     else:
         raise NotImplementedError
+
+
+def test_venv_config():
+    default = ".venv"
+    config_value = "foof"
+    config_kw = "babbo"
+
+    config = Config()
+    config.PyprojectKernelProvisioner.use_venv = config_value
+
+    prov = PyprojectKernelProvisioner()
+    assert prov.use_venv == default
+
+    prov = PyprojectKernelProvisioner(use_venv=config_kw)
+    assert prov.use_venv == config_kw
+
+    prov = PyprojectKernelProvisioner(config=config, use_venv=config_kw)
+    assert prov.use_venv == config_kw
+
+    prov = PyprojectKernelProvisioner(config=config)
+    assert prov.use_venv == config_value
