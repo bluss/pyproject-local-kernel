@@ -7,6 +7,9 @@ import shutil
 
 import pytest
 import jupyter_client.kernelspec
+from jupyter_client.kernelspec import KernelSpec
+from jupyter_client.provisioning import KernelProvisionerFactory as KPF  # type: ignore
+
 
 from pyproject_local_kernel.provisioner import PyprojectKernelProvisioner
 from pyproject_local_kernel import KERNEL_SPEC_NAME
@@ -14,6 +17,18 @@ from pyproject_local_kernel import ProjectKind
 
 
 pytestmark = pytest.mark.unit
+
+
+@pytest.fixture(scope="function")
+def kernel_spec() -> KernelSpec:
+    return jupyter_client.kernelspec.get_kernel_spec(KERNEL_SPEC_NAME)
+
+
+def test_instantiate(kernel_spec: KernelSpec):
+    prov = KPF.instance().create_provisioner_instance("id", kernel_spec, parent=None)
+    assert isinstance(prov, PyprojectKernelProvisioner)
+    assert prov.python_kernel_args
+    assert prov.sanity_check
 
 
 class Expected(enum.Enum):
@@ -31,14 +46,12 @@ class Expected(enum.Enum):
     ("client-uv", Expected.Fallback, None, True),
     ("client-uv", Expected.Venv, ".venv", False),
 ])
-def test_prov(scenario: str, python_case, use_venv: bool | None, sanity: bool,
-              tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
+def test_pre_launch(scenario: str, python_case, use_venv: bool | None, sanity: bool,
+                    kernel_spec: KernelSpec, tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
     prov = PyprojectKernelProvisioner()
     prov.use_venv = use_venv
     prov.python_kernel_args = ["command", "-f", "{connection_file}"]
     prov.sanity_check = sanity
-
-    kernel_spec = jupyter_client.kernelspec.get_kernel_spec(KERNEL_SPEC_NAME)
     prov.kernel_spec = kernel_spec
 
     cwd = tmp_path
