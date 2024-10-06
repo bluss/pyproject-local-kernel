@@ -99,3 +99,12 @@ def update_test_lockfiles(session: nox.Session):
         with session.chdir(dir):
             session.run("uv", "python", "pin", python_versions[0], external=True)
             session.run("uv", "lock", "-U")
+
+
+@nox.session()
+def show_jupyter_config(session: nox.Session):
+    "show configuration variables from jupyter classes"
+    script = """
+from pyproject_local_kernel.provisioner import PyprojectKernelProvisioner
+print(PyprojectKernelProvisioner.class_config_section())"""
+    session.run("uv", "run", "python", "-c", script, external=True)

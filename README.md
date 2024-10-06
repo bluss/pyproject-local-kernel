@@ -150,6 +150,28 @@ use-venv = ".venv"
 ```
 
 
+### `PyprojectKernelProvisioner`
+
+The kernel provisioner is configurable simliarly to other jupyter classes
+with the following settings. They can be set in your `jupyter_lab_config.py`
+settings file.
+When possible, prefer to use settings in `pyproject.toml` instead, to keep them
+close to the project.
+
+```python
+#------------------------------------------------------------------------------
+# PyprojectKernelProvisioner(LocalProvisioner) configuration
+#------------------------------------------------------------------------------
+## Enable sanity check for 'ipykernel' package in environment
+#  Default: True
+# c.PyprojectKernelProvisioner.sanity_check = True
+
+## Default setting for use-venv for projects using the 'use-venv' kernel
+#  Default: '.venv'
+# c.PyprojectKernelProvisioner.use_venv = '.venv'
+```
+
+
 ## About Particular Project Managers
 
 The project manager command, be it rye, uv, pdm, etc needs to be
