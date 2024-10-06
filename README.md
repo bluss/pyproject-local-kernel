@@ -34,6 +34,8 @@ A custom command or direct use of virtual environment can also be configured.
 
 [kp]: https://jupyter-client.readthedocs.io/
 
+![screenshot of notebook launcher](https://raw.githubusercontent.com/bluss/pyproject-local-kernel/main/docs/images/pyproject-local.png)
+
 ## Quick Start (JupyterLab)
 
 1. Install pyproject-local-kernel in your jupyterlab environment and restart
