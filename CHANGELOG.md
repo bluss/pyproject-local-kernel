@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.11.1
+
+- Add another kernelspec **Pyproject Local (use-venv)** which defaults to the
+  `use-venv` setting, using the virtual environment directly.
+  (#43 and cb90a2064576d8e58645ad9577a7653a94780065).
+
+- `PyprojectKernelProvisioner` is now configurable like other “jupyter objects”
+  using the same config system. However, `pyproject.toml` configuration
+  should be preferred. (#43)
+
+- When preparing to start the kernel, only errors from known checks
+  are caught and passed off to the starting fallback kernel.
+  (aaed1da1069de41df4ce493582ad98ccd6bc7d48)
+
 ## 0.11.0
 
 - Use [local kernel provisioning][lkp] to launch the kernel. This is
