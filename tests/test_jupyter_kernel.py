@@ -106,13 +106,14 @@ class ScenarioSetup:
             return proc
 
 
-@pytest.mark.parametrize("scenario", [
-    "rye",
-    "uv",
-    "hatch",
-    "venv",
+@pytest.mark.parametrize("scenario,notebook", [
+    ("rye", "notebook.py"),
+    ("uv", "notebook.py"),
+    ("uv", "notebook_use_venv.py"),
+    ("hatch", "notebook.py"),
+    ("venv", "notebook.py"),
 ])
-def test_project_manager(scenario: str, python_version: str, scenario_setup: ScenarioSetup):
+def test_project_manager(scenario: str, notebook: str | None,python_version: str, scenario_setup: ScenarioSetup):
     """
     Test papermill and pyproject-local-kernel for notebook side vs uv / rye / hatch / venv for project side
     """
@@ -121,7 +122,7 @@ def test_project_manager(scenario: str, python_version: str, scenario_setup: Sce
 
     update = python_version == "3.12"
 
-    scenario_setup.scenario(scenario, update)
+    scenario_setup.scenario(scenario, update, notebook=notebook)
     proc = scenario_setup.papermill()
     returncode = proc.returncode
 
