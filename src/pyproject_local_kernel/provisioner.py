@@ -25,7 +25,7 @@ Add `ipykernel` as a dependency in your project and update the virtual environme
 class PyprojectKernelProvisioner(LocalProvisioner):
     # only active if metadata pyproject_local_kernel.venv=true
     use_venv = Unicode(default_value=".venv", allow_none=True,
-                       help="Default setting for use-venv for projects using the kernel").tag(config=True)
+                       help="Default setting for use-venv for projects using the 'use-venv' kernel").tag(config=True)
     sanity_check = Bool(default_value=True, help="Enable sanity check for 'ipykernel' package in environment").tag(config=True)
     python_kernel_args = List[str](allow_none=False, help="Arguments for kernel process")
 
