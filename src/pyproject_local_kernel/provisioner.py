@@ -106,6 +106,13 @@ class PyprojectKernelProvisioner(LocalProvisioner):
         finally:
             self._log_debug("used %.3f s on sanity check", (time.time() - st))
 
+    async def launch_kernel(self, cmd: t.List[str], **kwargs: t.Any) -> KernelConnectionInfo:
+        self._log_info("Launching %r", cmd)
+        try:
+            return await super().launch_kernel(cmd, **kwargs)
+        except OSError as exc:
+            raise RuntimeError(f"Could not start kernel: {exc}") from exc
+
     async def send_signal(self, signum: int) -> None:
         self._log_debug("send signal=%r", signum)
         await super().send_signal(signum)
@@ -117,10 +124,3 @@ class PyprojectKernelProvisioner(LocalProvisioner):
     async def cleanup(self, restart: bool = False) -> None:
         self._log_debug("cleanup")
         await super().cleanup(restart=restart)
-
-    async def launch_kernel(self, cmd: t.List[str], **kwargs: t.Any) -> KernelConnectionInfo:
-        self._log_info("Launching %r", cmd)
-        try:
-            return await super().launch_kernel(cmd, **kwargs)
-        except OSError as exc:
-            raise RuntimeError(f"Could not start kernel: {exc}") from exc
