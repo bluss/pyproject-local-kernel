@@ -82,9 +82,11 @@ class PyprojectKernelProvisioner(LocalProvisioner):
         # note: we could raise an exception here and JupyterLab will show the message
         try:
             self._pplk_pre_launch(**kwargs)
-        except Exception as exc:
+        except (OSError, RuntimeError) as exc:
             # an error was encountered, run the fallback kernel instead to present the error
             self.kernel_spec.argv[:] = ["pyproject_local_kernel", f"--fallback-kernel={exc}"] + self.python_kernel_args
+        except Exception:
+            raise  # show to user
         self._log_debug("launching kernel from process pid=%d", os.getpid())
         return await super().pre_launch(**kwargs)
 
