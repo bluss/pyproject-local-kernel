@@ -97,7 +97,7 @@ typeCheckingMode = "basic"
 [tool.ruff]
 exclude = ["example", "tests/identify", "tests/server-client"]
 line-length = 150
-ignore = ["E741"]
+lint.ignore = ["E741"]
 
 [tool.pyproject_local_kernel]
 #use-venv = ".venv"  # for test
