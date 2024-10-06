@@ -55,12 +55,12 @@ KS_VENV = KERNEL_SPECS[1]
 ], indirect=["kernel_spec"])
 def test_pre_launch(scenario: str, expected, sanity: bool, kernel_spec: KernelSpec,
                     tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
-    prov = PyprojectKernelProvisioner()
-    prov.use_venv = ".venv"
-    prov.python_kernel_args = ["command", "-f", "{connection_file}"]
-    prov.sanity_check = sanity
-    prov.kernel_spec = kernel_spec
-
+    prov = PyprojectKernelProvisioner(
+        use_venv=".venv",
+        sanity_check=sanity,
+        kernel_spec=kernel_spec,
+        python_kernel_args=["command", "-f", "{connection_file}"],
+    )
     cwd = tmp_path
 
     if scenario:
