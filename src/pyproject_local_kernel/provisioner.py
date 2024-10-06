@@ -16,7 +16,7 @@ from pyproject_local_kernel import ProjectDetection, ProjectKind, identify, MY_T
 from pyproject_local_kernel.configdata import Config
 
 
-_SCRIPT_CHECK_HAS_KERNEL = """import importlib.util; assert importlib.util.find_spec("ipykernel")"""
+_SCRIPT_CHECK_HAS_KERNEL = """import importlib.util; raise SystemExit(not importlib.util.find_spec("ipykernel"))"""
 _MESSAGE_NO_PYPROJECT = """Could not start project - no pyproject.toml or malformed pyproject.toml?"""
 _MESSAGE_NO_IPYKERNEL = """Could not find `ipykernel` in environment.
 Add `ipykernel` as a dependency in your project and update the virtual environment."""
