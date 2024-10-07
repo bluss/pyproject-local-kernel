@@ -30,6 +30,7 @@ def test_instantiate(kernel_spec: KernelSpec):
     assert isinstance(prov, PyprojectKernelProvisioner)
     assert prov.python_kernel_args
     assert prov.sanity_check
+    assert prov.use_venv
 
 
 class Expected(enum.Enum):
@@ -55,11 +56,13 @@ KS_VENV = KERNEL_SPECS[1]
 ], indirect=["kernel_spec"])
 def test_pre_launch(scenario: str, expected, sanity: bool, kernel_spec: KernelSpec,
                     tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
+
+    config = kernel_spec.metadata['kernel_provisioner']['config']
     prov = PyprojectKernelProvisioner(
+        kernel_spec=kernel_spec,
         use_venv=".venv",
         sanity_check=sanity,
-        kernel_spec=kernel_spec,
-        python_kernel_args=["command", "-f", "{connection_file}"],
+        **config,
     )
     cwd = tmp_path
 

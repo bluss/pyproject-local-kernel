@@ -5,13 +5,13 @@
   "metadata": {
     "debugger": true,
     "pyproject_local_kernel": {
-        "description": "Pyproject Kernel enables the environment defined by the project; use-venv defaults to use the virtual environment directly, path configurable by use_venv",
-        "venv": true
+        "description": "Pyproject Kernel enables the environment defined by the project; use-venv defaults to use the virtual environment directly, path configurable by use_venv"
     },
     "kernel_provisioner": {
       "provisioner_name": "pyproject-local-kernel-provisioner",
       "config": {
-        "python_kernel_args": ["-m", "ipykernel_launcher", "-f", "{connection_file}"]
+        "python_kernel_args": ["-m", "ipykernel_launcher", "-f", "{connection_file}"],
+        "is_use_venv_kernel": true
       }
     }
   }

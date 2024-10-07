@@ -10,7 +10,8 @@
     "kernel_provisioner": {
       "provisioner_name": "pyproject-local-kernel-provisioner",
       "config": {
-        "python_kernel_args": ["-m", "ipykernel_launcher", "-f", "{connection_file}"]
+        "python_kernel_args": ["-m", "ipykernel_launcher", "-f", "{connection_file}"],
+        "is_use_venv_kernel": false
       }
     }
   }

@@ -28,6 +28,7 @@ class PyprojectKernelProvisioner(LocalProvisioner):
                        help="Default setting for use-venv for projects using the 'use-venv' kernel").tag(config=True)
     sanity_check = Bool(default_value=True, help="Enable sanity check for 'ipykernel' package in environment").tag(config=True)
     python_kernel_args = List[str](allow_none=False, help="Arguments for kernel process")
+    is_use_venv_kernel = Bool(default_value=False, allow_none=False, help="This is the use-venv kernelspec")
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -54,13 +55,11 @@ class PyprojectKernelProvisioner(LocalProvisioner):
         self._log_debug("kernel_spec=%r", kernel_spec.to_dict())
         self._log_debug("cwd=%s", cwd)
 
-        enable_venv_from_spec = kernel_spec.metadata.get("pyproject_local_kernel", {}).get("venv", False)
-
-        spec_use_venv = self.use_venv if enable_venv_from_spec else None
+        spec_use_venv = self.use_venv if self.is_use_venv_kernel else None
         spec_config = Config(use_venv=spec_use_venv)
 
         if not self.python_kernel_args:
-            raise RuntimeError("pyproject_local_kernel metadata missing from kernelspec")
+            raise RuntimeError("pyproject_local_kernel config missing from kernelspec")
 
         find_project = identify(cwd)
         self._log_debug("Found project %s in %s", find_project.kind, find_project.path)
