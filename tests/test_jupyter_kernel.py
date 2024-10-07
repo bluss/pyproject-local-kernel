@@ -89,7 +89,7 @@ class ScenarioSetup:
         self.client_dir = (self.base_dir / client_dir).absolute()
         if notebook:
             with chdir(self.base_dir):
-                run(f"uv run --project server jupytext --to ipynb {notebook} -o {self.notebook_in}")
+                run(f"uv run --project server jupytext --to ipynb {notebook} -o {self.notebook_in.as_posix()}")
 
     def papermill(self, papermill_args: str = "", launch_callback=None) -> PopenResult:
         "Run papermill on scenario notebook and return result with stdout/stderr"
@@ -100,7 +100,8 @@ class ScenarioSetup:
             assert self.client_dir, "Have client directory"
             client_dir = self.client_dir.name
 
-            args = f"uv run --project server papermill {papermill_args} --cwd {client_dir} {self.notebook_in} {self.notebook_out}"
+            args = (f"uv run --project server papermill {papermill_args} --cwd {client_dir} "
+                    f"{self.notebook_in.as_posix()} {self.notebook_out.as_posix()}")
             proc = popen_capture(args, launch_callback=launch_callback)
             return proc
 
