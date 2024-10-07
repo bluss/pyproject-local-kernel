@@ -69,11 +69,9 @@ class ScenarioSetup:
         self.tmp_path_factory = tmp
         self.base_dir = Path("tests/server-client")
         self.client_dir = None
-
-    def get_client_dir(self) -> Path:
-        if self.client_dir is None:
-            raise RuntimeError("Did not build client directory")
-        return self.client_dir
+        notebook_dir = tmp.mktemp("notebook")
+        self.notebook_in = notebook_dir / "notebook.ipynb"
+        self.notebook_out = notebook_dir / "notebook_out.ipynb"
 
     def scenario(self, name: str, update: bool = False, notebook: str | None = "notebook.py"):
         "prepare the ipykernel side project"
@@ -91,7 +89,7 @@ class ScenarioSetup:
         self.client_dir = (self.base_dir / client_dir).absolute()
         if notebook:
             with chdir(self.base_dir):
-                run(f"uv run --project server jupytext --to ipynb {notebook} -o {client_dir}/notebook.ipynb")
+                run(f"uv run --project server jupytext --to ipynb {notebook} -o {self.notebook_in}")
 
     def papermill(self, papermill_args: str = "", launch_callback=None) -> PopenResult:
         "Run papermill on scenario notebook and return result with stdout/stderr"
@@ -99,9 +97,10 @@ class ScenarioSetup:
             m.chdir(self.base_dir)
             # enable debug logging so we can assert on it
             m.setenv("PYPROJECT_LOCAL_KERNEL_DEBUG", "1")
-            client_dir = self.get_client_dir().name
+            assert self.client_dir, "Have client directory"
+            client_dir = self.client_dir.name
 
-            args = f"uv run --project server papermill {papermill_args} --cwd {client_dir} {client_dir}/notebook.ipynb {client_dir}/notebook_out.ipynb"
+            args = f"uv run --project server papermill {papermill_args} --cwd {client_dir} {self.notebook_in} {self.notebook_out}"
             proc = popen_capture(args, launch_callback=launch_callback)
             return proc
 
@@ -157,7 +156,7 @@ def test_interrupt(python_version: str, scenario_setup: ScenarioSetup):
     assert 'A cell timed out while it was being executed' in proc.stderr
     assert 'Parent appears to have exited' not in proc.stderr
     # assert that notebook recorded interrupt
-    notebook_path = scenario_setup.get_client_dir() / "notebook_out.ipynb"
+    notebook_path = scenario_setup.notebook_out
 
     # One cell output will record the KeyboardInterrupt error
     with open(notebook_path, "r") as nb_file:
