@@ -18,6 +18,7 @@ from testlib import PopenResult, popen_capture, run, save_restore_file
 pytestmark = pytest.mark.jupyter
 
 _PACKAGE_REINSTALL = "--reinstall-package pyproject-local-kernel"
+_UPDATE_VERSIONS = {"3.12", "3.13"}
 
 
 @contextlib.contextmanager
@@ -44,7 +45,7 @@ def server_sync(server_dir: Path, python_version: str,
                 tmp_path_factory: pytest.TempPathFactory, request: pytest.FixtureRequest):
     "sync driver/pyproject-local-kernel side project"
     extra_args = [m.args[0] for m in request.node.iter_markers() if m.name == "server_args"]
-    update = python_version == "3.12"
+    update = python_version in _UPDATE_VERSIONS
     with save_restore_file(server_dir / "uv.lock", tmp_path_factory.mktemp("server")):
         with chdir(server_dir):
             server_args = _PACKAGE_REINSTALL + (" -U" if update else "")
@@ -113,14 +114,16 @@ class ScenarioSetup:
     ("hatch", "notebook.py"),
     ("venv", "notebook.py"),
 ])
-def test_project_manager(scenario: str, notebook: str | None,python_version: str, scenario_setup: ScenarioSetup):
+def test_project_manager(scenario: str, notebook: str | None, python_version: str, scenario_setup: ScenarioSetup):
     """
     Test papermill and pyproject-local-kernel for notebook side vs uv / rye / hatch / venv for project side
     """
     if scenario != "venv" and shutil.which(scenario) is None:
         pytest.skip(f"{scenario} not installed")
+    if scenario == "rye" and python_version[2:] >= "13":
+        pytest.skip(f"{scenario} does not support 3.13")
 
-    update = python_version == "3.12"
+    update = python_version in _UPDATE_VERSIONS
 
     scenario_setup.scenario(scenario, update, notebook=notebook)
     proc = scenario_setup.papermill()
@@ -149,7 +152,7 @@ def test_interrupt(python_version: str, scenario_setup: ScenarioSetup):
     scenario = "interrupt"
     papermill_args = "--execution-timeout 1"
     notebook = "notebook-interrupt.py"
-    update = python_version == "3.12"
+    update = python_version in _UPDATE_VERSIONS
 
     scenario_setup.scenario(scenario, update=update, notebook=notebook)
     proc = scenario_setup.papermill(papermill_args)
