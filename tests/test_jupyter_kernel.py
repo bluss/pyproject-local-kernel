@@ -228,10 +228,12 @@ def test_direct_run(python_version: str, tmp_path: Path, pytestconfig: pytest.Co
     requires-python = ">={python_version}"
     [tool.pyproject-local-kernel]
     """
+
     with chdir(tmp_path):
-        pyproj = tmp_path / "pyproject.toml"
         cfile = tmp_path / "connection.json"
-        with open(pyproj, "w") as pf:
+        with open(".python-version", "w") as pv:
+            pv.write(python_version)
+        with open("pyproject.toml", "w") as pf:
             pf.write(textwrap.dedent(pyproject))
         proc = popen_capture(f"uv run --no-dev --with ipykernel --isolated -p {python_version} "
                              f"--project '{pytestconfig.rootpath}' pyproject_local_kernel -f '{cfile}' --test-interrupt --test-quit")
