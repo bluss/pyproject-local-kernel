@@ -72,29 +72,34 @@ class PyprojectKernelProvisioner(LocalProvisioner):
         if find_project.kind == ProjectKind.InvalidData:
             raise RuntimeError("\n".join([_MESSAGE_NO_PYPROJECT, f"Reason: {find_project.error_context}"]))
 
-        python_cmd = find_project.get_python_cmd(allow_fallback=True, allow_hatch_workaround=True)
-
-        if python_cmd is None:
+        python_environment = find_project.resolve(allow_hatch_workaround=True)
+        if python_environment is None:
             raise RuntimeError(_MESSAGE_NO_PYPROJECT)
 
+        if python_environment.venv_bin_dir:
+            kwargs["env"] = t.cast(dict, kwargs.get("env", os.environ.copy()))
+            python_environment.update_environment(kwargs["env"])
+
         # convert path to string and update kernel spec argv
-        python_cmd = list(map(str, python_cmd))
+        python_cmd = list(map(str, python_environment.python_cmd))
         kernel_spec.argv[:] = python_cmd + self.python_kernel_args
 
         if self.sanity_check:
             self._python_environment_sanity_check(find_project, python_cmd, cwd, kwargs)
+        return kwargs
 
     async def pre_launch(self, **kwargs) -> t.Dict[str, t.Any]:
         # note: we could raise an exception here and JupyterLab will show the message
         try:
-            self._pplk_pre_launch(**kwargs)
+            new_kwargs = self._pplk_pre_launch(**kwargs)
         except (OSError, RuntimeError) as exc:
             # an error was encountered, run the fallback kernel instead to present the error
             self.kernel_spec.argv[:] = ["pyproject_local_kernel", f"--fallback-kernel={exc}"] + self.python_kernel_args
+            new_kwargs = kwargs
         except Exception:
             raise  # show to user
         self._log_debug("launching kernel from process pid=%d", os.getpid())
-        return await super().pre_launch(**kwargs)
+        return await super().pre_launch(**new_kwargs)
 
     def _python_environment_sanity_check(self, project: ProjectDetection, python_cmd: list[str], cwd: Path, kwargs: dict):
         # skip sanity for uv because it will install ipykernel
@@ -116,6 +121,8 @@ class PyprojectKernelProvisioner(LocalProvisioner):
 
     async def launch_kernel(self, cmd: t.List[str], **kwargs: t.Any) -> KernelConnectionInfo:
         self._log_info("Launching %r", cmd)
+        self._log_debug("PATH=%r", kwargs.get("env", {}).get("PATH"))
+
         try:
             return await super().launch_kernel(cmd, **kwargs)
         except OSError as exc:
