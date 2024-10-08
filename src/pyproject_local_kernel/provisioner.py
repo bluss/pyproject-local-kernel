@@ -4,6 +4,7 @@ import logging
 from pathlib import Path
 import os
 import subprocess
+import sys
 import time
 import typing as t
 
@@ -94,7 +95,7 @@ class PyprojectKernelProvisioner(LocalProvisioner):
             new_kwargs = self._pplk_pre_launch(**kwargs)
         except (OSError, RuntimeError) as exc:
             # an error was encountered, run the fallback kernel instead to present the error
-            self.kernel_spec.argv[:] = ["pyproject_local_kernel", f"--fallback-kernel={exc}"] + self.python_kernel_args
+            self.kernel_spec.argv[:] = [sys.executable, "-m", "pyproject_local_kernel", f"--fallback-kernel={exc}"] + self.python_kernel_args
             new_kwargs = kwargs
         except Exception:
             raise  # show to user

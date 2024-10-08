@@ -18,8 +18,6 @@
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 import sys
-
-
 from pyproject_local_kernel.main import main
 
 sys.exit(main())
