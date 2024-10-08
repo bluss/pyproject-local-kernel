@@ -64,13 +64,22 @@ def test_hatch(path, monkeypatch: pytest.MonkeyPatch):
 @pytest.mark.parametrize("path,unix_cmd,win_cmd", [
     ("tests/identify/use-venv", ".myvenv/bin/python", r".myvenv\Scripts\python.exe"),
 ])
-def test_use_venv(path, unix_cmd, win_cmd):
+def test_use_venv(path, unix_cmd: str, win_cmd: str):
     # venv resolves to absolute path
     pd = identify(path)
     base_dir = Path(path).absolute()
     expected = base_dir / (win_cmd if is_windows() else unix_cmd)
-    assert pd.get_python_cmd() == [Path(expected)]
+
+    pres = pd.resolve()
+    assert pres is not None
+    assert pres.python_cmd == [expected]
     assert pd.path is not None and pd.path.name == "pyproject.toml"
+
+    mock_path = os.pathsep.join(["use", "venv"])
+    environment = {"PATH": mock_path}
+    pres.update_environment(environment)
+    path_components = environment["PATH"].split(os.pathsep)
+    assert path_components == [str(expected.parent), *mock_path.split(os.pathsep)]
 
 
 def is_windows():

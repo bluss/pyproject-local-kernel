@@ -81,7 +81,11 @@ class ProjectDetection:
     config: Config = dataclasses.field(default_factory=Config)
     error_context: str | None = None
 
-    def get_python_cmd(self, allow_fallback=True, allow_hatch_workaround=False) -> t.Sequence[str | Path] | None:
+    def get_python_cmd(self, *args, **kwargs) -> t.Sequence[Path | str] | None:
+        penv = self.resolve(*args, **kwargs)
+        return penv and penv.python_cmd
+
+    def resolve(self, allow_fallback=True, allow_hatch_workaround=False) -> PythonEnvironment | None:
         """
         allow_hatch_workaround: call out to `hatch env find`
         """
@@ -95,23 +99,26 @@ class ProjectDetection:
         # configuration: use-venv
         if use_venv is not None:
             assert self.path is not None
-            return [self.path.parent / get_venv_bin_python(Path(use_venv))]
+            cmd = [self.path.parent / get_venv_bin_python(Path(use_venv))]
+            # virtualenv PATH
+            venv_bin_dir = cmd[0].parent
+            return PythonEnvironment(cmd, venv_bin_dir)
 
         # configuration: python-cmd
         python_cmd = self.config.python_cmd_normalized()
         if python_cmd is not None:
-            return python_cmd
+            return PythonEnvironment(python_cmd)
 
         # project detection
         result = self.kind.python_cmd()
 
         if result is not None:
-            return result
+            return PythonEnvironment(result)
 
         if (allow_fallback and
             self.kind not in (ProjectKind.NoProject, ProjectKind.InvalidData)):
             if fallback := self._fallback_project_kind().python_cmd():
-                return fallback
+                return PythonEnvironment(fallback)
         return None
 
 
@@ -122,6 +129,22 @@ class ProjectDetection:
         if shutil.which("rye") is not None:
             return ProjectKind.Rye
         return ProjectKind.Unknown
+
+
+@dataclasses.dataclass
+class PythonEnvironment:
+    "A project's python environment"
+    python_cmd: t.Sequence[str | Path]
+    venv_bin_dir: Path | None = None
+
+    def update_environment(self, env: dict[str, t.Any]):
+        "Update environment variables in dict env"
+        if self.venv_bin_dir is None:
+            return
+        path_env = env.get("PATH", os.defpath)
+        path_entries = path_env.split(os.pathsep)
+        if not path_entries or path_entries[0] != self.venv_bin_dir:
+            env["PATH"] = os.pathsep.join([str(self.venv_bin_dir), *path_entries])
 
 
 def find_pyproject_file_from(curdir, basename="pyproject.toml"):
