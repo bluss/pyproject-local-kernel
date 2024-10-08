@@ -81,8 +81,8 @@ class ProjectDetection:
     config: Config = dataclasses.field(default_factory=Config)
     error_context: str | None = None
 
-    def get_python_cmd(self, *args, **kwargs) -> t.Sequence[Path | str] | None:
-        penv = self.resolve(*args, **kwargs)
+    def get_python_cmd(self, allow_fallback=True, allow_hatch_workaround=False) -> t.Sequence[Path | str] | None:
+        penv = self.resolve(allow_fallback, allow_hatch_workaround)
         return penv and penv.python_cmd
 
     def resolve(self, allow_fallback=True, allow_hatch_workaround=False) -> PythonEnvironment | None:
