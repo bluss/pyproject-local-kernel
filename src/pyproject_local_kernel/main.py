@@ -99,7 +99,7 @@ def main() -> int:
     _logger.debug("args=%r rest=%r", args, extra_args)
 
     if args.fallback_kernel:
-        return start_fallback_kernel(failure_to_start_msg=args.fallback_kernel)
+        return start_fallback_kernel(args, failure_to_start_msg=args.fallback_kernel)
 
     _logger.warning("Unsupported: direct launch of %s - but will attempt to work with this", MY_TOOL_NAME)
     _logger.warning("Must use jupyter-client to launch kernel with kernel provisioning")
@@ -123,7 +123,7 @@ def main() -> int:
             asyncio.run(prov.send_signal(signal.SIGINT))
 
 
-def start_fallback_kernel(failure_to_start_msg: str):
+def start_fallback_kernel(args: argparse.Namespace, failure_to_start_msg: str):
     """
     Start a fallback kernel - for the purpose having a good interface for the user
     to fix their environment.
@@ -205,23 +205,16 @@ def start_fallback_kernel(failure_to_start_msg: str):
                 print(msg, file=sys.stderr)
             return super().do_execute(*args, **kwargs)
 
-    # clean arguments before ipython sees them
-    _clean_sys_argv()
+    # remove extra items in sys.argv before IPKernelApp starts
+    sys.argv[:] = _clean_argv(args)
+    _logger.debug("Clean sys.argv=%r", sys.argv)
 
     IPKernelApp.launch_instance(kernel_class=FallbackMessageKernel)
     return 0
 
 
-def _clean_sys_argv():
-    clean_args = []
-    argv_iter = iter(sys.argv)
-    while True:
-        arg = next(argv_iter, None)
-        if arg is None:
-            break
-        if arg in ("--fallback-kernel",):
-            next(argv_iter, None)
-        else:
-            clean_args.append(arg)
-
-    sys.argv[:] = clean_args
+def _clean_argv(args: argparse.Namespace) -> list[str]:
+    argv = sys.argv[:1]
+    if args.connection_file:
+        argv += ["-f", args.connection_file]
+    return argv
