@@ -86,10 +86,10 @@ def test_pre_launch(scenario: str, expected, sanity: bool, kernel_spec: KernelSp
         uv_cmd = list(ProjectKind.Uv.python_cmd() or ["x"])
         assert python_cmd[:len(uv_cmd)] == uv_cmd
     elif expected == Expected.Fallback:
-        assert python_cmd[1] == "--fallback-kernel=not sane"
+        assert python_cmd[3] == "--fallback-kernel=not sane"
     elif expected == Expected.NoPyproject:
-        assert python_cmd[1].startswith("--fallback-kernel")
-        assert 'no pyproject.toml' in python_cmd[1]
+        assert python_cmd[3].startswith("--fallback-kernel")
+        assert 'no pyproject.toml' in python_cmd[3]
     else:
         raise NotImplementedError
 
