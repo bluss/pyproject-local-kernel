@@ -45,7 +45,7 @@ def _setup_logging():
 
 
 async def async_kernel_start(prov: KernelProvisionerBase, args: argparse.Namespace, extra_args: list[str]):
-    await prov.pre_launch()
+    kernel_kws = await prov.pre_launch()
 
     def expand(arg: str):
         "expand variables in argument"
@@ -53,9 +53,10 @@ async def async_kernel_start(prov: KernelProvisionerBase, args: argparse.Namespa
             arg = arg.format(connection_file=args.connection_file)
         return arg
 
-    cmd = [expand(arg) for arg in prov.kernel_spec.argv] + extra_args
+    cmd = kernel_kws.pop("cmd", None)
+    cmd = [expand(arg) for arg in cmd] + extra_args
 
-    kernel_connect_info = await prov.launch_kernel(cmd)
+    kernel_connect_info = await prov.launch_kernel(cmd, **kernel_kws)
     _logger.debug("info=%r", kernel_connect_info)
 
 
