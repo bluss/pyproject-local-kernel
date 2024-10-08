@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.11.2
+
+- Enable the binary path in the virtual environment for use-venv
+  and hatch configurations (#48)
+
+- Launch fallback kernel using `python -m`. (#49)
+
+- Test using Python 3.13. Was already compatible. (#45)
+
 ## 0.11.1
 
 - Add another kernelspec **Pyproject Local (use-venv)** which defaults to the
