@@ -42,10 +42,10 @@ overlay environment containing ipykernel if it wasn't already installed. This
 makes it possible to skip ipykernel in the project dependencies if desired.
 
 
-## How can I see which python environment I am using?
+## How can I see which Python environment I am using?
 
 In general it is a good idea to look at these variables in a notebook
-to understand which python version and python environment it is using:
+to understand which Python version and Python environment it is using:
 
 ```python
 sys.prefix
@@ -66,7 +66,7 @@ depend on any particular project manager and can use any virtual environment.
 And, if you for example compare the uv default configuration vs a `use-venv`
 configuration, both in a uv-defined project, then they stack up like this:
 
-**uv default**
+**Uv default**
 
 * Runs `uv run --with ipykernel python`
 * Installs `ipykernel` automatically
@@ -101,14 +101,14 @@ this way.
 directory directly. For this reason `pyproject-local-kernel` is almost always
 unecessary with VSCodium or VS Code ("code").
 
-Code does not launch the kernel in the same way that jupyterlab does
-(jupyterlab uses `jupyter-client` and enables kernel provisioning), for this reason
+Code does not launch the kernel in the same way that Jupyterlab does
+(Jupyterlab uses `jupyter-client` and enables kernel provisioning), for this reason
 `pyproject-local-kernel` is launched using a less reliable way when
 using code, and this is a - for now - unsupported way to use this project.
 
 However, it should more or less work. Here are some suggestions:
 
-Install both `jupyter` and `pyproject-local-kernel` in a central python
+Install both `jupyter` and `pyproject-local-kernel` in a central Python
 environment that you choose. (The [vscode-jupyter][] extension instructs that
 you should install `jupyter` and tell it where this installation is).
 
@@ -127,7 +127,7 @@ which can help in debugging.
 ## Does it work with with Pipenv?
 
 1. Add ipykernel to the environment packages
-2. Configure the python run command in local pyproject file
+2. Configure the Python run command in local pyproject file
 
 ```toml
 [tool.pyproject-local-kernel]
@@ -184,10 +184,10 @@ file and have other benefits of a proper project.
 
 ### Can I use a different version of Python for the notebook?
 
-Yes, the python version can be pinned separately per notebook project.
-It doesn't need to be the same as the jupyterlab Python version.
+Yes, the Python version can be pinned separately per notebook project.
+It doesn't need to be the same as the Jupyterlab Python version.
 
-### Why is the python environment path weird?
+### Why is the Python environment path weird?
 
 If you look at `sys.prefix` when using **uv** and pyproject local kernel,
 and you see a prefix like this or similar:
