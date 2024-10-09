@@ -7,7 +7,8 @@
 
 </p>
 
-Separate dependencies for Jupyter notebooks.
+Separate dependencies for Jupyter notebooks - each notebook
+project can have its own dependencies!
 
 [Website]: https://bluss.github.io/pyproject-local-kernel/
 [PyPi]: https://pypi.org/project/pyproject-local-kernel/
