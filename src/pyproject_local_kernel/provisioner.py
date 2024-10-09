@@ -78,7 +78,7 @@ class PyprojectKernelProvisioner(LocalProvisioner):
             raise RuntimeError(_MESSAGE_NO_PYPROJECT)
 
         if python_environment.venv_bin_dir:
-            kwargs["env"] = t.cast(dict, kwargs.get("env", os.environ.copy()))
+            kwargs["env"] = _get_environment(kwargs.get("env"), copy=False)
             python_environment.update_environment(kwargs["env"])
 
         # convert path to string and update kernel spec argv
@@ -86,7 +86,7 @@ class PyprojectKernelProvisioner(LocalProvisioner):
         kernel_spec.argv[:] = python_cmd + self.python_kernel_args
 
         if self.sanity_check:
-            self._python_environment_sanity_check(find_project, python_cmd, cwd, kwargs)
+            self._python_environment_sanity_check(find_project, python_cmd, cwd, env=kwargs.get("env"))
         return kwargs
 
     async def pre_launch(self, **kwargs) -> t.Dict[str, t.Any]:
@@ -102,7 +102,7 @@ class PyprojectKernelProvisioner(LocalProvisioner):
         self._log_debug("launching kernel from process pid=%d", os.getpid())
         return await super().pre_launch(**new_kwargs)
 
-    def _python_environment_sanity_check(self, project: ProjectDetection, python_cmd: list[str], cwd: Path, kwargs: dict):
+    def _python_environment_sanity_check(self, project: ProjectDetection, python_cmd: list[str], cwd: Path, env: dict | None):
         # skip sanity for uv because it will install ipykernel
         uv_cmd = t.cast(list, ProjectKind.Uv.python_cmd())
         if not project.config.use_venv and python_cmd[:len(uv_cmd)] == uv_cmd:
@@ -112,8 +112,10 @@ class PyprojectKernelProvisioner(LocalProvisioner):
         try:
             sanity_cmd = python_cmd + ["-c", _SCRIPT_CHECK_HAS_KERNEL]
             self._log_debug("Running sanity check: %r", sanity_cmd)
+            sanity_env = _get_environment(env, copy=True)
+            sanity_env["PYPROJECT_LOCAL_KERNEL_SANITY_CHECK"] = "1"
             try:
-                subprocess.run(sanity_cmd, check=True, cwd=cwd, env=kwargs.get("env"))
+                subprocess.run(sanity_cmd, check=True, cwd=cwd, env=sanity_env)
             except (subprocess.CalledProcessError, OSError) as exc:
                 self.__log(logging.ERROR, "failed sanity check: %s", exc)
                 raise RuntimeError(_MESSAGE_NO_IPYKERNEL)
@@ -140,3 +142,14 @@ class PyprojectKernelProvisioner(LocalProvisioner):
     async def cleanup(self, restart: bool = False) -> None:
         self._log_debug("cleanup")
         await super().cleanup(restart=restart)
+
+
+def _get_environment(env: dict[str, str] | None, *, copy) -> dict[str, str]:
+    """Get environment from env or os.environ
+    os.environ: always copy
+    env: copy if copy
+    """
+    if env is None:
+        return os.environ.copy()
+    else:
+        return env.copy() if copy else env
