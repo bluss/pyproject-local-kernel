@@ -172,7 +172,7 @@ manager in the jupyterlab environment, or install the project manager
 user-wide (using something like pipx, uv tool, rye tools, brew, or
 other method to install it.)
 
-### Uv
+***Uv***
 
 - Uv is detected if the pyproject.toml contains `tool.uv`. It is also the
   default fallback if no project manager is detected from a pyproject file.
@@ -184,16 +184,16 @@ other method to install it.)
 
 [eph]: https://docs.astral.sh/uv/reference/cli/
 
-### Rye
+***Rye***
 
 - Rye is detected if the pyproject.toml contains `tool.rye.managed = true`
   which Rye sets by default for its new projects.
 
-### PDM
+***PDM***
 
 - PDM is detected if pyproject.toml contains `tool.pdm`
 
-### Hatch
+***Hatch***
 
 - Hatch is detected if pyproject.toml contains `tool.hatch.envs`
 
@@ -205,7 +205,7 @@ other method to install it.)
   dependencies in a terminal before starting (it does not work so well with
   shell commands in a notebook).
 
-### Poetry
+***Poetry***
 
 - Poetry is detected if pyproject.toml contains `tool.poetry.name`
 
