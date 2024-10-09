@@ -123,7 +123,7 @@ class PyprojectKernelProvisioner(LocalProvisioner):
             self._log_debug("used %.3f s on sanity check", (time.time() - st))
 
     async def launch_kernel(self, cmd: t.List[str], **kwargs: t.Any) -> KernelConnectionInfo:
-        self._log_info("Launching %r", cmd)
+        self._log_info("Launching %r in cwd=%r", cmd, kwargs.get("cwd", None))
         self._log_debug("PATH=%r", kwargs.get("env", {}).get("PATH"))
 
         try:
