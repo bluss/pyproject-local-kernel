@@ -7,10 +7,7 @@
 
 </p>
 
-Separate dependencies for Jupyter notebooks in separate projects.
-
-Use python project managers to define dependencies:
-  use one of Uv, Rye, PDM, Poetry, Hatch (and so on).
+Separate dependencies for Jupyter notebooks.
 
 [Website]: https://bluss.github.io/pyproject-local-kernel/
 [PyPi]: https://pypi.org/project/pyproject-local-kernel/
@@ -21,18 +18,12 @@ environment for the project the notebook file resides in. This approach should
 be more portable, usable to anyone who checks out your project structure from
 git, and easier to use.
 
-Pyproject Local supports the following systems, and reads `pyproject.toml` to
-figure out which kind of project it is:
+Pyproject Local supports
+**Uv, Poetry, Hatch, Rye, and PDM**
+and reads `pyproject.toml` to figure out which kind of project it is.
+Or it can use a custom command or a bare virtual environment directly.
 
-Uv <br>
-Rye <br>
-Poetry <br>
-Hatch <br>
-PDM <br>
-
-A custom command or direct use of virtual environment can also be configured.
-
-[kp]: https://jupyter-client.readthedocs.io/
+[kp]: https://jupyter-client.readthedocs.io/en/latest/provisioning.html
 
 ![screenshot of notebook launcher](https://raw.githubusercontent.com/bluss/pyproject-local-kernel/main/docs/images/pyproject-local.png)
 
@@ -85,7 +76,7 @@ It will show a message like this - with some details about the error.
 Remember that you can also use jupyterlab's embedded terminal to help setting
 up a project.
 
-### No `pyproject.toml`
+***If `pyproject.toml` is Missing***
 
 If the Pyproject Local kernel is selected in a project where there is no `pyproject.toml`,
 then starting the kernel fails. On first run it should show an error message in JupyterLab.
@@ -93,7 +84,7 @@ then starting the kernel fails. On first run it should show an error message in 
 If this happens, create a new `pyproject.toml` with the editor or use
 one of the project init commands to create a new project.
 
-### No `ipykernel` in the project
+***If the `ipykernel` is Missing***
 
 The notebook project needs to install `ipykernel` as a dependency.
 
@@ -152,9 +143,9 @@ use-venv = ".venv"
 
 ### `PyprojectKernelProvisioner`
 
-The kernel provisioner is configurable simliarly to other jupyter classes
-with the following settings. They can be set in your `jupyter_lab_config.py`
-settings file.
+The kernel provisioner is configurable in the same way as other Jupyter
+objects, with the following settings. They can be set in your
+`jupyter_lab_config.py` settings file.
 When possible, prefer to use settings in `pyproject.toml` instead, to keep them
 close to the project.
 
@@ -177,7 +168,7 @@ close to the project.
 The project manager command, be it rye, uv, pdm, etc needs to be
 available on the path where jupyterlab runs. Either install the project
 manager in the jupyterlab environment, or install the project manager
-user-wide (using something like pipx, rye tools, uv tool, brew, or
+user-wide (using something like pipx, uv tool, rye tools, brew, or
 other method to install it.)
 
 ### Uv
@@ -187,8 +178,10 @@ other method to install it.)
 
 - The command used is `uv run --with ipykernel python` which means that it ensures
   `ipykernel` is used even if it's not already in the project(!). However, note that
-  it uses an ephemeral virtual environment for ipykernel in that case. Add
-  ipykernel to the project to avoid this.
+  it uses an [ephemeral virtual environment][eph] for ipykernel in that case.
+  Add ipykernel to the project to avoid this.
+
+[eph]: https://docs.astral.sh/uv/reference/cli/
 
 ### Rye
 
