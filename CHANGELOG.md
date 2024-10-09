@@ -7,7 +7,7 @@
 
 - Launch fallback kernel using `python -m`. (#49)
 
-- Test using Python 3.13. Was already compatible. (#45)
+- Test using Python 3.13. (#45)
 
 ## 0.11.1
 

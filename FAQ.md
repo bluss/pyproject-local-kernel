@@ -4,17 +4,30 @@
 ## How does it work?
 
 The regular IPython kernel for Jupyter is launched like this:
-`python -m ipykernel_launcher <arguments..>`
+`python -m ipykernel_launcher -f <connection_file>`
 
 If you just prefix that command with `rye run`, `uv run`, `poetry run`,
 `pdm run`, `hatch run`, etc, then you get a kernel invocation that executes in
 the current pyproject's environment. That's basically the whole magic of this
 package, it doesn't need to do more (well, if it only were *that* easy..)
 
+It uses [Kernel Provisioning][kp] in `jupyter-client` to launch the right
+command depending on project configuration.
+
+[kp]: https://jupyter-client.readthedocs.io/en/latest/provisioning.html
+
+## How do I install it?
+
 To break it down:
 
 - You install `jupyterlab` and `pyproject-local-kernel` together.
-- Then you have projects defined in a `pyproject.toml` for each notebook project
+- Then you have projects defined by `pyproject.toml` for each notebook
+  or collection of notebooks. They install `ipykernel` and packages
+  you want to use in the notebook.
+
+See also [`example/`][ex] in the git repository.
+
+[ex]: https://github.com/bluss/pyproject-local-kernel/tree/main/example
 
 
 ## Why do I have to install `ipykernel` manually?
@@ -157,15 +170,29 @@ If you have such a `.json` file, `jupyter kernelspec install --user` can help yo
 
 ## More questions about Uv
 
+### Can I start `pyproject-local-kernel` with `uvx`?
+
+Yes, you can launch a full Jupyterlab environment using:
+
+```console
+uvx --with pyproject-local-kernel --from jupyterlab jupyter-lab
+```
+
+However it is often good to use a project or environment manager to define the
+jpupyter environment with your chosen dependencies, so that you can use a lock
+file and have other benefits of a proper project.
+
 ### Why is the python environment path weird?
 
 If you look at `sys.prefix` when using **uv** and pyproject local kernel,
 and you see a prefix like this or similar:
-`'~/.cache/uv/archive-v0/n2G3HHDzRZ7cjiFgGXIwC'`, then uv is using an ephemeral
-environment to run the kernel.<br>
+`'~/.cache/uv/archive-v0/n2G3HHDzRZ7cjiFgGXIwC'`, then `uv run` is using an
+[ephemeral environment][eph] to run the kernel.<br>
 It should work just fine in most cases, but it means that `ipykernel` is not
 installed in your base environment. If you want to fix this,
 use `uv add ipykernel` and restart the kernel.
+
+[eph]: https://docs.astral.sh/uv/reference/cli/
 
 ### Can I nest projects?
 
