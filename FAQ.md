@@ -182,6 +182,11 @@ However it is often good to use a project or environment manager to define the
 jpupyter environment with your chosen dependencies, so that you can use a lock
 file and have other benefits of a proper project.
 
+### Can I use a different version of Python for the notebook?
+
+Yes, the python version can be pinned separately per notebook project.
+It doesn't need to be the same as the jupyterlab Python version.
+
 ### Why is the python environment path weird?
 
 If you look at `sys.prefix` when using **uv** and pyproject local kernel,
