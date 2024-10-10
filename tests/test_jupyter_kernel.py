@@ -92,7 +92,7 @@ class ScenarioSetup:
             with chdir(self.base_dir):
                 run(f"uv run --project server jupytext --to ipynb {notebook} -o {self.notebook_in.as_posix()}")
 
-    def papermill(self, papermill_args: str = "", launch_callback=None) -> PopenResult:
+    def papermill(self, papermill_args: str = "", launch_callback=None, timeout=None) -> PopenResult:
         "Run papermill on scenario notebook and return result with stdout/stderr"
         with pytest.MonkeyPatch.context() as m:
             m.chdir(self.base_dir)
@@ -103,7 +103,7 @@ class ScenarioSetup:
 
             args = (f"uv run --project server papermill {papermill_args} --cwd {client_dir} "
                     f"{self.notebook_in.as_posix()} {self.notebook_out.as_posix()}")
-            proc = popen_capture(args, launch_callback=launch_callback)
+            proc = popen_capture(args, launch_callback=launch_callback, timeout=timeout)
             return proc
 
 
@@ -181,7 +181,7 @@ def test_interrupt_parent_gone(scenario_setup: ScenarioSetup):
     notebook = "notebook-interrupt.py"
 
     scenario_setup.scenario(scenario, notebook=notebook)
-    proc = scenario_setup.papermill(papermill_args, launch_callback=_kill_the_parent)
+    proc = scenario_setup.papermill(papermill_args, launch_callback=_kill_the_parent, timeout=30)
     returncode = proc.returncode
 
     assert 'Parent appears to have exited' in proc.stderr

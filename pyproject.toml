@@ -96,6 +96,7 @@ exclude = [".venv"]
 typeCheckingMode = "basic"
 
 [tool.ruff]
+output-format = "grouped"
 exclude = ["example", "tests/identify", "tests/server-client"]
 line-length = 150
 lint.ignore = ["E741"]
