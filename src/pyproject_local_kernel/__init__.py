@@ -168,8 +168,12 @@ def get_dotkey(data: dict, dotkey, default):
     return root
 
 
+def has_dotkey(data, dotkey):
+    return get_dotkey(data, dotkey, None) is not None
+
+
 def is_rye(data: dict):
-    return get_dotkey(data, 'tool.rye.managed', False) is True
+    return has_project_table(data) and get_dotkey(data, 'tool.rye.managed', False) is True
 
 
 def is_poetry(data: dict):
@@ -177,15 +181,22 @@ def is_poetry(data: dict):
 
 
 def is_pdm(data: dict):
-    return get_dotkey(data, 'tool.pdm', None) is not None
+    return has_project_table(data) and get_dotkey(data, 'tool.pdm', None) is not None
 
 
 def is_hatch(data: dict):
-    return (get_dotkey(data, 'tool.hatch.version', None) is not None or
+    return has_project_table(data) and (get_dotkey(data, 'tool.hatch.version', None) is not None or
             get_dotkey(data, 'tool.hatch.envs', None) is not None)
 
 def is_uv(data: dict):
-    return get_dotkey(data, 'tool.uv', None) is not None
+    return has_project_table(data) and get_dotkey(data, 'tool.uv', None) is not None
+
+
+def has_project_table(data: dict):
+    # we can't check for just project.version because it can be dynamic
+    return has_dotkey(data, "project.name") and (
+        has_dotkey(data, "project.version") or
+        has_dotkey(data, "project.dynamic"))
 
 
 IDENTIFY_FUNCTIONS = {
@@ -213,6 +224,8 @@ def _identify_toml(data) -> t.Tuple[ProjectKind, t.Optional[Config], t.Optional[
     for kind, func in IDENTIFY_FUNCTIONS.items():
         if func(data):
             return kind, None, None
+    if not has_project_table(data):
+        return ProjectKind.InvalidData, None, "No valid project table"
     return ProjectKind.Unknown, None, None
 
 

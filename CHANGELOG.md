@@ -7,6 +7,9 @@
 
 - Log working directory setting when starting kernel process. (#51)
 
+- If `pyproject.toml` has no project section, do not identify it as belonging
+  to a project manager that requires the project section. (#52)
+
 ## 0.11.2
 
 - Enable the binary path in the virtual environment for use-venv
