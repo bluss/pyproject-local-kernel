@@ -1,0 +1,2 @@
+[tool.pyproject-local-kernel]
+use-venv = ".venv"

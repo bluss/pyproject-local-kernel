@@ -1,0 +1,4 @@
+[tool.hatch.envs]
+[tool.pdm]
+[tool.uv]
+[tool.pyproject-local-kernel]

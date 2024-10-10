@@ -18,8 +18,10 @@ pytestmark = pytest.mark.unit
     ("tests/identify/pdm", ProjectKind.Pdm),
     ("tests/identify/hatch", ProjectKind.Hatch),
     ("tests/identify/uv", ProjectKind.Uv),
-    ("tests/identify/broken", ProjectKind.InvalidData),
+    ("tests/identify/invalid_toml", ProjectKind.InvalidData),
     ("tests/identify/unknown", ProjectKind.Unknown),
+    ("tests/identify/no_project_section", ProjectKind.InvalidData),
+    ("tests/identify/config_no_project_section", ProjectKind.UseVenv),
 ])
 def test_ident(path, expected):
     pd = identify(path)
@@ -28,10 +30,10 @@ def test_ident(path, expected):
 
 
 @pytest.mark.parametrize("path,cmd", [
-    ("tests/identify/custom", ["my", "cmd"]),
-    ("tests/identify/custom_string", ['uv', 'run', '--with', 'custom string', '-BI']),
+    ("tests/identify/config_cmd", ["my", "cmd"]),
+    ("tests/identify/config_cmd_string", ['uv', 'run', '--with', 'custom string', '-BI']),
     # uv must be on the path, then we pick this fallback
-    ("tests/identify/fallback", ["uv", "run", "--with", "ipykernel", "python"]),
+    ("tests/identify/unknown", ["uv", "run", "--with", "ipykernel", "python"]),
 ])
 def test_custom(path, cmd):
     pd = identify(path)
@@ -87,8 +89,8 @@ def is_windows():
 
 
 @pytest.mark.parametrize("path", [
-    "tests/identify/custom_broken",
-    "tests/identify/custom_broken2",
+    "tests/identify/config_cmd_invalid_type1",
+    "tests/identify/config_cmd_invalid_type2",
 ])
 def test_custom_error(path, caplog):
     # Test log error
@@ -97,7 +99,7 @@ def test_custom_error(path, caplog):
 
 
 @pytest.mark.parametrize("path", [
-    "tests/identify/custom",
+    "tests/identify/config_cmd",
 ])
 def test_custom_ignored_key(path, caplog):
     # Test log error
