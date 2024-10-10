@@ -2,9 +2,16 @@ name: CI
 
 on:
   push:
-    branches: [ "main" ]
+    paths:
+      - '**'
+      - '!docs/**'
+      - '!*.md'
+      - '!mkdocs.yml'
+    branches:
+      - main
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - main
   workflow_dispatch:
 
 env:
