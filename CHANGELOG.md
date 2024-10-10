@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.11.3
+
+- Set `PYPROJECT_LOCAL_KERNEL_SANITY_CHECK` in the environment when running the
+  sanity check. (#51)
+
+- Log working directory setting when starting kernel process. (#51)
+
 ## 0.11.2
 
 - Enable the binary path in the virtual environment for use-venv
