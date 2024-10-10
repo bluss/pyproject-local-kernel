@@ -76,20 +76,20 @@ def test_pre_launch(scenario: str, expected, sanity: bool, kernel_spec: KernelSp
     if sanity:
         monkeypatch.setattr(prov, "_python_environment_sanity_check", fail_sanity)
 
-    asyncio.run(prov.pre_launch(cwd=cwd))
-
-    python_cmd = list(prov.kernel_spec.argv)
+    kwargs = asyncio.run(prov.pre_launch(cwd=cwd, extra_arguments=["extra"]))
+    cmd = kwargs.pop("cmd")
+    assert prov.kernel_spec.argv == cmd[:len(prov.kernel_spec.argv)]
 
     if expected == Expected.Venv:
-        assert python_cmd[0].startswith(str(cwd.absolute() / ".venv"))
+        assert cmd[0].startswith(str(cwd.absolute() / ".venv"))
     elif expected == Expected.Uv:
         uv_cmd = list(ProjectKind.Uv.python_cmd() or ["x"])
-        assert python_cmd[:len(uv_cmd)] == uv_cmd
+        assert cmd[:len(uv_cmd)] == uv_cmd
     elif expected == Expected.Fallback:
-        assert python_cmd[3] == "--fallback-kernel=not sane"
+        assert cmd[3] == "--fallback-kernel=not sane"
     elif expected == Expected.NoPyproject:
-        assert python_cmd[3].startswith("--fallback-kernel")
-        assert 'no pyproject.toml' in python_cmd[3]
+        assert cmd[3].startswith("--fallback-kernel")
+        assert 'no pyproject.toml' in cmd[3]
     else:
         raise NotImplementedError
 
