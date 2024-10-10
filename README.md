@@ -13,14 +13,13 @@ project can have its own dependencies!
 [Website]: https://bluss.github.io/pyproject-local-kernel/
 [PyPi]: https://pypi.org/project/pyproject-local-kernel/
 
-Instead of installing a myriad of jupyter kernelspecs, one per project, with
+Instead of installing a myriad of Jupyter kernelspecs, one per project, with
 this solution there is only one [kernel provisioner][kp] that enables the
 environment for the project the notebook file resides in. This approach should
 be more portable, usable to anyone who checks out your project structure from
 git, and easier to use.
 
-Pyproject Local supports
-**Uv, Poetry, Hatch, Rye, and PDM**
+Pyproject Local supports **Uv, Poetry, Hatch, Rye, and PDM**
 and reads `pyproject.toml` to figure out which kind of project it is.
 Or it can use a custom command or a bare virtual environment directly.
 
@@ -30,8 +29,8 @@ Or it can use a custom command or a bare virtual environment directly.
 
 ## Quick Start (JupyterLab)
 
-1. Install pyproject-local-kernel in your jupyterlab environment and restart
-   jupyterlab
+1. Install pyproject-local-kernel in your Jupyterlab environment and restart
+   Jupyterlab
 2. Create a new directory for the notebook project
 3. Create a new notebook and select the **Pyproject Local** kernel
 4. In the *“fallback”* environment that appears - because it is an empty
@@ -46,7 +45,7 @@ Or it can use a custom command or a bare virtual environment directly.
 7. Use more `add` commands to add further dependencies.
 
 
-See the examples directory for how to setup jupyterlab and notebook projects
+See the examples directory for how to setup Jupyterlab and notebook projects
 separately. JupyterLab and the notebook are installed in separate environments.
 
 
@@ -74,7 +73,7 @@ It will show a message like this - with some details about the error.
 ! environment - when you are done, restart the kernel and try again!
 ```
 
-Remember that you can also use jupyterlab's embedded terminal to help setting
+Remember that you can also use Jupyterlab's embedded terminal to help setting
 up a project.
 
 ***If `pyproject.toml` is Missing***
@@ -99,7 +98,7 @@ dependencies = [
 ```
 
 sync the changes to the project using sync command for the project
-manager you use, then restart the Pyproject Local kernel in jupyterlab.
+manager you use, then restart the Pyproject local kernel in Jupyterlab.
 
 ## Configuration
 
@@ -168,8 +167,8 @@ close to the project.
 ## About Particular Project Managers
 
 The project manager command, be it rye, uv, pdm, etc needs to be
-available on the path where jupyterlab runs. Either install the project
-manager in the jupyterlab environment, or install the project manager
+available on the path where Jupyterlab runs. Either install the project
+manager in the Jupyterlab environment, or install the project manager
 user-wide (using something like pipx, uv tool, rye tools, brew, or
 other method to install it.)
 

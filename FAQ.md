@@ -84,11 +84,11 @@ configuration, both in a uv-defined project, then they stack up like this:
 
 Yes it works, with both Nbconvert and Papermill.
 
-Pyproject Local Kernel relies on jupyter's working directory: the working
-directory is always the same as the notebook's location - and it will work as
-long as you run papermill the same way, using its `--cwd` argument.
+Pyproject Local Kernel relies on Jupyter's working directory convention: the
+working directory is always the same as the notebook's location - and it will
+work as long as you run Papermill the same way, using its `--cwd` argument.
 
-You can install papermill and pyproject-local-kernel in a separate environment,
+You can install Papermill and pyproject-local-kernel in a separate environment,
 and run each notebook in its own pyproject environment with its dependencies
 this way.
 
@@ -133,7 +133,7 @@ Local* to use this project from code.
 
 [vscode-jupyter]: https://github.com/microsoft/vscode-jupyter
 
-The output panel has a *Jupyter* section with logs from the jupyter kernel,
+The output panel has a *Jupyter* section with logs from the Jupyter kernel,
 which can help in debugging.
 
 
