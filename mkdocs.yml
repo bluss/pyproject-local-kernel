@@ -35,6 +35,7 @@ markdown_extensions:
   - sane_lists
   - admonition
   - def_list
+  - footnotes
   - pymdownx.details
   - pymdownx.keys
   - pymdownx.superfences

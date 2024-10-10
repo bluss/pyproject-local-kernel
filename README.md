@@ -112,7 +112,8 @@ Configuration is optional and is read from `pyproject.toml`. Only the
 The key `tool.pyproject-local-kernel.python-cmd` should be a command that runs
 python from the environment you want to use for the project.
 
-If this is set then it overrides the default command.
+If this is set then it overrides the default command. There is further
+explanation in [the FAQ](FAQ.md#how-does-the-python-cmd-configuration-work).
 
 **Default:** *Depends on project manager*<br>
 **Type:** `list[str] | str`<br>

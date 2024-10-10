@@ -156,6 +156,40 @@ is enough, or even none for custom or vitualenv configurations.
 For development of the project and running tests, Uv is required.
 
 
+## How does the `python-cmd` configuration work?
+
+`python-cmd` should be a command-line that runs Python, in the environment that
+should be used for the notebook.
+
+For example, for a regular virtual environment, the python command would be
+`.venv/bin/python` or `.venv\Scripts\python.exe`.
+
+The python command should take arguments and will be run with arguments to start
+the IPython kernel. It can also be used with different arguments to run a sanity check
+script, checking if `ipykernel` is installed. [^1]
+
+Example 1: `python-cmd` is a script in the same directory as `pyproject.toml`
+and when invoked with arguments, it will run python in the desired environment.
+
+```toml
+[tool.pyproject-local-kernel]
+python-cmd = "./runpy"
+```
+
+Example 2: a shell is invoked to be able to use shell constructs like `&&`
+directly, and care is taken so that it still uses the extra command line
+arguments. Of course, using any such script is less portable than just using a
+project or virtual environment configuration directly.
+
+```toml
+[tool.pyproject-local-kernel]
+python-cmd = ["bash", "-c", 'uv sync && X=1 .venv/bin/python -I "$@" && echo done', "--"]
+```
+
+[^1]: The variable `PYPROJECT_LOCAL_KERNEL_SANITY_CHECK` is set in the environment when
+running the sanity check.
+
+
 ## Isn't There a Less Complicated Way to Do It?
 
 Yes, there kind of is a way.
