@@ -95,6 +95,19 @@ this way.
 [1]: https://papermill.readthedocs.io/en/latest/
 
 
+## Does it work with Conda?
+
+Conda environments are supported only by using the `use-venv` setting in
+`pyproject.toml`, where it needs to point to the location of of the installed
+environment as an absolute path, or a path relative to the the `pyproject.toml`
+file.
+
+```toml
+[tool.pyproject-local-kernel]
+use-venv = ".venv"
+```
+
+
 ## How to setup for VSCodium or VS Code?
 
 **Note** that code natively supports using virtual environments in a local
