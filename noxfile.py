@@ -85,7 +85,7 @@ def docs_serve(session: nox.Session):
 @nox.session(tags=["check"])
 def check(session: nox.Session):
     "lint check; extra args are passed to ruff"
-    session.run("uvx", "ruff@0.6.8", "check", "--output-format=concise", *session.posargs)
+    session.run("uvx", "ruff@0.6.8", "check", *session.posargs)
 
 
 @nox.session(tags=[])

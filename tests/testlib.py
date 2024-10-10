@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import asyncio
-from concurrent.futures import ThreadPoolExecutor
 import contextlib
 from dataclasses import dataclass
 from pathlib import Path
@@ -39,40 +38,35 @@ class PopenResult:
     returncode: int
 
 
-def popen_capture(args: str, popen_kwargs=None, launch_callback=None) -> PopenResult:
+def popen_capture(args: str, popen_kwargs=None, launch_callback=None, timeout=None) -> PopenResult:
     """
     Run a subprocess using Popen, stream stdout, stderr to stdout/stderr, but also capture them.
     """
-    argv = shlex.split(args)
-    proc = subprocess.Popen(argv, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8", **(popen_kwargs or {}))
+    async def async_process():
+        argv = shlex.split(args)
+        proc = await asyncio.create_subprocess_exec(argv[0], *argv[1:],
+                                                    stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                                                    **(popen_kwargs or {}))
 
-    if launch_callback:
-        launch_callback(proc)
+        if launch_callback:
+            launch_callback(proc)
 
-    ret, stdout, stderr = asyncio.run(_read_process_outputs(proc))
+        return await asyncio.gather(
+            asyncio.wait_for(proc.wait(), timeout=timeout),
+            _areadlines("stdout", proc.stdout),  # type: ignore
+            _areadlines("stderr", proc.stderr),  # type: ignore
+        )
+
+    ret, stdout, stderr = asyncio.run(async_process())
 
     return PopenResult(stdout="".join(stdout), stderr="".join(stderr), returncode=ret)
 
 
-async def _read_process_outputs(proc: subprocess.Popen[str]) -> t.Tuple[int, list[str], list[str]]:
-    loop = asyncio.get_running_loop()
-
-    with ThreadPoolExecutor() as thread_pool:
-        return await asyncio.gather(
-            # wait for process end, stdout and stderr
-            loop.run_in_executor(thread_pool, proc.wait),
-            _areadlines(thread_pool, "stdout", proc.stdout),  # type: ignore
-            _areadlines(thread_pool, "stderr", proc.stderr),  # type: ignore
-        )
-
-
-async def _areadlines(thread_pool: ThreadPoolExecutor, name: str, fp: t.IO[str]) -> list[str]:
+async def _areadlines(name: str, fp: asyncio.StreamReader) -> list[str]:
     "async read and echo all lines of a file"
-    loop = asyncio.get_running_loop()
     result = []
-    while fp is not None:  # async cancellation
-        # readline is blocking, so run it in the pool
-        ret = await loop.run_in_executor(thread_pool, fp.readline)
+    while True:
+        ret = (await fp.readline()).decode("utf-8", errors="replace")
         if ret == "":
             break
         print(name, ": ", ret, sep="", end="")
