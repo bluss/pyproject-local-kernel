@@ -98,7 +98,7 @@ this way.
 ## Does it work with Conda?
 
 Conda environments are supported only by using the `use-venv` setting in
-`pyproject.toml`, where it needs to point to the location of of the installed
+`pyproject.toml`, where it needs to point to the location of the installed
 environment as an absolute path, or a path relative to the the `pyproject.toml`
 file.
 
