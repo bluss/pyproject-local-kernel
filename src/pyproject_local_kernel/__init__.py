@@ -30,9 +30,9 @@ from pathlib import Path
 import typing as t
 
 try:
-    import tomllib as tomli
+    import tomllib as tomli  # pyright: ignore[reportMissingImports]
 except ImportError:
-    import tomli as tomli
+    import tomli as tomli    # pyright: ignore[reportMissingImports]
 
 
 from pyproject_local_kernel.configdata import Config
