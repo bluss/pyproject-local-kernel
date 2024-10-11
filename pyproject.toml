@@ -95,6 +95,8 @@ venv = ".venv"
 exclude = [".venv"]
 typeCheckingMode = "basic"
 
+reportUnusedParameter = false
+
 [tool.ruff]
 output-format = "grouped"
 exclude = ["example", "tests/identify", "tests/server-client"]
