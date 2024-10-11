@@ -8,6 +8,7 @@ import sys
 import time
 import typing as t
 
+
 from jupyter_client import KernelConnectionInfo
 from jupyter_client.kernelspec import KernelSpec
 from jupyter_client.provisioning.local_provisioner import LocalProvisioner
@@ -51,10 +52,8 @@ class PyprojectKernelProvisioner(LocalProvisioner):
         kernel_spec = t.cast(KernelSpec, self.kernel_spec)
         cwd = Path(kwargs.get("cwd", Path.cwd()))
 
-        for tname in ["config", "kernel_id", "use_venv", "sanity_check"]:
+        for tname in ["config", "use_venv", "sanity_check"]:
             self._log_debug("%s=%r", tname, getattr(self, tname, None))
-        self._log_debug("kernel_spec=%r", kernel_spec.to_dict())
-        self._log_debug("cwd=%s", cwd)
 
         spec_use_venv = self.use_venv if self.is_use_venv_kernel else None
         spec_config = Config(use_venv=spec_use_venv)
@@ -63,9 +62,9 @@ class PyprojectKernelProvisioner(LocalProvisioner):
             raise RuntimeError("pyproject_local_kernel config missing from kernelspec")
 
         find_project = identify(cwd)
-        self._log_debug("Found project %s in %s", find_project.kind, find_project.path)
         find_project.config = find_project.config.merge_with(spec_config)
-        self._log_debug("pyproject config=%r", find_project.config)
+        self._log_debug("Found project %s in %s", find_project.kind, find_project.path)
+        self._log_debug("with effective config %r", find_project.config)
 
         if find_project.path is None:
             raise RuntimeError(_MESSAGE_NO_PYPROJECT)
@@ -99,7 +98,7 @@ class PyprojectKernelProvisioner(LocalProvisioner):
             new_kwargs = kwargs
         except Exception:
             raise  # show to user
-        self._log_debug("launching kernel from process pid=%d", os.getpid())
+        self._log_debug("Launching kernel from process pid=%d", os.getpid())
         return await super().pre_launch(**new_kwargs)
 
     def _python_environment_sanity_check(self, project: ProjectDetection, python_cmd: list[str], cwd: Path, env: dict | None):
@@ -124,7 +123,6 @@ class PyprojectKernelProvisioner(LocalProvisioner):
 
     async def launch_kernel(self, cmd: t.List[str], **kwargs: t.Any) -> KernelConnectionInfo:
         self._log_info("Launching %r in cwd=%r", cmd, kwargs.get("cwd", None))
-        self._log_debug("PATH=%r", kwargs.get("env", {}).get("PATH"))
 
         try:
             return await super().launch_kernel(cmd, **kwargs)
