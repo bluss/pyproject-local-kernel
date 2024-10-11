@@ -2,7 +2,7 @@
 name = "mkdocs-tool"
 version = "0.1.0"
 description = "Add your description here"
-requires-python = ">=3.11"
+requires-python = ">=3.12"
 dependencies = [
     "mkdocs",
     "mkdocs-material>=9.1",
