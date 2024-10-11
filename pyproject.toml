@@ -103,4 +103,4 @@ exclude = ["example", "tests/identify", "tests/server-client"]
 line-length = 150
 lint.ignore = ["E741"]
 
-[tool.pyproject_local_kernel]
+[tool.pyproject-local-kernel]
