@@ -105,7 +105,7 @@ class ProjectDetection:
             return PythonEnvironment(cmd, venv_bin_dir)
 
         # configuration: python-cmd
-        python_cmd = self.config.python_cmd_normalized()
+        python_cmd = self.config.python_cmd
         if python_cmd is not None:
             return PythonEnvironment(python_cmd)
 
