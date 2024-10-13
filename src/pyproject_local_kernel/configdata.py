@@ -8,11 +8,11 @@ import typing as t
 _logger = logging.getLogger(__name__)
 
 
-def _to_skewer_case(name: str):
+def _to_skewer_case(name: str) -> str:
     return name.replace("_", "-")
 
 
-def _type_check(type_annot, obj):
+def _type_check(type_annot: t.Any, obj: t.Any) -> bool:
     """
     Yes I know, ad-hoc type check of type annotations.
     Supports List, Union, Optional as needed.
@@ -30,7 +30,6 @@ def _type_check(type_annot, obj):
 def _dataclass_from_dict(cls, data: dict[str, t.Any]):
     kwargs = {}
     used_configs = set()
-    self_type_hints = t.get_type_hints(cls)
     for field in dataclasses.fields(cls):
         config_name = _to_skewer_case(field.name)
         for lookup_name in (config_name, field.name):
@@ -41,9 +40,6 @@ def _dataclass_from_dict(cls, data: dict[str, t.Any]):
                 pass
         else:
             continue
-        field_type = self_type_hints[field.name]
-        if not _type_check(field_type, config_value):
-            raise TypeError(f"invalid config {config_name} = {config_value!r}, expected value of type {field.type}")
         kwargs[field.name] = config_value
         used_configs.add(lookup_name)
     for unknown_config_key in set(data).difference(used_configs):
@@ -51,8 +47,19 @@ def _dataclass_from_dict(cls, data: dict[str, t.Any]):
     return cls(**kwargs)
 
 
+class _PostInitTypeCheck:
+    def __post_init__(self):
+        self_type_hints = t.get_type_hints(type(self))
+        for field in dataclasses.fields(self):  # type: ignore
+            config_name = _to_skewer_case(field.name)
+            config_value = getattr(self, field.name)
+            field_type = self_type_hints[field.name]
+            if not _type_check(field_type, config_value):
+                raise TypeError(f"invalid config {config_name} = {config_value!r}, expected value of type {field.type}")
+
+
 @dataclasses.dataclass
-class Config:
+class Config(_PostInitTypeCheck):
     """
     pyproject tool.MY_TOOL_NAME section
     """
