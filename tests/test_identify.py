@@ -4,8 +4,7 @@ import shutil
 
 import pytest
 
-from pyproject_local_kernel import ProjectKind
-from pyproject_local_kernel import identify
+from pyproject_local_kernel._identify import ProjectKind, identify
 import testlib
 
 
