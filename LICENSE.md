@@ -1,7 +1,5 @@
 # LICENSE
 
-In general, unless otherwise noted below.
-
 Copyright 2023-2024 Ulrik Sverdrup "bluss"
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
