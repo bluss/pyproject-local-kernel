@@ -223,10 +223,10 @@ def _identify_toml(data) -> t.Tuple[ProjectKind, t.Optional[Config], t.Optional[
         return ProjectKind.UseVenv, config, None
     for kind, func in IDENTIFY_FUNCTIONS.items():
         if func(data):
-            return kind, None, None
+            return kind, config, None
     if not has_project_table(data):
         return ProjectKind.InvalidData, None, "No valid project table"
-    return ProjectKind.Unknown, None, None
+    return ProjectKind.Unknown, config, None
 
 
 def identify(file):
