@@ -58,13 +58,13 @@ class PyprojectKernelProvisioner(LocalProvisioner):
             self._log_debug("%s=%r", tname, getattr(self, tname, None))
 
         spec_use_venv = self.use_venv if self.is_use_venv_kernel else None
-        spec_config = Config(use_venv=spec_use_venv)
+        spec_config = Config(use_venv=spec_use_venv, sanity_check=self.sanity_check)
 
         if not self.python_kernel_args:
             raise RuntimeError("pyproject_local_kernel config missing from kernelspec")
 
         find_project = identify(cwd)
-        find_project.config = find_project.config.merge_with(spec_config).merge_with(Config.default())
+        find_project.config = find_project.config.merge_with(spec_config)
         self._log_debug("Found project %s in %s", find_project.kind, find_project.path)
         self._log_debug("with effective config %r", find_project.config)
 
@@ -86,7 +86,7 @@ class PyprojectKernelProvisioner(LocalProvisioner):
         python_cmd = list(map(str, python_environment.python_cmd))
         kernel_spec.argv[:] = python_cmd + self.python_kernel_args
 
-        if self.sanity_check:
+        if find_project.config.sanity_check:
             self._python_environment_sanity_check(find_project, python_cmd, cwd, env=kwargs.get("env"))
         return kwargs
 
