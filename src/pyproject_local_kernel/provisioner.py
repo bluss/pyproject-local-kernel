@@ -14,8 +14,8 @@ from jupyter_client.kernelspec import KernelSpec
 from jupyter_client.provisioning.local_provisioner import LocalProvisioner
 from traitlets import Bool, List, Unicode
 
-from pyproject_local_kernel import ProjectDetection, ProjectKind, identify, MY_TOOL_NAME, ENABLE_DEBUG_ENV
-from pyproject_local_kernel.configdata import Config
+from pyproject_local_kernel._identify import ProjectDetection, ProjectKind, identify, MY_TOOL_NAME, ENABLE_DEBUG_ENV
+from pyproject_local_kernel._configdata import Config
 
 
 _SCRIPT_CHECK_HAS_KERNEL = """import importlib.util; raise SystemExit(not importlib.util.find_spec("ipykernel"))"""

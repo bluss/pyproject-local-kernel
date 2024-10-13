@@ -32,8 +32,8 @@ from jupyter_client import KernelProvisionerBase  # type: ignore
 from jupyter_client.provisioning import KernelProvisionerFactory as KPF  # type: ignore
 import jupyter_client.kernelspec
 
-from pyproject_local_kernel import KERNEL_SPECS, MY_TOOL_NAME, ENABLE_DEBUG_ENV
-from pyproject_local_kernel import ProjectKind, find_pyproject_file_from, identify
+from pyproject_local_kernel._identify import KERNEL_SPECS, MY_TOOL_NAME, ENABLE_DEBUG_ENV
+from pyproject_local_kernel._identify import ProjectKind, find_pyproject_file_from, identify
 
 
 _logger = logging.getLogger(__name__)
@@ -44,7 +44,7 @@ def _setup_logging():
     logging.basicConfig(level=log_level, format=f"{MY_TOOL_NAME} %(levelname)-7s: %(message)s")
 
 
-async def async_kernel_start(prov: KernelProvisionerBase, args: argparse.Namespace, extra_args: list[str]):
+async def _async_kernel_start(prov: KernelProvisionerBase, args: argparse.Namespace, extra_args: list[str]):
     kernel_kws = await prov.pre_launch()
 
     def expand(arg: str):
@@ -60,7 +60,7 @@ async def async_kernel_start(prov: KernelProvisionerBase, args: argparse.Namespa
     _logger.debug("info=%r", kernel_connect_info)
 
 
-async def async_kernel_loop(prov: KernelProvisionerBase, args: argparse.Namespace) -> int:
+async def _async_kernel_loop(prov: KernelProvisionerBase, args: argparse.Namespace) -> int:
     async def sigterm():
         _logger.debug("sigterm in async loop")
         await prov.terminate()
@@ -99,7 +99,7 @@ def main() -> int:
     _logger.debug("args=%r rest=%r", args, extra_args)
 
     if args.fallback_kernel:
-        return start_fallback_kernel(args, failure_to_start_msg=args.fallback_kernel)
+        return _start_fallback_kernel(args, failure_to_start_msg=args.fallback_kernel)
 
     _logger.warning("Unsupported: direct launch of %s - but will attempt to work with this", MY_TOOL_NAME)
     _logger.warning("Must use jupyter-client to launch kernel with kernel provisioning")
@@ -113,17 +113,17 @@ def main() -> int:
     prov = KPF.instance().create_provisioner_instance(str(uuid.uuid4()), kernel_spec, parent=None)
     _logger.debug("provisioner=%s", prov)
 
-    asyncio.run(async_kernel_start(prov, args, extra_args))
+    asyncio.run(_async_kernel_start(prov, args, extra_args))
 
     # KeyboardInterrupt will work on windows, signal handler does not
     while True:
         try:
-            return asyncio.run(async_kernel_loop(prov, args))
+            return asyncio.run(_async_kernel_loop(prov, args))
         except KeyboardInterrupt:
             asyncio.run(prov.send_signal(signal.SIGINT))
 
 
-def start_fallback_kernel(args: argparse.Namespace, failure_to_start_msg: str):
+def _start_fallback_kernel(args: argparse.Namespace, failure_to_start_msg: str):
     """
     Start a fallback kernel - for the purpose having a good interface for the user
     to fix their environment.

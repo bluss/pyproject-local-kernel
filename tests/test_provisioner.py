@@ -13,8 +13,7 @@ from traitlets.config import Config
 
 
 from pyproject_local_kernel.provisioner import PyprojectKernelProvisioner
-from pyproject_local_kernel import KERNEL_SPECS
-from pyproject_local_kernel import ProjectKind
+from pyproject_local_kernel._identify import KERNEL_SPECS, ProjectKind
 
 
 pytestmark = pytest.mark.unit
