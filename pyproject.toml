@@ -45,9 +45,6 @@ pyproject-local-kernel-provisioner = "pyproject_local_kernel.provisioner:Pyproje
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
-[tool.rye]
-managed = false
-
 [tool.uv]
 managed = true
 dev-dependencies = [
@@ -79,7 +76,8 @@ packages = ["src/pyproject_local_kernel"]
 "./data/kernel.json" = "share/jupyter/kernels/pyproject_local_kernel/kernel.json"
 "./data/kernel_use_venv.json" = "share/jupyter/kernels/pyproject_local_kernel_use_venv/kernel.json"
 
-# Tests
+
+## Tests ##
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = [
@@ -90,17 +88,18 @@ filterwarnings = [
     "ignore:Jupyter is migrating its paths",
 ]
 
-# Editors and other tools below
-
-[tool.pyright]
-pythonVersion = "3.8"
-typeCheckingMode = "standard"
-reportUnusedParameter = false
-
+## Project tools ##
 [tool.ruff]
 output-format = "grouped"
 exclude = ["example", "tests/identify", "tests/server-client"]
 line-length = 150
 lint.ignore = ["E741"]
+
+
+## Editors and other tools ##
+[tool.pyright]
+pythonVersion = "3.8"
+typeCheckingMode = "standard"
+reportUnusedParameter = false
 
 [tool.pyproject-local-kernel]
