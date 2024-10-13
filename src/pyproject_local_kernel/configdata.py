@@ -12,6 +12,10 @@ def _to_skewer_case(name: str) -> str:
     return name.replace("_", "-")
 
 
+def _not_none(a: t.Any, b: t.Any) -> t.Any:
+    return a if a is not None else b
+
+
 def _type_check(type_annot: t.Any, obj: t.Any) -> bool:
     """
     Yes I know, ad-hoc type check of type annotations.
@@ -76,4 +80,6 @@ class Config(_PostInitTypeCheck):
 
     def merge_with(self, other: Config) -> Config:
         "Merge with self taking precedence over other"
-        return Config(python_cmd=self.python_cmd or other.python_cmd, use_venv=self.use_venv or other.use_venv)
+        values = {field.name: _not_none(getattr(self, field.name), getattr(other, field.name))
+                  for field in dataclasses.fields(self)}
+        return Config(**values)
