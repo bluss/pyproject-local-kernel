@@ -27,35 +27,32 @@ def _type_check(type_annot, obj):
     return ret
 
 
-@dataclasses.dataclass
-class TypeCheckedFromDict:
-    """
-    Add from_dict constructor which checks the types of fields;
-    enforces skewer case `like-this` for fields like `like_this`.
-    """
-    @classmethod
-    def from_dict(cls, data: dict[str, t.Any]):
-        kwargs = {}
-        used_configs = set()
-        self_type_hints = t.get_type_hints(cls)
-        for field in dataclasses.fields(cls):
-            config_name = _to_skewer_case(field.name)
+def _dataclass_from_dict(cls, data: dict[str, t.Any]):
+    kwargs = {}
+    used_configs = set()
+    self_type_hints = t.get_type_hints(cls)
+    for field in dataclasses.fields(cls):
+        config_name = _to_skewer_case(field.name)
+        for lookup_name in (config_name, field.name):
             try:
-                config_value = data[config_name]
+                config_value = data[lookup_name]
+                break
             except KeyError:
-                continue
-            field_type = self_type_hints[field.name]
-            if not _type_check(field_type, config_value):
-                raise TypeError(f"invalid config {config_name} = {config_value!r}, expected value of type {field.type}")
-            kwargs[field.name] = config_value
-            used_configs.add(config_name)
-        for unknown_config_key in set(data).difference(used_configs):
-            _logger.warning("Ignoring unknown configuration key %r", unknown_config_key)
-        return cls(**kwargs)
+                pass
+        else:
+            continue
+        field_type = self_type_hints[field.name]
+        if not _type_check(field_type, config_value):
+            raise TypeError(f"invalid config {config_name} = {config_value!r}, expected value of type {field.type}")
+        kwargs[field.name] = config_value
+        used_configs.add(lookup_name)
+    for unknown_config_key in set(data).difference(used_configs):
+        _logger.warning("Ignoring unknown (or duplicate) configuration key %r", unknown_config_key)
+    return cls(**kwargs)
 
 
 @dataclasses.dataclass
-class Config(TypeCheckedFromDict):
+class Config:
     """
     pyproject tool.MY_TOOL_NAME section
     """
@@ -63,7 +60,9 @@ class Config(TypeCheckedFromDict):
     python_cmd: t.Optional[t.Union[str, t.List[str]]] = None
     use_venv: t.Optional[str] = None
 
-    def python_cmd_normalized(self) -> t.Optional[t.List[str]]:
+    from_dict = classmethod(_dataclass_from_dict)
+
+    def python_cmd_normalized(self) -> list[str] | None:
         if isinstance(self.python_cmd, str):
             return shlex.split(self.python_cmd)
         return self.python_cmd
