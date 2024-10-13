@@ -29,16 +29,17 @@ def test_ident(path, expected):
     assert pd.path is not None and pd.path.name == "pyproject.toml"
 
 
-@pytest.mark.parametrize("path,cmd", [
-    ("tests/identify/config_cmd", ["my", "cmd"]),
-    ("tests/identify/config_cmd_string", ['uv', 'run', '--with', 'custom string', '-BI']),
+@pytest.mark.parametrize("path,cmd,sanity", [
+    ("tests/identify/config_cmd", ["my", "cmd"], False),
+    ("tests/identify/config_cmd_string", ['uv', 'run', '--with', 'custom string', '-BI'], None),
     # uv must be on the path, then we pick this fallback
-    ("tests/identify/unknown", ["uv", "run", "--with", "ipykernel", "python"]),
+    ("tests/identify/unknown", ["uv", "run", "--with", "ipykernel", "python"], None),
 ])
-def test_custom(path, cmd):
+def test_custom_and_sanity(path, cmd, sanity):
     pd = identify(path)
     assert pd.get_python_cmd() == cmd
     assert pd.path is not None and pd.path.name == "pyproject.toml"
+    assert pd.config.sanity_check == sanity
 
 
 @pytest.mark.parametrize("path", [

@@ -16,3 +16,4 @@ dev-dependencies = []
 [tool.pyproject-local-kernel]
 python-cmd = ["my", "cmd"]
 not-valid = 1
+sanity_check = false
