@@ -3,4 +3,4 @@
 # Nox is the task runner for the project.
 # Run ./nox -l to list available tasks, extra arguments after -- are passed to the task.
 
-exec uv run nox "$@"
+exec uv run python -m nox "$@"
