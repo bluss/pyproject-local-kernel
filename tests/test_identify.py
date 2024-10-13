@@ -104,7 +104,7 @@ def test_custom_error(path, caplog):
 def test_custom_ignored_key(path, caplog):
     # Test log error
     identify(path)
-    assert any("unknown configuration key 'not-valid'" in rec.message for rec in caplog.records)
+    assert any("unknown (or duplicate) configuration key 'not-valid'" in rec.message for rec in caplog.records)
 
 
 def test_no_project(tmp_path: Path):
