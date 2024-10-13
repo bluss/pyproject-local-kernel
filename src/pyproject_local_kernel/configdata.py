@@ -70,6 +70,7 @@ class Config(_PostInitTypeCheck):
 
     python_cmd: t.Optional[t.List[str]] = None
     use_venv: t.Optional[str] = None
+    sanity_check: t.Optional[bool] = None
 
     from_dict = classmethod(_dataclass_from_dict)
 
