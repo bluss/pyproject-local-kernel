@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.12.0
+
+- Show more specific error if we fail to run sanity check (#55)
+
+- Add project config `sanity-check` (#55)
+
+- Accept both underscore and hyphen in project configuration (#55)
+
+- Sharpen the public/private API distinction even if this is not a library;
+  only the main function and the kernel provisioner are public API now. (#57)
+
 ## 0.11.3
 
 - Set `PYPROJECT_LOCAL_KERNEL_SANITY_CHECK` in the environment when running the
