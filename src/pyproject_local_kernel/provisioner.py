@@ -20,8 +20,10 @@ from pyproject_local_kernel.configdata import Config
 
 _SCRIPT_CHECK_HAS_KERNEL = """import importlib.util; raise SystemExit(not importlib.util.find_spec("ipykernel"))"""
 _MESSAGE_NO_PYPROJECT = """Could not start project - no pyproject.toml or malformed pyproject.toml?"""
-_MESSAGE_NO_IPYKERNEL_SANITY = """Sanity check: Could not find `ipykernel` in environment.
+_MESSAGE_SANITY = """Sanity check: Could not find `ipykernel` in environment"""
+_MESSAGE_SANITY_NO_IPYKERNEL = _MESSAGE_SANITY + """
 Add `ipykernel` as a dependency in your project and update the virtual environment."""
+
 
 
 class PyprojectKernelProvisioner(LocalProvisioner):
@@ -115,9 +117,12 @@ class PyprojectKernelProvisioner(LocalProvisioner):
             sanity_env["PYPROJECT_LOCAL_KERNEL_SANITY_CHECK"] = "1"
             try:
                 subprocess.run(sanity_cmd, check=True, cwd=cwd, env=sanity_env)
+            except OSError as exc:
+                self.__log(logging.ERROR, "failed sanity check: %s", exc)
+                raise RuntimeError(_MESSAGE_SANITY + f"\nError: {exc}")
             except (subprocess.CalledProcessError, OSError) as exc:
                 self.__log(logging.ERROR, "failed sanity check: %s", exc)
-                raise RuntimeError(_MESSAGE_NO_IPYKERNEL_SANITY)
+                raise RuntimeError(_MESSAGE_SANITY_NO_IPYKERNEL)
         finally:
             self._log_debug("used %.3f s on sanity check", (time.time() - st))
 
