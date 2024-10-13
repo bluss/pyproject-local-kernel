@@ -141,6 +141,20 @@ or sync required dependencies.
 use-venv = ".venv"
 ```
 
+### `sanity-check`
+
+If `true`, then run a check for `ipykernel` being installed in the project
+before starting the kernel process.
+
+**Default:** true<br>
+**Type:** `bool`<br>
+**Example:**
+
+```toml
+[tool.pyproject-local-kernel]
+sanity-check = true
+```
+
 
 ### `PyprojectKernelProvisioner`
 
