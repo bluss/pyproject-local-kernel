@@ -64,7 +64,7 @@ class PyprojectKernelProvisioner(LocalProvisioner):
             raise RuntimeError("pyproject_local_kernel config missing from kernelspec")
 
         find_project = identify(cwd)
-        find_project.config = find_project.config.merge_with(spec_config)
+        find_project.config = find_project.config.merge_with(spec_config).merge_with(Config.default())
         self._log_debug("Found project %s in %s", find_project.kind, find_project.path)
         self._log_debug("with effective config %r", find_project.config)
 
