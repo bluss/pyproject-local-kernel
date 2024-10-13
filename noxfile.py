@@ -71,8 +71,11 @@ def build(session: nox.Session):
 @nox.session(name="build-test", tags=["ci-linux"])
 def build_test(session: nox.Session):
     "Test the built wheel"
-    for wheel in glob.glob("dist/pyproject_local_kernel*.whl"):
+    wheels = glob.glob("dist/pyproject_local_kernel*.whl")
+    for wheel in wheels:
         session.run("uvx", "--refresh-package", "pyproject-local-kernel", "--with", wheel, "pytest", "-m", "unit")
+    if not len(wheels):
+        session.error("No wheels to test")
 
 
 @nox.session(name="docs-serve")
