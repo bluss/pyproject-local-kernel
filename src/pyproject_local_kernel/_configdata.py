@@ -85,6 +85,7 @@ class Config(_PostInitTypeCheck):
 
     def merge_with(self, other: Config) -> Config:
         "Merge with self taking precedence over other"
-        values = {field.name: _not_none(getattr(self, field.name), getattr(other, field.name))
-                  for field in dataclasses.fields(self)}
-        return Config(**values)
+        for field in dataclasses.fields(self):
+            if getattr(self, field.name) is None:
+                setattr(self, field.name, getattr(other, field.name))
+        return self
