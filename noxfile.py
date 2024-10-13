@@ -6,7 +6,6 @@ Run ./nox -l to list available tasks, extra arguments after -- are passed to the
 import glob
 import os
 from pathlib import Path
-import sys
 
 import nox
 
@@ -51,10 +50,13 @@ def jupyter(session: nox.Session):
     _pytest(session, "-s", "-m", "jupyter", *session.posargs)
 
 
-@nox.session(tags=["ci-linux", "ci-windows"])
-def jupyter_all_python(session: nox.Session):
+@nox.session()
+@nox.parametrize("use_python", [
+    nox.param(python_versions, tags=["ci-linux"]),
+    nox.param(python_versions[-2:], tags=["ci-windows"]),
+])
+def jupyter_all_python(session: nox.Session, use_python):
     "Run pytest integration tests with jupyter kernel"
-    use_python = python_versions if sys.platform != "win32" else python_versions[-2:]
     pytest_args = ["--use-python", " ".join(use_python)]
     pytest_args += session.posargs
     _pytest(session, "-s", "-m", "jupyter", *pytest_args)
