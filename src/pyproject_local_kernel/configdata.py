@@ -68,12 +68,16 @@ class Config(_PostInitTypeCheck):
     pyproject tool.MY_TOOL_NAME section
     """
 
-    python_cmd: t.Optional[t.Union[str, t.List[str]]] = None
+    python_cmd: t.Optional[t.List[str]] = None
     use_venv: t.Optional[str] = None
 
     from_dict = classmethod(_dataclass_from_dict)
 
-    def python_cmd_normalized(self) -> list[str] | None:
+    def __post_init__(self):
+        self.python_cmd = self._python_cmd_normalized()
+        super().__post_init__()
+
+    def _python_cmd_normalized(self) -> list[str] | None:
         if isinstance(self.python_cmd, str):
             return shlex.split(self.python_cmd)
         return self.python_cmd
