@@ -22,6 +22,7 @@ python_versions = [
     "3.13",
 ]
 python_short = ["py" + p.replace(".", "") for p in python_versions]
+windows_python_versions = [python_versions[1], python_versions[-1]]
 
 def _pytest(session: nox.Session, *args, python=None):
     py_args = ("-p", python) if python is not None else ()
@@ -53,7 +54,7 @@ def jupyter(session: nox.Session):
 @nox.session()
 @nox.parametrize("use_python", [
     nox.param(python_versions, tags=["ci-linux"]),
-    nox.param(python_versions[-2:], tags=["ci-windows"]),
+    nox.param(windows_python_versions, tags=["ci-windows"]),
 ])
 def jupyter_all_python(session: nox.Session, use_python):
     "Run pytest integration tests with jupyter kernel"
