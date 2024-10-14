@@ -1,0 +1,893 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="..">
+      
+      
+        <link rel="next" href="../CHANGELOG/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.40">
+    
+    
+      
+        <title>FAQ - Pyproject Local Kernel</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.8c3ca2c6.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../static/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#frequently-asked-questions" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      <!--
+  Copyright (c) 2016-2024 Martin Donath <martin.donath@squidfunk.com>
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to
+  deal in the Software without restriction, including without limitation the
+  rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+  sell copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+  IN THE SOFTWARE.
+-->
+
+<!-- Determine classes -->
+
+
+
+<!-- Header -->
+<header class="md-header" data-md-component="header">
+  <nav
+    class="md-header__inner md-grid"
+    aria-label="Header"
+  >
+
+    <!-- Link to home -->
+    <a
+      href=".."
+      title="Pyproject Local Kernel"
+      class="md-header__button md-logo"
+      aria-label="Pyproject Local Kernel"
+      data-md-component="logo"
+    >
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+
+    <!-- Button to open drawer -->
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+
+    <!-- Header title -->
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pyproject Local Kernel
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              FAQ
+            
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Color palette toggle -->
+    
+
+    <!-- User preference: color palette -->
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+
+    <!-- Site language selector -->
+    
+
+    <!-- Button to open search modal -->
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+
+      <!-- Search interface -->
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+        <div class="pypi_badge">
+    <a href="https://pypi.org/project/pyproject-local-kernel/" title="pyproject-local-kernel at Python Package Index">
+        <img src="https://img.shields.io/pypi/v/pyproject-local-kernel?style=for-the-badge&logo=python&logoColor=yellow&color=000050&labelColor=3f6ec6"/>
+    </a>
+</div>
+    
+
+    <!-- Repository information -->
+    
+      <div class="md-header__source">
+        <a href="https://github.com/bluss/pyproject-local-kernel" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    bluss/pyproject-local-kernel
+  </div>
+</a>
+      </div>
+    
+  </nav>
+
+  <!-- Navigation tabs (sticky) -->
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+    
+  
+  Overview
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
+        
+  
+    
+  
+  FAQ
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../CHANGELOG/" class="md-tabs__link">
+        
+  
+    
+  
+  Changelog
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Pyproject Local Kernel" class="md-nav__button md-logo" aria-label="Pyproject Local Kernel" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Pyproject Local Kernel
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/bluss/pyproject-local-kernel" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    bluss/pyproject-local-kernel
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    FAQ
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    FAQ
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#how-does-it-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      How does it work?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-do-i-install-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      How do I install it?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-do-i-have-to-install-ipykernel-manually" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why do I have to install ipykernel manually?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-can-i-see-which-python-environment-i-am-using" class="md-nav__link">
+    <span class="md-ellipsis">
+      How can I see which Python environment I am using?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-the-benefit-of-the-use-venv-setting" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is the benefit of the use-venv setting?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#does-pyproject-local-kernel-work-with-nbconvert-and-papermill" class="md-nav__link">
+    <span class="md-ellipsis">
+      Does Pyproject Local Kernel work with Nbconvert and Papermill?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#does-it-work-with-conda" class="md-nav__link">
+    <span class="md-ellipsis">
+      Does it work with Conda?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-setup-for-vscodium-or-vs-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to setup for VSCodium or VS Code?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#does-it-work-with-with-pipenv" class="md-nav__link">
+    <span class="md-ellipsis">
+      Does it work with with Pipenv?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#does-pyproject-local-kernel-require-uv-or-rye" class="md-nav__link">
+    <span class="md-ellipsis">
+      Does Pyproject Local Kernel require Uv or Rye?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-does-the-python-cmd-configuration-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      How does the python-cmd configuration work?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#isnt-there-a-less-complicated-way-to-do-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      Isn't There a Less Complicated Way to Do It?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#more-questions-about-uv" class="md-nav__link">
+    <span class="md-ellipsis">
+      More questions about Uv
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="More questions about Uv">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#can-i-start-pyproject-local-kernel-with-uvx" class="md-nav__link">
+    <span class="md-ellipsis">
+      Can I start pyproject-local-kernel with uvx?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#can-i-use-a-different-version-of-python-for-the-notebook" class="md-nav__link">
+    <span class="md-ellipsis">
+      Can I use a different version of Python for the notebook?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-is-the-python-environment-path-weird" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why is the Python environment path weird?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#can-i-nest-projects" class="md-nav__link">
+    <span class="md-ellipsis">
+      Can I nest projects?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CHANGELOG/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Changelog
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="frequently-asked-questions">Frequently Asked Questions</h1>
+<h2 id="how-does-it-work">How does it work?</h2>
+<p>The regular IPython kernel for Jupyter is launched like this:
+<code>python -m ipykernel_launcher -f &lt;connection_file&gt;</code></p>
+<p>If you just prefix that command with <code>rye run</code>, <code>uv run</code>, <code>poetry run</code>,
+<code>pdm run</code>, <code>hatch run</code>, etc, then you get a kernel invocation that executes in
+the current pyproject's environment. That's basically the whole magic of this
+package, it doesn't need to do more (well, if it only were <em>that</em> easy..)</p>
+<p>It uses <a href="https://jupyter-client.readthedocs.io/en/latest/provisioning.html">Kernel Provisioning</a> in <code>jupyter-client</code> to launch the right
+command depending on project configuration.</p>
+<h2 id="how-do-i-install-it">How do I install it?</h2>
+<p>To break it down:</p>
+<ul>
+<li>You install <code>jupyterlab</code> and <code>pyproject-local-kernel</code> together.</li>
+<li>Then you have projects defined by <code>pyproject.toml</code> for each notebook
+  or collection of notebooks. They install <code>ipykernel</code> and packages
+  you want to use in the notebook.</li>
+</ul>
+<p>See also <a href="https://github.com/bluss/pyproject-local-kernel/tree/main/example"><code>example/</code></a> in the git repository.</p>
+<h2 id="why-do-i-have-to-install-ipykernel-manually">Why do I have to install <code>ipykernel</code> manually?</h2>
+<p>The IPython kernel is the interpreter that executes everything in the notebook,
+and it needs to be installed together with all the dependencies the notebook
+wants to import. However only one installation of JupyterLab (or equivalent
+notebook program) is necessary, and should be separate from the notebook.</p>
+<p>For Uv, the default command is <code>uv run --with ipykernel</code> which creates an
+overlay environment containing ipykernel if it wasn't already installed. This
+makes it possible to skip ipykernel in the project dependencies if desired.</p>
+<h2 id="how-can-i-see-which-python-environment-i-am-using">How can I see which Python environment I am using?</h2>
+<p>In general it is a good idea to look at these variables in a notebook
+to understand which Python version and Python environment it is using:</p>
+<div class="highlight"><pre><span></span><code><span class="n">sys</span><span class="o">.</span><span class="n">prefix</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">executable</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">version_info</span>
+</code></pre></div>
+<p>You can also start JupyterLab with debug logs, and look for
+<code>pyproject-local-kernel</code> debug info in the output.</p>
+<h2 id="what-is-the-benefit-of-the-use-venv-setting">What is the benefit of the <code>use-venv</code> setting?</h2>
+<p>It is used for more flexibility. It means that pyproject local does not
+depend on any particular project manager and can use any virtual environment.</p>
+<p>And, if you for example compare the uv default configuration vs a <code>use-venv</code>
+configuration, both in a uv-defined project, then they stack up like this:</p>
+<p><strong>Uv default</strong></p>
+<ul>
+<li>Runs <code>uv run --with ipykernel python</code></li>
+<li>Installs <code>ipykernel</code> automatically</li>
+<li>Syncs dependencies automatically on every start/restart</li>
+</ul>
+<p><strong><code>use-venv = ".venv"</code></strong></p>
+<ul>
+<li>Runs <code>python</code> from the virtual environment directly which has less
+  indirection and overhead</li>
+<li>Does not create or change the environment, only uses it as it is</li>
+<li>Requires <code>ipykernel</code> to be installed</li>
+</ul>
+<h2 id="does-pyproject-local-kernel-work-with-nbconvert-and-papermill">Does Pyproject Local Kernel work with Nbconvert and <a href="https://papermill.readthedocs.io/en/latest/">Papermill</a>?</h2>
+<p>Yes it works, with both Nbconvert and Papermill.</p>
+<p>Pyproject Local Kernel relies on Jupyter's working directory convention: the
+working directory is always the same as the notebook's location - and it will
+work as long as you run Papermill the same way, using its <code>--cwd</code> argument.</p>
+<p>You can install Papermill and pyproject-local-kernel in a separate environment,
+and run each notebook in its own pyproject environment with its dependencies
+this way.</p>
+<h2 id="does-it-work-with-conda">Does it work with Conda?</h2>
+<p>Conda environments are supported only by using the <code>use-venv</code> setting in
+<code>pyproject.toml</code>, where it needs to point to the location of the installed
+environment as an absolute path, or a path relative to the the <code>pyproject.toml</code>
+file.</p>
+<div class="highlight"><pre><span></span><code><span class="k">[tool.pyproject-local-kernel]</span>
+<span class="n">use-venv</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;.venv&quot;</span>
+</code></pre></div>
+<h2 id="how-to-setup-for-vscodium-or-vs-code">How to setup for VSCodium or VS Code?</h2>
+<p><strong>Note</strong> that code natively supports using virtual environments in a local
+directory directly. For this reason <code>pyproject-local-kernel</code> is almost always
+unecessary with VSCodium or VS Code ("code").</p>
+<p>Code does not launch the kernel in the same way that Jupyterlab does
+(Jupyterlab uses <code>jupyter-client</code> and enables kernel provisioning), for this reason
+<code>pyproject-local-kernel</code> is launched using a less reliable way when
+using code, and this is a - for now - unsupported way to use this project.</p>
+<p>However, it should more or less work. Here are some suggestions:</p>
+<p>Install both <code>jupyter</code> and <code>pyproject-local-kernel</code> in a central Python
+environment that you choose. (The <a href="https://github.com/microsoft/vscode-jupyter">vscode-jupyter</a> extension instructs that
+you should install <code>jupyter</code> and tell it where this installation is).</p>
+<p>Then you need need to use the command <em>Python: Select Interpreter</em> to select
+the environment where you installed <code>jupyter</code>.</p>
+<p>When this is done, you can use <em>Select Kernel</em> → <em>Jupyter Kernel</em> → <em>Pyproject
+Local</em> to use this project from code.</p>
+<p>The output panel has a <em>Jupyter</em> section with logs from the Jupyter kernel,
+which can help in debugging.</p>
+<h2 id="does-it-work-with-with-pipenv">Does it work with with Pipenv?</h2>
+<ol>
+<li>Add ipykernel to the environment packages</li>
+<li>Configure the Python run command in local pyproject file</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="k">[tool.pyproject-local-kernel]</span>
+<span class="n">python-cmd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;env&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;PIPENV_IGNORE_VIRTUALENVS=1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;pipenv&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;run&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;python&quot;</span><span class="p">]</span>
+</code></pre></div>
+<h2 id="does-pyproject-local-kernel-require-uv-or-rye">Does Pyproject Local Kernel require Uv or Rye?</h2>
+<p>No, neither of them are strictly required to use. Any supported project manager
+is enough, or even none for custom or vitualenv configurations.</p>
+<p>For development of the project and running tests, Uv is required.</p>
+<h2 id="how-does-the-python-cmd-configuration-work">How does the <code>python-cmd</code> configuration work?</h2>
+<p><code>python-cmd</code> should be a command-line that runs Python, in the environment that
+should be used for the notebook.</p>
+<p>For example, for a regular virtual environment, the python command would be
+<code>.venv/bin/python</code> or <code>.venv\Scripts\python.exe</code>.</p>
+<p>The python command should take arguments and will be run with arguments to start
+the IPython kernel. It can also be used with different arguments to run a sanity check
+script, checking if <code>ipykernel</code> is installed. <sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup></p>
+<p>Example 1: <code>python-cmd</code> is a script in the same directory as <code>pyproject.toml</code>
+and when invoked with arguments, it will run python in the desired environment.</p>
+<div class="highlight"><pre><span></span><code><span class="k">[tool.pyproject-local-kernel]</span>
+<span class="n">python-cmd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;./runpy&quot;</span>
+</code></pre></div>
+<p>Example 2: a shell is invoked to be able to use shell constructs like <code>&amp;&amp;</code>
+directly, and care is taken so that it still uses the extra command line
+arguments. Of course, using any such script is less portable than just using a
+project or virtual environment configuration directly.</p>
+<div class="highlight"><pre><span></span><code><span class="k">[tool.pyproject-local-kernel]</span>
+<span class="n">python-cmd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;bash&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;-c&quot;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;uv sync &amp;&amp; X=1 .venv/bin/python -I &quot;$@&quot; &amp;&amp; echo done&#39;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;--&quot;</span><span class="p">]</span>
+</code></pre></div>
+<h2 id="isnt-there-a-less-complicated-way-to-do-it">Isn't There a Less Complicated Way to Do It?</h2>
+<p>Yes, there kind of is a way.</p>
+<p>If you install the following kernelspec, you can use <code>uv run</code> as
+the environment manager for your notebooks. You don't hardcode a virtual environment path,
+but you hardcode that you're using <code>uv run</code>.</p>
+<p>This example does more or less the same as what <code>pyproject-local-kernel</code> does, but without
+the error handling and configurability:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;argv&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;uv&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;run&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;--with&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;ipykernel&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;python&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;-m&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;ipykernel_launcher&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;-f&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;{connection_file}&quot;</span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;display_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Uv Run Ipykernel&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;language&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;python&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;metadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;debugger&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>If you have such a <code>.json</code> file, <code>jupyter kernelspec install --user</code> can help you install it.</p>
+<h2 id="more-questions-about-uv">More questions about Uv</h2>
+<h3 id="can-i-start-pyproject-local-kernel-with-uvx">Can I start <code>pyproject-local-kernel</code> with <code>uvx</code>?</h3>
+<p>Yes, you can launch a full Jupyterlab environment using:</p>
+<div class="highlight"><pre><span></span><code><span class="go">uvx --with pyproject-local-kernel --from jupyterlab jupyter-lab</span>
+</code></pre></div>
+<p>However it is often good to use a project or environment manager to define the
+Jupyter environment with your chosen dependencies, so that you can use a lock
+file and have other benefits of a proper project.</p>
+<h3 id="can-i-use-a-different-version-of-python-for-the-notebook">Can I use a different version of Python for the notebook?</h3>
+<p>Yes, the Python version can be pinned separately per notebook project.
+It doesn't need to be the same as the Jupyterlab Python version.</p>
+<h3 id="why-is-the-python-environment-path-weird">Why is the Python environment path weird?</h3>
+<p>If you look at <code>sys.prefix</code> when using <strong>uv</strong> and pyproject local kernel,
+and you see a prefix like this or similar:
+<code>'~/.cache/uv/archive-v0/n2G3HHDzRZ7cjiFgGXIwC'</code>, then <code>uv run</code> is using an
+<a href="https://docs.astral.sh/uv/reference/cli/">ephemeral environment</a> to run the kernel.<br>
+It should work just fine in most cases, but it means that <code>ipykernel</code> is not
+installed in your base environment. If you want to fix this,
+use <code>uv add ipykernel</code> and restart the kernel.</p>
+<h3 id="can-i-nest-projects">Can I nest projects?</h3>
+<p>You can, but <code>pyproject-local-kernel</code> always looks at the closest
+<code>pyproject.toml</code> only, not at the whole workspace.</p>
+<p>If you want to “isolate” a <code>pyproject.toml</code> insert an empty
+<code>[tool.uv.workspace]</code> in the <code>pyproject.toml</code>, that way it is not part of any
+other workspace from directories above it.</p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p>The variable <code>PYPROJECT_LOCAL_KERNEL_SANITY_CHECK</code> is set in the environment when
+running the sanity check.&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href=".." class="md-footer__link md-footer__link--prev" aria-label="Previous: Overview">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Overview
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../CHANGELOG/" class="md-footer__link md-footer__link--next" aria-label="Next: Changelog">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Changelog
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2024 “bluss” Ulrik Sverdrup
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.instant", "navigation.tracking", "content.code.annotate", "content.code.copy", "content.tabs.link", "toc.integrate", "toc.follow", "navigation.path", "navigation.top", "navigation.tabs", "navigation.footer"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.525ec568.min.js"></script>
+      
+    
+  </body>
+</html>
