@@ -174,7 +174,7 @@ def test_interrupt(python_version: str, scenario_setup: ScenarioSetup):
         raise
 
 
-@pytest.mark.skip
+@pytest.mark.skipif(sys.platform != "win32", reason="windows only because of ipykernel")
 def test_interrupt_parent_gone(scenario_setup: ScenarioSetup):
     scenario = "interrupt"
     papermill_args = "--execution-timeout 10"
