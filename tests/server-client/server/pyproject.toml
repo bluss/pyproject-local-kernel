@@ -18,6 +18,10 @@ classifiers = [
 kernel = [
     "ipykernel>=6.29.5",
 ]
+nbconvert = [
+    # nbconvert pulls in ipykernel as well
+    "nbconvert>=7.16.4",
+]
 
 [build-system]
 requires = ["hatchling"]

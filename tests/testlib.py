@@ -42,6 +42,7 @@ def popen_capture(args: str, popen_kwargs=None, launch_callback=None, timeout=No
     """
     Run a subprocess using Popen, stream stdout, stderr to stdout/stderr, but also capture them.
     """
+    print(">", args)
     async def async_process():
         argv = shlex.split(args)
         proc = await asyncio.create_subprocess_exec(argv[0], *argv[1:],
