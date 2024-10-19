@@ -1,10 +1,13 @@
+import dataclasses
 from pathlib import Path
 import os
 import shutil
+import typing
 
 import pytest
 
 from pyproject_local_kernel._identify import ProjectKind, identify
+from pyproject_local_kernel._configdata import _type_name, Config
 import testlib
 
 
@@ -112,3 +115,11 @@ def test_no_project(tmp_path: Path):
     assert pd.kind == ProjectKind.NoProject
     assert pd.path is None
     assert pd.get_python_cmd() is None
+
+
+def test_config_type_name():
+    self_type_hints = typing.get_type_hints(Config)
+    for field in dataclasses.fields(Config):
+        assert _type_name(self_type_hints[field.name])
+
+    assert _type_name(typing.Union[typing.List[str], None]) == "list[str] | None"

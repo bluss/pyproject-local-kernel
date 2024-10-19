@@ -12,10 +12,6 @@ def _to_skewer_case(name: str) -> str:
     return name.replace("_", "-")
 
 
-def _not_none(a: t.Any, b: t.Any) -> t.Any:
-    return a if a is not None else b
-
-
 def _type_check(type_annot: t.Any, obj: t.Any) -> bool:
     """
     Yes I know, ad-hoc type check of type annotations.
@@ -29,6 +25,18 @@ def _type_check(type_annot: t.Any, obj: t.Any) -> bool:
         return _type_check(list, obj) and all(_type_check(args[0], elt) for elt in obj)
     ret = isinstance(obj, orig)
     return ret
+
+
+def _type_name(type_annot: t.Any) -> str:
+    args = t.get_args(type_annot)
+    orig = t.get_origin(type_annot) or type_annot
+    if args != () and (orig == t.Union or orig == t.Optional):
+        return " | ".join(_type_name(arg) for arg in args)
+    elif args != () and orig is list:
+        return "list[" + _type_name(args[0])  + "]"
+    if type_annot is type(None):
+        return "None"
+    return type_annot.__name__
 
 
 def _dataclass_from_dict(cls, data: dict[str, t.Any]):
@@ -59,7 +67,11 @@ class _PostInitTypeCheck:
             config_value = getattr(self, field.name)
             field_type = self_type_hints[field.name]
             if not _type_check(field_type, config_value):
-                raise TypeError(f"invalid config {config_name} = {config_value!r}, expected value of type {field.type}")
+                show_type = _type_name(field_type)
+                raise TypeError(f"invalid config {config_name} = {config_value!r}, expected value of type {show_type!r}")
+
+    def _display_field_type(self, field: str) -> str:
+        raise NotImplementedError
 
 
 @dataclasses.dataclass
@@ -68,7 +80,8 @@ class Config(_PostInitTypeCheck):
     pyproject tool.MY_TOOL_NAME section
     """
 
-    python_cmd: t.Optional[t.List[str]] = None
+    # python_cmd is always a list[str] after normalization
+    python_cmd: t.Optional[t.Union[str, t.List[str]]] = None
     use_venv: t.Optional[str] = None
     sanity_check: t.Optional[bool] = None
 
