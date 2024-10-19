@@ -6,7 +6,9 @@ from pathlib import Path
 import re
 import shutil
 import sys
+import tempfile
 import textwrap
+
 import threading
 import time
 
@@ -94,17 +96,35 @@ class ScenarioSetup:
 
     def papermill(self, papermill_args: str = "", launch_callback=None, timeout=None) -> PopenResult:
         "Run papermill on scenario notebook and return result with stdout/stderr"
+        assert self.client_dir, "Have client directory"
+        client_dir = self.client_dir.name
+
         with pytest.MonkeyPatch.context() as m:
             m.chdir(self.base_dir)
             # enable debug logging so we can assert on it
             m.setenv("PYPROJECT_LOCAL_KERNEL_DEBUG", "1")
-            assert self.client_dir, "Have client directory"
-            client_dir = self.client_dir.name
 
             args = (f"uv run --project server papermill {papermill_args} --cwd {client_dir} "
                     f"{self.notebook_in.as_posix()} {self.notebook_out.as_posix()}")
             proc = popen_capture(args, launch_callback=launch_callback, timeout=timeout)
             return proc
+
+    def nbconvert(self, args: str = "", launch_callback=None, timeout=None) -> PopenResult:
+        "Run nbconvert on scenario notebook and return result with stdout/stderr"
+        assert self.client_dir, "Have client directory"
+        client_dir = self.client_dir.name
+
+        with pytest.MonkeyPatch.context() as m:
+            m.chdir(self.base_dir)
+            m.setenv("PYPROJECT_LOCAL_KERNEL_DEBUG", "1")
+            # Temporary location for notebook nested under client dir
+            with tempfile.TemporaryDirectory(dir=self.client_dir) as client_tmp:
+                nb = Path(client_tmp) / self.notebook_in.name
+                shutil.copy(self.notebook_in, nb)
+                args = f"uv run --project ../server jupyter-nbconvert --execute --inplace {args} {nb.as_posix()}"
+                proc = popen_capture(args, launch_callback=launch_callback, timeout=timeout,
+                                     popen_kwargs=dict(cwd=client_dir))
+                return proc
 
 
 @pytest.mark.parametrize("scenario,notebook", [
@@ -114,7 +134,8 @@ class ScenarioSetup:
     ("hatch", "notebook.py"),
     ("venv", "notebook.py"),
 ])
-def test_project_manager(scenario: str, notebook: str | None, python_version: str, scenario_setup: ScenarioSetup):
+def test_project_papermill(scenario: str, notebook: str, python_version: str,
+                           scenario_setup: ScenarioSetup, executable: str = "papermill"):
     """
     Test papermill and pyproject-local-kernel for notebook side vs uv / rye / hatch / venv for project side
     """
@@ -126,12 +147,24 @@ def test_project_manager(scenario: str, notebook: str | None, python_version: st
     update = python_version in _UPDATE_VERSIONS
 
     scenario_setup.scenario(scenario, update, notebook=notebook)
-    proc = scenario_setup.papermill()
+    proc = getattr(scenario_setup, executable)()
     returncode = proc.returncode
 
     assert "Traceback" not in proc.stderr
     assert "Failed to start kernel" not in proc.stderr
     assert returncode == 0
+
+
+@pytest.mark.server_args("--extra nbconvert")
+@pytest.mark.parametrize("scenario,notebook", [
+    ("uv", "notebook.py"),
+    ("venv", "notebook.py"),
+])
+def test_project_nbconvert(scenario: str, notebook: str, python_version: str, scenario_setup: ScenarioSetup):
+    """
+    Test nbconvert and pyproject-local-kernel for notebook side vs project side
+    """
+    test_project_papermill(scenario, notebook, python_version, scenario_setup, executable="nbconvert")
 
 
 @pytest.mark.server_args("--extra kernel")
