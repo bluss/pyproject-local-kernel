@@ -70,9 +70,6 @@ class _PostInitTypeCheck:
                 show_type = _type_name(field_type)
                 raise TypeError(f"invalid config {config_name} = {config_value!r}, expected value of type {show_type!r}")
 
-    def _display_field_type(self, field: str) -> str:
-        raise NotImplementedError
-
 
 @dataclasses.dataclass
 class Config(_PostInitTypeCheck):
