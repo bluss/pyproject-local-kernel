@@ -24,6 +24,7 @@ pytestmark = pytest.mark.unit
     ("tests/identify/unknown", ProjectKind.Unknown),
     ("tests/identify/no_project_section", ProjectKind.InvalidData),
     ("tests/identify/config_no_project_section", ProjectKind.UseVenv),
+    ("tests/identify/config_cmd", ProjectKind.CustomConfiguration),
 ])
 def test_ident(path, expected):
     pd = identify(path)
