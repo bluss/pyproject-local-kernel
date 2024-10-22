@@ -98,7 +98,7 @@ def main() -> int:
     args, extra_args = parser.parse_known_args()
     _logger.debug("args=%r rest=%r", args, extra_args)
 
-    if args.fallback_kernel:
+    if args.fallback_kernel is not None:
         return _start_fallback_kernel(args, failure_to_start_msg=args.fallback_kernel)
 
     _logger.warning("Unsupported: direct launch of %s - but will attempt to work with this", MY_TOOL_NAME)
