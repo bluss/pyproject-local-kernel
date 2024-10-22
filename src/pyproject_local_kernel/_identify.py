@@ -212,7 +212,7 @@ def _identify_toml(data) -> t.Tuple[ProjectKind, t.Optional[Config], t.Optional[
         if func(data):
             return kind, config, None
     if not has_project_table(data):
-        return ProjectKind.InvalidData, None, "No valid project table"
+        return ProjectKind.InvalidData, None, "No valid project table or configuration"
     return ProjectKind.Unknown, config, None
 
 
