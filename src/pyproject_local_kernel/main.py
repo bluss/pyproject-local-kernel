@@ -205,16 +205,15 @@ def _start_fallback_kernel(args: argparse.Namespace, failure_to_start_msg: str):
                 print(msg, file=sys.stderr)
             return super().do_execute(*args, **kwargs)
 
-    # remove extra items in sys.argv before IPKernelApp starts
-    sys.argv[:] = _clean_argv(args)
-    _logger.debug("Clean sys.argv=%r", sys.argv)
+    argv = _ipykernel_argv(args)
+    _logger.debug("IPKernelApp launch argv=%r", argv)
 
-    IPKernelApp.launch_instance(kernel_class=FallbackMessageKernel)
+    IPKernelApp.launch_instance(argv, kernel_class=FallbackMessageKernel)
     return 0
 
 
-def _clean_argv(args: argparse.Namespace) -> list[str]:
-    argv = sys.argv[:1]
+def _ipykernel_argv(args: argparse.Namespace) -> list[str]:
+    argv = []
     if args.connection_file:
         argv += ["-f", args.connection_file]
     return argv
