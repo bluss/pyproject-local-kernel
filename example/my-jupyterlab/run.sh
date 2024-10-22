@@ -4,4 +4,4 @@
 
 set -ex
 
-uv run jupyter-lab --notebook-dir=..
+uv run jupyter-lab --notebook-dir=.. "$@"
