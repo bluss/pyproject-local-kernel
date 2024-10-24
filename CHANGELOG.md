@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.12.1
+
+- Update how configuration types are displayed in errors (#60)
+
+- Pin Python 3.12 for the examples (#62)
+
+- Minor fixes to fallback kernel mode (#62)
+
+- Clarify error message when project section is missing from `pyproject.toml`
+  (#62)
+
+
 ## 0.12.0
 
 - Show more specific error if we fail to run sanity check (#55)
