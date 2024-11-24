@@ -24,7 +24,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Install Uv
-      uses: astral-sh/setup-uv@v3
+      uses: astral-sh/setup-uv@v4
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
     - name: Lint check
@@ -36,7 +36,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Install Uv
-      uses: astral-sh/setup-uv@v3
+      uses: astral-sh/setup-uv@v4
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
     - name: Install Rye
@@ -57,7 +57,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Install Uv
-      uses: astral-sh/setup-uv@v3
+      uses: astral-sh/setup-uv@v4
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
     - name: Install Rye
