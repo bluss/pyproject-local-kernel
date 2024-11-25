@@ -31,8 +31,14 @@ jobs:
       run: ./nox -t check
 
   tests-linux:
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    name: tests/${{ matrix.os }}
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
     steps:
     - uses: actions/checkout@v4
     - name: Install Uv
@@ -53,7 +59,7 @@ jobs:
   tests-windows:
     runs-on: windows-latest
     name: tests-windows
-    timeout-minutes: 10
+    timeout-minutes: 20
     steps:
     - uses: actions/checkout@v4
     - name: Install Uv
