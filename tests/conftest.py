@@ -6,6 +6,9 @@ import pytest
 # for testlib
 sys.path.append(os.path.dirname(__file__))
 
+# compatibility fix
+os.environ["UV_VENV_CLEAR"] = "1"
+
 
 def is_debugging():
     "https://stackoverflow.com/a/75438209"
