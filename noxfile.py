@@ -10,7 +10,7 @@ from pathlib import Path
 import nox
 
 nox.options.default_venv_backend = "none"
-nox.options.reuse_venv = True
+nox.options.reuse_venv = "yes"
 nox.options.sessions = []
 
 python_versions = [
