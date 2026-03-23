@@ -14,12 +14,11 @@ nox.options.reuse_venv = "yes"
 nox.options.sessions = []
 
 python_versions = [
-    "3.8",
-    "3.9",
     "3.10",
     "3.11",
     "3.12",
     "3.13",
+    "3.14",
 ]
 python_short = ["py" + p.replace(".", "") for p in python_versions]
 windows_python_versions = [python_versions[1], python_versions[-1]]
