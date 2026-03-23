@@ -1,5 +1,6 @@
 version = 1
-requires-python = ">=3.8"
+revision = 3
+requires-python = ">=3.10"
 
 [[package]]
 name = "client-nokernel"
