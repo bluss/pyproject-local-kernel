@@ -45,13 +45,15 @@ pyproject-local-kernel-provisioner = "pyproject_local_kernel.provisioner:Pyproje
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
-[tool.uv]
-managed = true
-dev-dependencies = [
+[dependency-groups]
+dev = [
     "pytest>=8.3.3",
     "nox>=2024.4.15",
     "psutil>=6.0.0",
 ]
+
+[tool.uv]
+managed = true
 python-preference = "only-managed"
 
 cache-keys = [{ file = "data/*.json" }, { file = "src/**/*.py" }]
