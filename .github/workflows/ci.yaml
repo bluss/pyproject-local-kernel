@@ -39,10 +39,6 @@ jobs:
       uses: astral-sh/setup-uv@v7
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
-    - name: Install Rye
-      run: |
-        curl -sSf https://rye.astral.sh/get | RYE_TOOLCHAIN_VERSION=$(cat .python-version) RYE_INSTALL_OPTION="--yes" bash
-        echo "$HOME/.rye/shims" >> $GITHUB_PATH
     - name: Install Hatch
       run: |
         uv tool install hatch
@@ -58,10 +54,6 @@ jobs:
     - uses: actions/checkout@v4
     - name: Install Uv
       uses: astral-sh/setup-uv@v7
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-    - name: Install Rye
-      uses: eifinger/setup-rye@v4
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
     - name: Install Hatch
