@@ -6,13 +6,13 @@ authors = [
     { name = "Ulrik Sverdrup", email = "ulrik.sverdrup@gmail.com" }
 ]
 dependencies = [
-    "jupyter-client>=8.6.3",
-    "tomli>=2.1.0; python_version < '3.11'",
+    "jupyter-client>=8.8.0",
+    "tomli>=2.4.0; python_version < '3.11'",
     "traitlets>=5.14.3",
 ]
 readme = "README.md"
 license = {file = "LICENSE.md"}
-requires-python = ">= 3.8"
+requires-python = ">= 3.10"
 keywords = ["Interactive", "Interpreter", "Jupyter", "Pyproject"]
 classifiers = [
     "Framework :: Jupyter",
@@ -23,12 +23,11 @@ classifiers = [
     "Operating System :: OS Independent",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
 ]
 
 [project.urls]
@@ -45,13 +44,15 @@ pyproject-local-kernel-provisioner = "pyproject_local_kernel.provisioner:Pyproje
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
-[tool.uv]
-managed = true
-dev-dependencies = [
+[dependency-groups]
+dev = [
     "pytest>=8.3.3",
     "nox>=2024.4.15",
     "psutil>=6.0.0",
 ]
+
+[tool.uv]
+managed = true
 python-preference = "only-managed"
 
 cache-keys = [{ file = "data/*.json" }, { file = "src/**/*.py" }]
