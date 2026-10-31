@@ -112,3 +112,16 @@ def test_venv_config():
 
     prov = PyprojectKernelProvisioner(config=config)
     assert prov.use_venv == config_value
+
+
+def test_custom_cmd_env_drops_virtual_env(tmp_path: Path):
+    shutil.copy("tests/identify/config_cmd/pyproject.toml", tmp_path / "pyproject.toml")
+    spec = KernelSpec(argv=["placeholder"], display_name="t", language="python")
+    prov = PyprojectKernelProvisioner(
+        kernel_spec=spec, python_kernel_args=["-m", "ipykernel"], sanity_check=False
+    )
+    kwargs = prov._pplk_pre_launch(
+        cwd=tmp_path, env={"VIRTUAL_ENV": "/jupyterlab/env", "PATH": "/usr/bin"}
+    )
+    assert "VIRTUAL_ENV" not in kwargs["env"]
+    assert prov.kernel_spec.argv[:2] == ["my", "cmd"]
