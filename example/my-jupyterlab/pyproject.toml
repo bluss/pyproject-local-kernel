@@ -1,6 +1,6 @@
 [project]
 name = "my-jupyterlab"
-version = "0.4.0"
+version = "0.5.0"
 description = "Jupyterlab install"
 authors = [
     { name = "Author", email = "author@example.com" }
@@ -12,9 +12,9 @@ classifiers = [
 ]
 
 dependencies = [
-    "jupyterlab>=4.2",
-    "jupytext>=1.16.1",
-    "pyproject-local-kernel>=0.11.0",
+    "jupyterlab>=4.6",
+    "jupytext>=1.19.6",
+    "pyproject-local-kernel>=0.12.0",
 ]
 
 [tool.uv.workspace]

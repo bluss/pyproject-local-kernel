@@ -6,7 +6,7 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.16.3
+#       jupytext_version: 1.19.6
 #   kernelspec:
 #     display_name: Pyproject Local
 #     language: python
@@ -30,8 +30,8 @@ import numpy as np
 np.__version__
 
 # %% [markdown]
-# If you use other project managers such as for example rye you might need to run `rye sync` or similar to sync
+# If you use other project managers such as **for example** PDM you might need to run `pdm sync` or similar to sync
 # the notebook before starting. This can be run directly in the notebook, and *then* you restart the kernel in the jupyterlab interface.
 
 # %% [raw]
-# !rye sync
+# !pdm sync
