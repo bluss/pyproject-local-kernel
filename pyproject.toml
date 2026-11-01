@@ -6,7 +6,7 @@ authors = [
     { name = "Ulrik Sverdrup", email = "ulrik.sverdrup@gmail.com" }
 ]
 dependencies = [
-    "jupyter-client>=8.8.0",
+    "jupyter-client>=8.10.0",
     "tomli>=2.4.0; python_version < '3.11'",
     "traitlets>=5.14.3",
 ]
