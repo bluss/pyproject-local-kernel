@@ -1,0 +1,925 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../FAQ/">
+      
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.40">
+    
+    
+      
+        <title>Changelog - Pyproject Local Kernel</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.8c3ca2c6.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../static/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#changelog" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      <!--
+  Copyright (c) 2016-2024 Martin Donath <martin.donath@squidfunk.com>
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to
+  deal in the Software without restriction, including without limitation the
+  rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+  sell copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+  IN THE SOFTWARE.
+-->
+
+<!-- Determine classes -->
+
+
+
+<!-- Header -->
+<header class="md-header" data-md-component="header">
+  <nav
+    class="md-header__inner md-grid"
+    aria-label="Header"
+  >
+
+    <!-- Link to home -->
+    <a
+      href=".."
+      title="Pyproject Local Kernel"
+      class="md-header__button md-logo"
+      aria-label="Pyproject Local Kernel"
+      data-md-component="logo"
+    >
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+
+    <!-- Button to open drawer -->
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+
+    <!-- Header title -->
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pyproject Local Kernel
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Changelog
+            
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Color palette toggle -->
+    
+
+    <!-- User preference: color palette -->
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+
+    <!-- Site language selector -->
+    
+
+    <!-- Button to open search modal -->
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+
+      <!-- Search interface -->
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+        <div class="pypi_badge">
+    <a href="https://pypi.org/project/pyproject-local-kernel/" title="pyproject-local-kernel at Python Package Index">
+        <img src="https://img.shields.io/pypi/v/pyproject-local-kernel?style=for-the-badge&logo=python&logoColor=yellow&color=000050&labelColor=3f6ec6"/>
+    </a>
+</div>
+    
+
+    <!-- Repository information -->
+    
+      <div class="md-header__source">
+        <a href="https://github.com/bluss/pyproject-local-kernel" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    bluss/pyproject-local-kernel
+  </div>
+</a>
+      </div>
+    
+  </nav>
+
+  <!-- Navigation tabs (sticky) -->
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+    
+  
+  Overview
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../FAQ/" class="md-tabs__link">
+        
+  
+    
+  
+  FAQ
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
+        
+  
+    
+  
+  Changelog
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Pyproject Local Kernel" class="md-nav__button md-logo" aria-label="Pyproject Local Kernel" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Pyproject Local Kernel
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/bluss/pyproject-local-kernel" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    bluss/pyproject-local-kernel
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../FAQ/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    FAQ
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Changelog
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Changelog
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#0121" class="md-nav__link">
+    <span class="md-ellipsis">
+      0.12.1
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#0120" class="md-nav__link">
+    <span class="md-ellipsis">
+      0.12.0
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#0113" class="md-nav__link">
+    <span class="md-ellipsis">
+      0.11.3
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#0112" class="md-nav__link">
+    <span class="md-ellipsis">
+      0.11.2
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#0111" class="md-nav__link">
+    <span class="md-ellipsis">
+      0.11.1
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#0110" class="md-nav__link">
+    <span class="md-ellipsis">
+      0.11.0
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#0101" class="md-nav__link">
+    <span class="md-ellipsis">
+      0.10.1
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#0100" class="md-nav__link">
+    <span class="md-ellipsis">
+      0.10.0
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#091" class="md-nav__link">
+    <span class="md-ellipsis">
+      0.9.1
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#090" class="md-nav__link">
+    <span class="md-ellipsis">
+      0.9.0
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#081" class="md-nav__link">
+    <span class="md-ellipsis">
+      0.8.1
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#080" class="md-nav__link">
+    <span class="md-ellipsis">
+      0.8.0
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#072" class="md-nav__link">
+    <span class="md-ellipsis">
+      0.7.2
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#071" class="md-nav__link">
+    <span class="md-ellipsis">
+      0.7.1
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#070" class="md-nav__link">
+    <span class="md-ellipsis">
+      0.7.0
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#060" class="md-nav__link">
+    <span class="md-ellipsis">
+      0.6.0
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#055" class="md-nav__link">
+    <span class="md-ellipsis">
+      0.5.5
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#054" class="md-nav__link">
+    <span class="md-ellipsis">
+      0.5.4
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#053" class="md-nav__link">
+    <span class="md-ellipsis">
+      0.5.3
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#052" class="md-nav__link">
+    <span class="md-ellipsis">
+      0.5.2
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#051" class="md-nav__link">
+    <span class="md-ellipsis">
+      0.5.1
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#050" class="md-nav__link">
+    <span class="md-ellipsis">
+      0.5.0
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="changelog">Changelog</h1>
+<h2 id="0121">0.12.1</h2>
+<ul>
+<li>
+<p>Update how configuration types are displayed in errors (<a class="gh-link gh-issue" href="https://github.com/bluss/pyproject-local-kernel/issues/60" title="GitHub Issue bluss/pyproject-local-kernel #60">#60</a>)</p>
+</li>
+<li>
+<p>Pin Python 3.12 for the examples (<a class="gh-link gh-issue" href="https://github.com/bluss/pyproject-local-kernel/issues/62" title="GitHub Issue bluss/pyproject-local-kernel #62">#62</a>)</p>
+</li>
+<li>
+<p>Minor fixes to fallback kernel mode (<a class="gh-link gh-issue" href="https://github.com/bluss/pyproject-local-kernel/issues/62" title="GitHub Issue bluss/pyproject-local-kernel #62">#62</a>)</p>
+</li>
+<li>
+<p>Clarify error message when project section is missing from <code>pyproject.toml</code>
+  (<a class="gh-link gh-issue" href="https://github.com/bluss/pyproject-local-kernel/issues/62" title="GitHub Issue bluss/pyproject-local-kernel #62">#62</a>)</p>
+</li>
+</ul>
+<h2 id="0120">0.12.0</h2>
+<ul>
+<li>
+<p>Show more specific error if we fail to run sanity check (<a class="gh-link gh-issue" href="https://github.com/bluss/pyproject-local-kernel/issues/55" title="GitHub Issue bluss/pyproject-local-kernel #55">#55</a>)</p>
+</li>
+<li>
+<p>Add project config <code>sanity-check</code> (<a class="gh-link gh-issue" href="https://github.com/bluss/pyproject-local-kernel/issues/55" title="GitHub Issue bluss/pyproject-local-kernel #55">#55</a>)</p>
+</li>
+<li>
+<p>Accept both underscore and hyphen in project configuration (<a class="gh-link gh-issue" href="https://github.com/bluss/pyproject-local-kernel/issues/55" title="GitHub Issue bluss/pyproject-local-kernel #55">#55</a>)</p>
+</li>
+<li>
+<p>Sharpen the public/private API distinction even if this is not a library;
+  only the main function and the kernel provisioner are public API now. (<a class="gh-link gh-issue" href="https://github.com/bluss/pyproject-local-kernel/issues/57" title="GitHub Issue bluss/pyproject-local-kernel #57">#57</a>)</p>
+</li>
+</ul>
+<h2 id="0113">0.11.3</h2>
+<ul>
+<li>
+<p>Set <code>PYPROJECT_LOCAL_KERNEL_SANITY_CHECK</code> in the environment when running the
+  sanity check. (<a class="gh-link gh-issue" href="https://github.com/bluss/pyproject-local-kernel/issues/51" title="GitHub Issue bluss/pyproject-local-kernel #51">#51</a>)</p>
+</li>
+<li>
+<p>Log working directory setting when starting kernel process. (<a class="gh-link gh-issue" href="https://github.com/bluss/pyproject-local-kernel/issues/51" title="GitHub Issue bluss/pyproject-local-kernel #51">#51</a>)</p>
+</li>
+<li>
+<p>If <code>pyproject.toml</code> has no project section, do not identify it as belonging
+  to a project manager that requires the project section. (<a class="gh-link gh-issue" href="https://github.com/bluss/pyproject-local-kernel/issues/52" title="GitHub Issue bluss/pyproject-local-kernel #52">#52</a>)</p>
+</li>
+</ul>
+<h2 id="0112">0.11.2</h2>
+<ul>
+<li>
+<p>Enable the binary path in the virtual environment for use-venv
+  and hatch configurations (<a class="gh-link gh-issue" href="https://github.com/bluss/pyproject-local-kernel/issues/48" title="GitHub Issue bluss/pyproject-local-kernel #48">#48</a>)</p>
+</li>
+<li>
+<p>Launch fallback kernel using <code>python -m</code>. (<a class="gh-link gh-issue" href="https://github.com/bluss/pyproject-local-kernel/issues/49" title="GitHub Issue bluss/pyproject-local-kernel #49">#49</a>)</p>
+</li>
+<li>
+<p>Test using Python 3.13. (<a class="gh-link gh-issue" href="https://github.com/bluss/pyproject-local-kernel/issues/45" title="GitHub Issue bluss/pyproject-local-kernel #45">#45</a>)</p>
+</li>
+</ul>
+<h2 id="0111">0.11.1</h2>
+<ul>
+<li>
+<p>Add another kernelspec <strong>Pyproject Local (use-venv)</strong> which defaults to the
+  <code>use-venv</code> setting, using the virtual environment directly.
+  (<a class="gh-link gh-issue" href="https://github.com/bluss/pyproject-local-kernel/issues/43" title="GitHub Issue bluss/pyproject-local-kernel #43">#43</a> and <a class="gh-link gh-commit" href="https://github.com/bluss/pyproject-local-kernel/commit/cb90a2064576d8e58645ad9577a7653a94780065" title="GitHub Commit: bluss/pyproject-local-kernel@cb90a2064576d8e58645ad9577a7653a94780065">cb90a20</a>).</p>
+</li>
+<li>
+<p><code>PyprojectKernelProvisioner</code> is now configurable like other “jupyter objects”
+  using the same config system. However, <code>pyproject.toml</code> configuration
+  should be preferred. (<a class="gh-link gh-issue" href="https://github.com/bluss/pyproject-local-kernel/issues/43" title="GitHub Issue bluss/pyproject-local-kernel #43">#43</a>)</p>
+</li>
+<li>
+<p>When preparing to start the kernel, only errors from known checks
+  are caught and passed off to the starting fallback kernel.
+  (<a class="gh-link gh-commit" href="https://github.com/bluss/pyproject-local-kernel/commit/aaed1da1069de41df4ce493582ad98ccd6bc7d48" title="GitHub Commit: bluss/pyproject-local-kernel@aaed1da1069de41df4ce493582ad98ccd6bc7d48">aaed1da</a>)</p>
+</li>
+</ul>
+<h2 id="0110">0.11.0</h2>
+<ul>
+<li>Use <a href="https://jupyter-client.readthedocs.io/en/latest/provisioning.html">local kernel provisioning</a> to launch the kernel. This is
+  a more standard way to do it, with less overhead and less compatibility
+  issues. (<a class="gh-link gh-issue" href="https://github.com/bluss/pyproject-local-kernel/issues/39" title="GitHub Issue bluss/pyproject-local-kernel #39">#39</a>)</li>
+<li>Improved fallback mode on errors and documentation around this</li>
+<li>License update again, more or less reverting what was done in v0.10.0,
+  because the relevant code has been removed. (<a class="gh-link gh-issue" href="https://github.com/bluss/pyproject-local-kernel/issues/39" title="GitHub Issue bluss/pyproject-local-kernel #39">#39</a>)</li>
+<li>The package now installs an executable <code>pyproject_local_kernel</code> that is
+  used interally (<a class="gh-link gh-issue" href="https://github.com/bluss/pyproject-local-kernel/issues/39" title="GitHub Issue bluss/pyproject-local-kernel #39">#39</a>)</li>
+<li>This one goes to eleven, it really does</li>
+</ul>
+<h2 id="0101">0.10.1</h2>
+<ul>
+<li>If there is no <code>pyproject.toml</code> at all, show an error message to the user
+  instead of throwing an exception. Fixes a regression. (<a class="gh-link gh-issue" href="https://github.com/bluss/pyproject-local-kernel/issues/34" title="GitHub Issue bluss/pyproject-local-kernel #34">#34</a>)</li>
+<li>Fix running tests in sdist (<a class="gh-link gh-issue" href="https://github.com/bluss/pyproject-local-kernel/issues/33" title="GitHub Issue bluss/pyproject-local-kernel #33">#33</a>)</li>
+</ul>
+<h2 id="0100">0.10.0</h2>
+<ul>
+<li>Support interrupting the kernel on windows (<a class="gh-link gh-issue" href="https://github.com/bluss/pyproject-local-kernel/issues/30" title="GitHub Issue bluss/pyproject-local-kernel #30">#30</a>, <a class="gh-link gh-issue" href="https://github.com/bluss/pyproject-local-kernel/issues/32" title="GitHub Issue bluss/pyproject-local-kernel #32">#32</a>)</li>
+<li>Now uses <code>jupyter-client</code> to launch the kernel process (<a class="gh-link gh-issue" href="https://github.com/bluss/pyproject-local-kernel/issues/30" title="GitHub Issue bluss/pyproject-local-kernel #30">#30</a>)</li>
+<li>License was updated after we copied one file from ipykernel,
+  now a combination of MIT and BSD 3-clause.</li>
+</ul>
+<h2 id="091">0.9.1</h2>
+<ul>
+<li>Call <code>hatch env find</code> using <code>--no-color</code> for robustness (<a class="gh-link gh-issue" href="https://github.com/bluss/pyproject-local-kernel/issues/27" title="GitHub Issue bluss/pyproject-local-kernel #27">#27</a>)</li>
+<li>Support a command string for <code>python-cmd</code> configuration (<a class="gh-link gh-issue" href="https://github.com/bluss/pyproject-local-kernel/issues/28" title="GitHub Issue bluss/pyproject-local-kernel #28">#28</a>)</li>
+<li>Better test setup for jupyter using pytest (<a class="gh-link gh-issue" href="https://github.com/bluss/pyproject-local-kernel/issues/27" title="GitHub Issue bluss/pyproject-local-kernel #27">#27</a>)</li>
+</ul>
+<h2 id="090">0.9.0</h2>
+<ul>
+<li>Check configuration value types strictly and warn on unknown configuration</li>
+<li>Examples in the repository now use Uv</li>
+</ul>
+<h2 id="081">0.8.1</h2>
+<ul>
+<li>Fix problem trying to forward SIGCHLD to kernel, which was maybe specific to
+  Python 3.8 (and not-windows) (<a class="gh-link gh-issue" href="https://github.com/bluss/pyproject-local-kernel/issues/24" title="GitHub Issue bluss/pyproject-local-kernel #24">#24</a>)</li>
+</ul>
+<h2 id="080">0.8.0</h2>
+<ul>
+<li>Change how <code>hatch</code> projects are run: detect the (default) virtual env path
+  and run python from there. User has to ensure virtualenv dependencies are
+  synchronized. (<a class="gh-link gh-issue" href="https://github.com/bluss/pyproject-local-kernel/issues/23" title="GitHub Issue bluss/pyproject-local-kernel #23">#23</a>)</li>
+</ul>
+<h2 id="072">0.7.2</h2>
+<ul>
+<li>Published documentation to a new website using mkdocs</li>
+<li>Copyedited documentation</li>
+</ul>
+<h2 id="071">0.7.1</h2>
+<ul>
+<li>Use Uv as first fallback if no explicit project manager can be identified
+  from the pyproject if <code>uv</code> is in the command path. Use Rye as the second
+  fallback in the same way.</li>
+</ul>
+<h2 id="070">0.7.0</h2>
+<ul>
+<li>Use <code>uv run</code> for uv projects. Requires uv 0.2.29 or later.
+  Uses <code>uv run --with ipykernel</code> which means it will run as
+  before if ipykernel is already installed, or run in an overlay
+  environment (ipykernel + base pyproject) if not.</li>
+<li>Include kernel start failure messages in user visible text in more cases such
+  as “command not found”.</li>
+</ul>
+<h2 id="060">0.6.0</h2>
+<ul>
+<li>Support configuration <code>use-venv</code> for setting a name of a virtualenv to use</li>
+<li>Support Uv (in a basic way, by assuming <code>use-venv=".venv"</code> for uv)</li>
+</ul>
+<h2 id="055">0.5.5</h2>
+<ul>
+<li>Fix ProjectDetection.path which should hold the path to the pyproject file</li>
+<li>Added trusted publishing (for PyPI) workflow on github</li>
+</ul>
+<h2 id="054">0.5.4</h2>
+<ul>
+<li>Enable debugging for the Pyproject Local kernel (just like the regular
+ipykernel)</li>
+<li>More extensive tests, on linux and windows, including notebook execution</li>
+</ul>
+<h2 id="053">0.5.3</h2>
+<ul>
+<li>Add tests. Moved main logic to module to facilitate.</li>
+<li>Update readme</li>
+</ul>
+<h2 id="052">0.5.2</h2>
+<ul>
+<li>Use tomllib for newer Python, and tomli as fallback</li>
+<li>Catch all exceptions when starting the kernel, so that the fallback can be
+started in most situations.</li>
+<li>More detailed error messages in the fallback</li>
+</ul>
+<h2 id="051">0.5.1</h2>
+<ul>
+<li>Cleaned up unnecessary log output</li>
+<li>Set repo URL in package</li>
+</ul>
+<h2 id="050">0.5.0</h2>
+<ul>
+<li>Changed name to pyproject-local-kernel (previously ryeish-kernel)</li>
+<li>Now supports Rye, PDM, Poetry, Hatch and custom configuration</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../FAQ/" class="md-footer__link md-footer__link--prev" aria-label="Previous: FAQ">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                FAQ
+              </div>
+            </div>
+          </a>
+        
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2024 “bluss” Ulrik Sverdrup
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.instant", "navigation.tracking", "content.code.annotate", "content.code.copy", "content.tabs.link", "toc.integrate", "toc.follow", "navigation.path", "navigation.top", "navigation.tabs", "navigation.footer"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.525ec568.min.js"></script>
+      
+    
+  </body>
+</html>
