@@ -286,7 +286,7 @@ wheels = [
 
 [[package]]
 name = "pyproject-local-kernel"
-version = "0.13.0"
+version = "0.12.1"
 source = { editable = "." }
 dependencies = [
     { name = "jupyter-client" },

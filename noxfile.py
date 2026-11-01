@@ -19,6 +19,7 @@ python_versions = [
     "3.12",
     "3.13",
     "3.14",
+    "3.15",
 ]
 python_short = ["py" + p.replace(".", "") for p in python_versions]
 windows_python_versions = [python_versions[1], python_versions[-1]]
