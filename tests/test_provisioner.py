@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import asyncio
 import enum
+import os
 from pathlib import Path
 import shutil
 
@@ -13,7 +14,7 @@ from traitlets.config import Config
 
 
 from pyproject_local_kernel.provisioner import PyprojectKernelProvisioner
-from pyproject_local_kernel._identify import KERNEL_SPECS, ProjectKind
+from pyproject_local_kernel._identify import KERNEL_SPECS, ProjectKind, get_venv_bin_python
 
 
 pytestmark = pytest.mark.unit
@@ -114,14 +115,67 @@ def test_venv_config():
     assert prov.use_venv == config_value
 
 
-def test_custom_cmd_env_drops_virtual_env(tmp_path: Path):
+@pytest.mark.parametrize("env,expected", [
+    ({"VIRTUAL_ENV": "/jupyterlab/env", "PATH": "/usr/bin", "CUSTOM": "keep"},
+     {"PATH": "/usr/bin", "CUSTOM": "keep"}),
+    ({"VIRTUAL_ENV": "/jupyterlab/env"}, {}),
+    ({"VIRTUAL_ENV": ""}, {}),
+    ({"PATH": "/usr/bin", "CUSTOM": "keep"}, {"PATH": "/usr/bin", "CUSTOM": "keep"}),
+    ({"VIRTUAL_ENV": "/jupyter lab/env", "PATH": "/usr/bin"}, {"PATH": "/usr/bin"}),
+])
+def test_pre_launch_env_custom_cmd(tmp_path: Path, env, expected):
     shutil.copy("tests/identify/config_cmd/pyproject.toml", tmp_path / "pyproject.toml")
     spec = KernelSpec(argv=["placeholder"], display_name="t", language="python")
     prov = PyprojectKernelProvisioner(
         kernel_spec=spec, python_kernel_args=["-m", "ipykernel"], sanity_check=False
     )
-    kwargs = prov._pplk_pre_launch(
-        cwd=tmp_path, env={"VIRTUAL_ENV": "/jupyterlab/env", "PATH": "/usr/bin"}
+    launch_env = dict(env)
+    kwargs = asyncio.run(prov.pre_launch(cwd=tmp_path, env=launch_env))
+    cmd = kwargs.pop("cmd")
+    assert cmd == ["my", "cmd", "-m", "ipykernel"]
+    assert prov.kernel_spec.argv == cmd
+    assert kwargs["env"] == expected
+    assert kwargs["env"] is not launch_env
+    assert launch_env == env
+
+
+def test_pre_launch_env_custom_cmd_repeated(tmp_path: Path):
+    shutil.copy("tests/identify/config_cmd/pyproject.toml", tmp_path / "pyproject.toml")
+    spec = KernelSpec(argv=["placeholder"], display_name="t", language="python")
+    prov = PyprojectKernelProvisioner(
+        kernel_spec=spec, python_kernel_args=["-m", "ipykernel"], sanity_check=False
     )
-    assert "VIRTUAL_ENV" not in kwargs["env"]
-    assert prov.kernel_spec.argv[:2] == ["my", "cmd"]
+    first_env = {"VIRTUAL_ENV": "/jupyterlab/env", "PATH": "/usr/bin"}
+    first = asyncio.run(prov.pre_launch(cwd=tmp_path, env=first_env))
+    second_env = {"VIRTUAL_ENV": "/other/env", "PATH": "/bin", "CUSTOM": "keep"}
+    second = asyncio.run(prov.pre_launch(cwd=tmp_path, env=second_env))
+    assert first["env"] == {"PATH": "/usr/bin"}
+    assert second["env"] == {"PATH": "/bin", "CUSTOM": "keep"}
+    assert first["cmd"] == second["cmd"] == ["my", "cmd", "-m", "ipykernel"]
+    assert first_env == {"VIRTUAL_ENV": "/jupyterlab/env", "PATH": "/usr/bin"}
+    assert second_env == {"VIRTUAL_ENV": "/other/env", "PATH": "/bin", "CUSTOM": "keep"}
+
+
+@pytest.mark.parametrize("env", [
+    {"VIRTUAL_ENV": "/jupyterlab/env", "PATH": "/usr/bin", "CUSTOM": "keep"},
+    {"VIRTUAL_ENV": "/jupyterlab/env", "CUSTOM": "keep"},
+    {"PATH": "/usr/bin"},
+])
+def test_pre_launch_env_use_venv(tmp_path: Path, env):
+    shutil.copy("tests/identify/use-venv/pyproject.toml", tmp_path / "pyproject.toml")
+    spec = KernelSpec(argv=["placeholder"], display_name="t", language="python")
+    prov = PyprojectKernelProvisioner(
+        kernel_spec=spec, python_kernel_args=["-m", "ipykernel"], sanity_check=False
+    )
+    venv_python = tmp_path / get_venv_bin_python(Path(".myvenv"))
+    venv_bin = str(venv_python.parent)
+    launch_env = dict(env)
+    kwargs = asyncio.run(prov.pre_launch(cwd=tmp_path, env=launch_env))
+    cmd = kwargs.pop("cmd")
+    assert cmd == [str(venv_python), "-m", "ipykernel"]
+    assert prov.kernel_spec.argv == cmd
+    expected = dict(env)
+    path = expected.get("PATH", os.defpath)
+    if not path.split(os.pathsep) or path.split(os.pathsep)[0] != venv_bin:
+        expected["PATH"] = os.pathsep.join([venv_bin, path])
+    assert kwargs["env"] == expected
