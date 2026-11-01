@@ -7,8 +7,8 @@ authors = [
 ]
 dependencies = [
     "jupyter-client>=8.10.0",
-    "tomli>=2.4.0; python_version < '3.11'",
-    "traitlets>=5.14.3",
+    "tomli>=2.5.0; python_version < '3.11'",
+    "traitlets>=5.16.1",
 ]
 readme = "README.md"
 license = {file = "LICENSE.md"}
