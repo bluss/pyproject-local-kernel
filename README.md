@@ -19,7 +19,7 @@ environment for the project the notebook file resides in. This approach should
 be more portable, usable to anyone who checks out your project structure from
 git, and easier to use.
 
-Pyproject Local supports **Uv, Poetry, Hatch, Rye, and PDM**
+Pyproject Local supports **Uv, Poetry, Hatch, and PDM**
 and reads `pyproject.toml` to figure out which kind of project it is.
 Or it can use a custom command or a bare virtual environment directly.
 
@@ -180,10 +180,10 @@ close to the project.
 
 ## About Particular Project Managers
 
-The project manager command, be it rye, uv, pdm, etc needs to be
+The project manager command, be it uv, pdm, etc needs to be
 available on the path where Jupyterlab runs. Either install the project
 manager in the Jupyterlab environment, or install the project manager
-user-wide (using something like pipx, uv tool, rye tools, brew, or
+user-wide (using something like pipx, uv tool, brew, or
 other method to install it.)
 
 ***Uv***
@@ -197,11 +197,6 @@ other method to install it.)
   Add ipykernel to the project to avoid this.
 
 [eph]: https://docs.astral.sh/uv/reference/cli/
-
-***Rye***
-
-- Rye is detected if the pyproject.toml contains `tool.rye.managed = true`
-  which Rye sets by default for its new projects.
 
 ***PDM***
 

@@ -15,7 +15,6 @@ pytestmark = pytest.mark.unit
 
 
 @pytest.mark.parametrize("path,expected", [
-    ("tests/identify/rye", ProjectKind.Rye),
     ("tests/identify/poetry", ProjectKind.Poetry),
     ("tests/identify/pdm", ProjectKind.Pdm),
     ("tests/identify/hatch", ProjectKind.Hatch),

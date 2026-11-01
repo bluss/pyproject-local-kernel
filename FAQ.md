@@ -6,7 +6,7 @@
 The regular IPython kernel for Jupyter is launched like this:
 `python -m ipykernel_launcher -f <connection_file>`
 
-If you just prefix that command with `rye run`, `uv run`, `poetry run`,
+If you just prefix that command with `uv run`, `poetry run`,
 `pdm run`, `hatch run`, etc, then you get a kernel invocation that executes in
 the current pyproject's environment. That's basically the whole magic of this
 package, it doesn't need to do more (well, if it only were *that* easy..)
@@ -148,9 +148,9 @@ python-cmd = ["env", "PIPENV_IGNORE_VIRTUALENVS=1", "pipenv", "run", "python"]
 ```
 
 
-## Does Pyproject Local Kernel require Uv or Rye?
+## Does Pyproject Local Kernel require Uv?
 
-No, neither of them are strictly required to use. Any supported project manager
+No, it is not strictly required to use. Any supported project manager
 is enough, or even none for custom or vitualenv configurations.
 
 For development of the project and running tests, Uv is required.

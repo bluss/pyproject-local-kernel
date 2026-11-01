@@ -37,7 +37,6 @@ class ProjectKind(enum.Enum):
     "detected project type"
     CustomConfiguration = enum.auto()
     UseVenv = enum.auto()
-    Rye = enum.auto()
     Poetry = enum.auto()
     Pdm = enum.auto()
     Hatch = enum.auto()
@@ -47,8 +46,6 @@ class ProjectKind(enum.Enum):
     InvalidData = enum.auto()
 
     def python_cmd(self) -> list[str] | None:
-        if self == ProjectKind.Rye:
-            return ["rye", "run", "python"]
         if self == ProjectKind.Poetry:
             return ['poetry', 'run', 'python']
         if self == ProjectKind.Pdm:
@@ -113,8 +110,6 @@ class ProjectDetection:
     def _fallback_project_kind(cls) -> ProjectKind:
         if shutil.which("uv") is not None:
             return ProjectKind.Uv
-        if shutil.which("rye") is not None:
-            return ProjectKind.Rye
         return ProjectKind.Unknown
 
 
@@ -159,10 +154,6 @@ def has_dotkey(data, dotkey):
     return get_dotkey(data, dotkey, None) is not None
 
 
-def is_rye(data: dict):
-    return has_project_table(data) and get_dotkey(data, 'tool.rye.managed', False) is True
-
-
 def is_poetry(data: dict):
     return bool(get_dotkey(data, 'tool.poetry.name', ""))
 
@@ -187,7 +178,6 @@ def has_project_table(data: dict):
 
 
 IDENTIFY_FUNCTIONS = {
-    ProjectKind.Rye: is_rye,
     ProjectKind.Pdm: is_pdm,
     ProjectKind.Poetry: is_poetry,
     ProjectKind.Hatch: is_hatch,

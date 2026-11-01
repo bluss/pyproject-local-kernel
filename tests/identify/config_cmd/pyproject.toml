@@ -1,5 +1,5 @@
 [project]
-name = "rye"
+name = "not-rye"
 version = "0.1.0"
 description = "Add your description here"
 authors = [
@@ -7,11 +7,6 @@ authors = [
 ]
 dependencies = []
 requires-python = ">= 3.0"
-
-[tool.rye]
-managed = true
-virtual = true
-dev-dependencies = []
 
 [tool.pyproject-local-kernel]
 python-cmd = ["my", "cmd"]

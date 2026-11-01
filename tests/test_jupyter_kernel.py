@@ -128,7 +128,6 @@ class ScenarioSetup:
 
 
 @pytest.mark.parametrize("scenario,notebook", [
-    ("rye", "notebook.py"),
     ("uv", "notebook.py"),
     ("uv", "notebook_use_venv.py"),
     ("hatch", "notebook.py"),
@@ -137,12 +136,10 @@ class ScenarioSetup:
 def test_project_papermill(scenario: str, notebook: str, python_version: str,
                            scenario_setup: ScenarioSetup, executable: str = "papermill"):
     """
-    Test papermill and pyproject-local-kernel for notebook side vs uv / rye / hatch / venv for project side
+    Test papermill and pyproject-local-kernel for notebook side vs uv / hatch / venv for project side
     """
     if scenario != "venv" and shutil.which(scenario) is None:
         pytest.skip(f"{scenario} not installed")
-    if scenario == "rye" and python_version[2:] >= "13":
-        pytest.skip(f"{scenario} does not support 3.13")
 
     update = python_version in _UPDATE_VERSIONS
 

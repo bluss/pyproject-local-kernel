@@ -162,12 +162,7 @@ def _start_fallback_kernel(args: argparse.Namespace, failure_to_start_msg: str):
         help_messages += [f"The detected project type is: {project_kind.name}"]
 
     help_messages += [""]
-    if project_kind == ProjectKind.Rye:
-        help_messages += [
-            "Run this:",
-            "!rye add --sync ipykernel",
-        ]
-    elif project_kind == ProjectKind.Uv:
+    if project_kind == ProjectKind.Uv:
         help_messages += [
             "Run this:",
             "!uv add ipykernel",
