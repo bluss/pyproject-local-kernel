@@ -23,6 +23,9 @@ _PACKAGE_REINSTALL = "--reinstall-package pyproject-local-kernel"
 _UPDATE_VERSIONS = {"3.12", "3.13"}
 
 
+def run_venv_clear():
+    run("uv venv --clear -q")
+
 @contextlib.contextmanager
 def chdir(path):
     with pytest.MonkeyPatch.context() as m:
@@ -36,10 +39,10 @@ def server_dir(python_version: str):
     base_dir = Path("tests/server-client") / "server"
     with chdir(base_dir):
         run(f"uv python pin -q {python_version}")
-        run("uv venv -q")
+        run_venv_clear()
     yield base_dir
     with chdir(base_dir):
-        run("uv venv -q")
+        run_venv_clear()
 
 
 @pytest.fixture(scope="function")
@@ -87,7 +90,7 @@ class ScenarioSetup:
             else:
                 update_arg = "-U" if update else ""
                 run(f"uv python pin -q {self.python}")
-                run("uv venv -q")
+                run_venv_clear()
                 run(f"uv sync -q {update_arg}")
         self.client_dir = (self.base_dir / client_dir).absolute()
         if notebook:
