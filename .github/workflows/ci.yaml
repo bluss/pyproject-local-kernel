@@ -65,5 +65,6 @@ jobs:
       shell: bash
       env:
         UV_LINK_MODE: symlink
+        PYTHONUTF8: "1"
       run: |
           ./nox -t ci-windows
