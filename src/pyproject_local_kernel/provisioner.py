@@ -81,6 +81,10 @@ class PyprojectKernelProvisioner(LocalProvisioner):
         if python_environment.venv_bin_dir:
             kwargs["env"] = _get_environment(kwargs.get("env"), copy=False)
             python_environment.update_environment(kwargs["env"])
+        else:
+            # A custom python-cmd runs in the project's environment, not JupyterLab's.
+            kwargs["env"] = _get_environment(kwargs.get("env"), copy=True)
+            kwargs["env"].pop("VIRTUAL_ENV", None)
 
         # convert path to string and update kernel spec argv
         python_cmd = list(map(str, python_environment.python_cmd))
