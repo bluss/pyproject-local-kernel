@@ -78,8 +78,11 @@ class PyprojectKernelProvisioner(LocalProvisioner):
         if python_environment is None:
             raise RuntimeError(_MESSAGE_NO_PYPROJECT)
 
+        # drop VIRTUAL_ENV from ambient environment if any
+        kwargs["env"] = _get_environment(kwargs.get("env"))
+        kwargs["env"].pop("VIRTUAL_ENV", None)
+
         if python_environment.venv_bin_dir:
-            kwargs["env"] = _get_environment(kwargs.get("env"), copy=False)
             python_environment.update_environment(kwargs["env"])
 
         # convert path to string and update kernel spec argv
@@ -113,7 +116,7 @@ class PyprojectKernelProvisioner(LocalProvisioner):
         try:
             sanity_cmd = python_cmd + ["-c", _SCRIPT_CHECK_HAS_KERNEL]
             self._log_debug("Running sanity check: %r", sanity_cmd)
-            sanity_env = _get_environment(env, copy=True)
+            sanity_env = _get_environment(env)
             sanity_env["PYPROJECT_LOCAL_KERNEL_SANITY_CHECK"] = "1"
             try:
                 subprocess.run(sanity_cmd, check=True, cwd=cwd, env=sanity_env)
@@ -147,12 +150,6 @@ class PyprojectKernelProvisioner(LocalProvisioner):
         await super().cleanup(restart=restart)
 
 
-def _get_environment(env: dict[str, str] | None, *, copy) -> dict[str, str]:
-    """Get environment from env or os.environ
-    os.environ: always copy
-    env: copy if copy
-    """
-    if env is None:
-        return os.environ.copy()
-    else:
-        return env.copy() if copy else env
+def _get_environment(env: dict[str, str] | None) -> dict[str, str]:
+    """Get environment from env if not None or os.environ, always a copy"""
+    return os.environ.copy() if env is None else env.copy()

@@ -79,6 +79,11 @@ def test_pre_launch(scenario: str, expected, sanity: bool, kernel_spec: KernelSp
     cmd = kwargs.pop("cmd")
     assert prov.kernel_spec.argv == cmd[:len(prov.kernel_spec.argv)]
 
+    if expected in (Expected.Venv, Expected.Uv):
+        venv_value = kwargs.get("env", {}).get("VIRTUAL_ENV")
+        assert "VIRTUAL_ENV" not in kwargs["env"].keys(), \
+            f"should not be exported: VIRTUAL_ENV={venv_value}"
+
     if expected == Expected.Venv:
         assert cmd[0].startswith(str(cwd.absolute() / ".venv"))
     elif expected == Expected.Uv:
